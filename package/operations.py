@@ -7,9 +7,9 @@ def conjunction(contracts):
 		return two_contract_conjunction(contracts[0],contracts[1])
 
 def two_contract_conjunction(c1,c2):
-	return Contract(list_union(c1.get_variables(),c2.get_variables()),
-		list_union(c1.get_assumptions(),c2.get_assumptions()),
-		list_union(c1.get_guarantees(),c2.get_guarantees()))
+	return Contract(list_union(c1.variables,c2.variables),
+		list_union(c1.assumptions,c2.assumptions),
+		list_union(c1.guarantees,c2.guarantees))
 
 def list_union(l1,l2):
 	return list(set().union(l1,l2))

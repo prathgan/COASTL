@@ -1,7 +1,7 @@
 def display(c):
 	print("V:")
-	print(c.get_variables())
+	print(c.variables)
 	print("A:")
-	print(c.get_assumptions())
+	print(c.assumptions)
 	print("G:")
-	print(c.get_guarantees())
+	print(c.guarantees)

@@ -14,11 +14,14 @@ class Contract(object):
 	def process_guarantees(self, guarantees):
 		self.__guarantees = guarantees
 
-	def get_variables(self):
+	@property
+	def variables(self):
 		return self.__variables
 
-	def get_assumptions(self):
+	@property
+	def assumptions(self):
 		return self.__assumptions
 
-	def get_guarantees(self):
+	@property
+	def guarantees(self):
 		return self.__guarantees
