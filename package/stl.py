@@ -1,9 +1,25 @@
+import re
 """
 must translate string of logic such as "!G[0,10](F[1,3](!(x>=1)&&(y<=0))" intro tree structure
 """
 def process_logic(logic):
-	
+	return None
 
+def logic_string_breakdown(str):
+	elements = {}
+	elements['G'] = [m.start() for m in re.finditer("G", str)]
+	elements['F'] = [m.start() for m in re.finditer("F", str)]
+	elements['U'] = [m.start() for m in re.finditer("U", str)]
+	elements['!'] = [m.start() for m in re.finditer("!", str)]
+	elements['||'] = [m.start() for m in re.finditer("||", str)]
+	elements['&&'] = [m.start() for m in re.finditer("&&", str)]
+	elements['['] = [m.start() for m in re.finditer("[", str)]
+	elements[']'] = [m.start() for m in re.finditer("]", str)]
+	elements[','] = [m.start() for m in re.finditer(",", str)]
+	elements['<'] = [m.start() for m in re.finditer("<", str)]
+	elements['>'] = [m.start() for m in re.finditer(">", str)]
+	elements['='] = [m.start() for m in re.finditer("=", str)]
+	return elements
 
 class Node(object):
 	

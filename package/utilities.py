@@ -1,5 +1,5 @@
 def display(c):
-	"""prints contract c represented"""
+	"""displays Contract c in a readable manner"""
 	print("Variables:")
 	print(c.variables)
 	print("Assumptions:")
