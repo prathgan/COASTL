@@ -1,7 +1,8 @@
 def display(c):
-	print("V:")
+	"""prints contract c represented"""
+	print("Variables:")
 	print(c.variables)
-	print("A:")
+	print("Assumptions:")
 	print(c.assumptions)
-	print("G:")
+	print("Guarantees:")
 	print(c.guarantees)
