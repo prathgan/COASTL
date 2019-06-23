@@ -3,9 +3,10 @@ import re
 must translate string of logic such as "!G[0,10](F[1,3](!(x>=1)&&(y<=0))" intro tree structure
 """
 def process_logic(logic):
-	return None
+	control_indices = logic_string_breakdown(logic)
+	print(control_indices)
 
-#maybe use a FIFO queue to verify all parenthesis are closed
+# maybe use a FIFO queue to verify all parenthesis are closed
 
 def logic_string_breakdown(str):
 	elements = {}
@@ -15,12 +16,15 @@ def logic_string_breakdown(str):
 	elements['!'] = [m.start() for m in re.finditer("!", str)]
 	elements['||'] = [m.start() for m in re.finditer("||", str)]
 	elements['&&'] = [m.start() for m in re.finditer("&&", str)]
-	elements['['] = [m.start() for m in re.finditer("[", str)]
-	elements[']'] = [m.start() for m in re.finditer("]", str)]
+	elements['['] = [m.start() for m in re.finditer("\[", str)]
+	elements[']'] = [m.start() for m in re.finditer("\]", str)]
+	elements['('] = [m.start() for m in re.finditer("\(", str)]
+	elements[')'] = [m.start() for m in re.finditer("\)", str)]
 	elements[','] = [m.start() for m in re.finditer(",", str)]
 	elements['<'] = [m.start() for m in re.finditer("<", str)]
 	elements['>'] = [m.start() for m in re.finditer(">", str)]
 	elements['='] = [m.start() for m in re.finditer("=", str)]
+	print(str)
 	return elements
 
 class Node(object):

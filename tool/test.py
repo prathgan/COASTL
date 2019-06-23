@@ -12,4 +12,4 @@ c3 = Contract(["t","s"], ["s<15","t>12"], ["return t+3","return z-1"])
 #conjoined = (conjunction([c1,c2,c3]))
 #display(conjoined)
 
-print(logic_string_breakdown("!G[0,10](F[1,3](!(x>=1)&&(y<=0))"))
+process_logic("!G[0,10](F[1,3](!(x>=1)&&(y<=0))")
