@@ -4,39 +4,9 @@ must translate string of logic such as "!G[0,10](F[1,3](!(x>=1)&&(y<=0))" intro 
 """
 def process_logic(logic):
 	control_indices = logic_string_breakdown(logic)
-	predicate_operators = control_indices["<"]+control_indices[">"]+control_indices["="]
-	predicate_operators.sort()
-	this_operator_ind = 0
-	for operator in predicate_operators:
-		if this_operator_ind <= len(predicate_operators)-1 and\
-		abs(predicate_operators[this_operator_ind]-\
-		predicate_operators[this_operator_ind+1])==1:
-			logic_operator_ind = predicate_operators[this_operator_ind]
-			left_paren_search_ind = logic_operator_ind-1
-			while left_paren_search_ind>=0:
-				if(logic[left_paren_search_ind]=="("):
-					break
-				left_paren_search_ind = left_paren_search_ind-1
-			right_paren_search_ind = logic_operator_ind+2
-			while left_paren_search_ind<len(logic):
-				if(logic[right_paren_search_ind]==")"):
-					break
-				right_paren_search_ind = right_paren_search_ind+1
-			variable = logic[left_paren_search_ind+1:logic_operator_ind]
-			minrange = None
-			maxrange = None
-			if logic[logic_operator_ind]==">":
-				minrange = float(logic[logic_operator_ind+2:right_paren_search_ind])
-			elif logic[logic_operator_ind]=="<":
-				maxrange = float(logic[logic_operator_ind+2:right_paren_search_ind])
-			logic_operator = logic[logic_operator_ind:logic_operator_ind+2]
-			nodename = "node_"+str(logic_operator_ind)
-			exec(nodename+" = Node(None,[],1,logic_operator,variable,minrange,maxrange)")
-			this_operator_ind = this_operator_ind+1
-
-		else:
-			pass # TODO: write this part (single predicate logic, not <= or >=)
-		this_operator_ind = this_operator_ind+1
+	predicate_nodes = process_predicate_nodes(logic, control_indices)
+	print(predicate_nodes)
+	
 # maybe use a FIFO queue to verify all parenthesis are closed
 
 def logic_string_breakdown(str):
@@ -57,6 +27,67 @@ def logic_string_breakdown(str):
 	elements['='] = [m.start() for m in re.finditer("=", str)]
 	return elements
 
+def process_predicate_nodes(logic, control_indices):
+	node_array = []
+	predicate_operators = control_indices["<"]+control_indices[">"]+control_indices["="]
+	predicate_operators.sort()
+	this_operator_ind = 0
+	for operator in predicate_operators:
+		if this_operator_ind < len(predicate_operators)-1 and\
+		abs(predicate_operators[this_operator_ind]-\
+		predicate_operators[this_operator_ind+1])==1:
+			logic_operator_ind = predicate_operators[this_operator_ind]
+			left_paren_search_ind = logic_operator_ind-1
+			while left_paren_search_ind>=0:
+				if(logic[left_paren_search_ind]=="("):
+					break
+				left_paren_search_ind = left_paren_search_ind-1
+			right_paren_search_ind = logic_operator_ind+2
+			while right_paren_search_ind<len(logic):
+				if(logic[right_paren_search_ind]==")"):
+					break
+				right_paren_search_ind = right_paren_search_ind+1
+			variable = logic[left_paren_search_ind+1:logic_operator_ind]
+			minrange = None
+			maxrange = None
+			if logic[logic_operator_ind]==">":
+				minrange = float(logic[logic_operator_ind+2:right_paren_search_ind])
+			elif logic[logic_operator_ind]=="<":
+				maxrange = float(logic[logic_operator_ind+2:right_paren_search_ind])
+			logic_operator = logic[logic_operator_ind:logic_operator_ind+2]
+			nodename = "node_"+str(logic_operator_ind)
+			exec(nodename+" = Node(None,[],1,logic_operator,variable,minrange,maxrange)")
+			# exec("print("+nodename+")")
+			exec("node_array.append("+nodename+")")
+			this_operator_ind = this_operator_ind+1
+		elif this_operator_ind <= len(predicate_operators)-1:
+			logic_operator_ind = predicate_operators[this_operator_ind]
+			left_paren_search_ind = logic_operator_ind-1
+			while left_paren_search_ind>=0:
+				if(logic[left_paren_search_ind]=="("):
+					break
+				left_paren_search_ind = left_paren_search_ind-1
+			right_paren_search_ind = logic_operator_ind+1
+			while right_paren_search_ind<len(logic):
+				if(logic[right_paren_search_ind]==")"):
+					break
+				right_paren_search_ind = right_paren_search_ind+1
+			variable = logic[left_paren_search_ind+1:logic_operator_ind]
+			minrange = None
+			maxrange = None
+			if logic[logic_operator_ind]==">":
+				minrange = float(logic[logic_operator_ind+1:right_paren_search_ind])
+			elif logic[logic_operator_ind]=="<":
+				maxrange = float(logic[logic_operator_ind+1:right_paren_search_ind])
+			logic_operator = logic[logic_operator_ind:logic_operator_ind+1]
+			nodename = "node_"+str(logic_operator_ind)
+			exec(nodename+" = Node(None,[],1,logic_operator,variable,minrange,maxrange)")
+			# exec("print("+nodename+")")
+			exec("node_array.append("+nodename+")")
+		this_operator_ind = this_operator_ind+1
+	return node_array
+
+	
 class Node(object):
 	
 	"""
