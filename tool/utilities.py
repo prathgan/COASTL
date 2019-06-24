@@ -1,8 +1,6 @@
 def display_contract(c):
 	"""displays Contract c in a readable manner"""
-	print("Variables:")
-	print(c.variables)
-	print("Assumptions:")
-	print(c.assumptions)
-	print("Guarantees:")
-	print(c.guarantees)
+	print(c)
+
+def display_tree(root):
+	print(root)
