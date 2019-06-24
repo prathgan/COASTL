@@ -96,14 +96,17 @@ class Node(object):
 
 	@property
 	def value(self):
-		"""returns range_end"""
+		"""returns string representation of this node"""
 		if self.__type==0:
 			if self.__logic=="G" or self.__logic=="F" or self.__logic=="U":
-				self.__value = self.__logic+"["+str(self.__range_start)+","+str(self.__range_end)+"]"
+				self.__value = self.__logic+"["+str(self.__range_start)+","+\
+				str(self.__range_end)+"]"
 			if self.__logic=="!" or self.__logic=="||" or self.__logic=="&&":
 				self.__value = self.__logic
 		elif self.__type==1:
-			self.__value = str(self.__vars[0])+self.__logic+str(self.__range_start if self.__range_start==self.__range_end else self.__range_start if self.__range_end==None else self.__range_end)
+			self.__value = str(self.__vars[0])+self.__logic+\
+			str(self.__range_start if self.__range_start==self.__range_end else\
+			self.__range_start if self.__range_end==None else self.__range_end)
 		return self.__value
 
 	@parent.setter
