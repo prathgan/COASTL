@@ -12,7 +12,7 @@ from stl import *
 #conjoined = (conjunction([c1,c2,c3]))
 #display_contract(conjoined)
 
-tree, root = process_logic("!G[0,10](F[1,3](!(x>=1)&&(y<0))")
+root = process_logic("!G[0,10](F[1,3](!(x>=1)&&(y<0))")
 print(root)
 
 # root = Node(None, [], 0, "!", ["x"], None, None)

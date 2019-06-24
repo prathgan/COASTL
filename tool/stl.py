@@ -2,13 +2,19 @@ import re
 """
 must translate string of logic such as "!G[0,10](F[1,3](!(x>=1)&&(y<=0))" intro tree structure
 """
+
+
+
+
+
+#----------------OLD------------------------------------------------
 def process_logic(logic):
 	control_indices = logic_string_breakdown(logic)
 	predicate_nodes = process_predicate_nodes(logic, control_indices)
 	tree = []
 	tree = tree + predicate_nodes
 	tree = tree + process_predicate_modifiers(logic, predicate_nodes)
-	return tree, tree[-1]
+	return tree[-1]
 	# should return root of tree
 	
 # maybe use a FIFO queue to verify all parenthesis are closed
