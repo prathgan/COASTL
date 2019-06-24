@@ -3,12 +3,12 @@ import re
 must translate string of logic such as "!G[0,10](F[1,3](!(x>=1)&&(y<=0))" intro tree structure
 """
 def process_logic(logic):
-	print(logic)
 	control_indices = logic_string_breakdown(logic)
 	predicate_nodes = process_predicate_nodes(logic, control_indices)
 	tree = []
 	tree = tree + predicate_nodes
-	tree = tree + process_predicate_modifiers(predicate_nodes)
+	tree = tree + process_predicate_modifiers(logic, predicate_nodes)
+	return tree, tree[-1]
 	# should return root of tree
 	
 # maybe use a FIFO queue to verify all parenthesis are closed
@@ -91,20 +91,27 @@ def process_predicate_nodes(logic, control_indices):
 		this_operator_ind = this_operator_ind+1
 	return node_array
 
-def process_predicate_modifiers(predicate_nodes):
+def process_predicate_modifiers(logic, predicate_nodes):
 	tree_appendix = []
 	pred_arr_index = 0
 	for node in predicate_nodes:
 		if logic[node.string_bounds[0]-1:node.string_bounds[0]]=="!":
-			node.parent = Node(None, [node], 0, "!", node.vars, None, None, [node.string_bounds[0]-1,node.string_bounds[0]-1])
+			node.parent = Node(None, [], 0, "!", node.vars, None, None,[node.string_bounds[0]-1,node.string_bounds[0]-1])
 			tree_appendix.append(node.parent)
 		if pred_arr_index<len(predicate_nodes)-1\
 		and (logic[node.string_bounds[1]+1:predicate_nodes[pred_arr_index+1].string_bounds[0]]=="&&"\
 		or logic[node.string_bounds[1]+1:predicate_nodes[pred_arr_index+1].string_bounds[0]]=="||"):
-			# print(str(node)+" and "+str(predicate_nodes[pred_arr_index+1])+" have operator between them")
+			find_highest_parent(node).parent = Node(None, [], 0, logic[node.string_bounds[1]+1:predicate_nodes[pred_arr_index+1].string_bounds[0]], node.vars, None, None,[node.string_bounds[1]+1,predicate_nodes[pred_arr_index+1].string_bounds[0]-1])
+			find_highest_parent(predicate_nodes[pred_arr_index+1]).parent = find_highest_parent(node)
+			tree_appendix.append(find_highest_parent(node))
 			pass # create parent node to these nodes with operator
 		pred_arr_index = pred_arr_index + 1
 	return tree_appendix
+
+def find_highest_parent(node):
+	if node.parent == None:
+		return node
+	return find_highest_parent(node.parent)
 
 class Node(object):
 	
@@ -197,6 +204,7 @@ class Node(object):
 	@parent.setter
 	def parent(self, parent):
 		self.__parent = parent
+		parent.children = parent.children + [self]
 
 	@children.setter
 	def children(self, children):

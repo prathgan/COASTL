@@ -12,7 +12,8 @@ from stl import *
 #conjoined = (conjunction([c1,c2,c3]))
 #display_contract(conjoined)
 
-process_logic("!G[0,10](F[1,3](!(x>=1)&&(y<0))")
+tree, root = process_logic("!G[0,10](F[1,3](!(x>=1)&&(y<0))")
+print(root)
 
 # root = Node(None, [], 0, "!", ["x"], None, None)
 # child_layer_1 = Node(root, [], 0, "G", ["x"], 0, 10)
