@@ -4,6 +4,14 @@ import re
 must translate string of logic such as "!G[0,10](F[1,3](!(x>=1)&&(y<=0))" intro tree structure
 """
 
+# when find the variables at the predicate node, propogate the variable up through empty variable fields in logic nodes
+
+def process_logic(logic):
+	if logic[0]=='G' or logic[0]=='F':
+		firstnum, secondnum, closep = square_parens(logic,1)
+		return Node(None, [], 0, logic[0], "", None, None, 1, )
+		pass
+
 def round_parens(string, start):
 	count = 0
 	itr_index = start
@@ -61,7 +69,7 @@ class Node(object):
     ------
     N/A
     """
-	def __init__(self, parent, children, ttype, logic, vvars, range_start, range_end, string_bounds):
+	def __init__(self, parent, children, ttype, logic, vvars, range_start, range_end):
 		self.__parent = parent
 		self.__children = children
 		self.__type = ttype
@@ -70,7 +78,6 @@ class Node(object):
 		self.__range_start = range_start
 		self.__range_end = range_end
 		self.__value = ""
-		self.__string_bounds = string_bounds
 
 	@property
 	def parent(self):
@@ -106,11 +113,6 @@ class Node(object):
 	def range_end(self):
 		"""returns range_end"""
 		return self.__range_end
-
-	@property
-	def string_bounds(self):
-		"""returns range_end"""
-		return self.__string_bounds
 
 	@property
 	def value(self):
