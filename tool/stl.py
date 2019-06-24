@@ -1,123 +1,43 @@
 import re
+
 """
 must translate string of logic such as "!G[0,10](F[1,3](!(x>=1)&&(y<=0))" intro tree structure
 """
 
+def round_parens(string, start):
+	count = 0
+	itr_index = start
+	first_not_found = 1
+	openp = 0
+	closep = 0
+	while itr_index<len(string):
+		if string[itr_index]=='(':
+			if first_not_found==1:
+				start = itr_index
+				first_not_found=0
+			count = count + 1
+		if string[itr_index]==')':
+			count = count - 1
+			if count==0:
+				end = itr_index
+				break
+		itr_index = itr_index + 1
+	return start, end
 
-
-
-
-#----------------OLD------------------------------------------------
-def process_logic(logic):
-	control_indices = logic_string_breakdown(logic)
-	predicate_nodes = process_predicate_nodes(logic, control_indices)
-	tree = []
-	tree = tree + predicate_nodes
-	tree = tree + process_predicate_modifiers(logic, predicate_nodes)
-	return tree[-1]
-	# should return root of tree
-	
-# maybe use a FIFO queue to verify all parenthesis are closed
-
-def logic_string_breakdown(str):
-	elements = {}
-	elements['G'] = [m.start() for m in re.finditer("G", str)]
-	elements['F'] = [m.start() for m in re.finditer("F", str)]
-	elements['U'] = [m.start() for m in re.finditer("U", str)]
-	elements['!'] = [m.start() for m in re.finditer("!", str)]
-	elements['||'] = [m.start() for m in re.finditer("||", str)]
-	elements['&&'] = [m.start() for m in re.finditer("&&", str)]
-	elements['['] = [m.start() for m in re.finditer("\[", str)]
-	elements[']'] = [m.start() for m in re.finditer("\]", str)]
-	elements['('] = [m.start() for m in re.finditer("\(", str)]
-	elements[')'] = [m.start() for m in re.finditer("\)", str)]
-	elements[','] = [m.start() for m in re.finditer(",", str)]
-	elements['<'] = [m.start() for m in re.finditer("<", str)]
-	elements['>'] = [m.start() for m in re.finditer(">", str)]
-	elements['='] = [m.start() for m in re.finditer("=", str)]
-	return elements
-
-def process_predicate_nodes(logic, control_indices):
-	node_array = []
-	predicate_operators = control_indices["<"]+control_indices[">"]+control_indices["="]
-	predicate_operators.sort()
-	this_operator_ind = 0
-	for operator in predicate_operators:
-		if this_operator_ind < len(predicate_operators)-1 and\
-		abs(predicate_operators[this_operator_ind]-\
-		predicate_operators[this_operator_ind+1])==1:
-			logic_operator_ind = predicate_operators[this_operator_ind]
-			left_paren_search_ind = logic_operator_ind-1
-			while left_paren_search_ind>=0:
-				if(logic[left_paren_search_ind]=="("):
-					break
-				left_paren_search_ind = left_paren_search_ind-1
-			right_paren_search_ind = logic_operator_ind+2
-			while right_paren_search_ind<len(logic):
-				if(logic[right_paren_search_ind]==")"):
-					break
-				right_paren_search_ind = right_paren_search_ind+1
-			variable = logic[left_paren_search_ind+1:logic_operator_ind]
-			minrange = None
-			maxrange = None
-			if logic[logic_operator_ind]==">":
-				minrange = float(logic[logic_operator_ind+2:right_paren_search_ind])
-			elif logic[logic_operator_ind]=="<":
-				maxrange = float(logic[logic_operator_ind+2:right_paren_search_ind])
-			logic_operator = logic[logic_operator_ind:logic_operator_ind+2]
-			nodename = "node_"+str(logic_operator_ind)
-			exec(nodename+" = Node(None,[],1,logic_operator,variable,minrange,maxrange,\
-					[left_paren_search_ind,right_paren_search_ind])")
-			exec("node_array.append("+nodename+")")
-			this_operator_ind = this_operator_ind+1
-		elif this_operator_ind <= len(predicate_operators)-1:
-			logic_operator_ind = predicate_operators[this_operator_ind]
-			left_paren_search_ind = logic_operator_ind-1
-			while left_paren_search_ind>=0:
-				if(logic[left_paren_search_ind]=="("):
-					break
-				left_paren_search_ind = left_paren_search_ind-1
-			right_paren_search_ind = logic_operator_ind+1
-			while right_paren_search_ind<len(logic):
-				if(logic[right_paren_search_ind]==")"):
-					break
-				right_paren_search_ind = right_paren_search_ind+1
-			variable = logic[left_paren_search_ind+1:logic_operator_ind]
-			minrange = None
-			maxrange = None
-			if logic[logic_operator_ind]==">":
-				minrange = float(logic[logic_operator_ind+1:right_paren_search_ind])
-			elif logic[logic_operator_ind]=="<":
-				maxrange = float(logic[logic_operator_ind+1:right_paren_search_ind])
-			logic_operator = logic[logic_operator_ind:logic_operator_ind+1]
-			nodename = "node_"+str(logic_operator_ind)
-			exec(nodename+" = Node(None,[],1,logic_operator,variable,minrange,maxrange,\
-				[left_paren_search_ind,right_paren_search_ind])")
-			exec("node_array.append("+nodename+")")
-		this_operator_ind = this_operator_ind+1
-	return node_array
-
-def process_predicate_modifiers(logic, predicate_nodes):
-	tree_appendix = []
-	pred_arr_index = 0
-	for node in predicate_nodes:
-		if logic[node.string_bounds[0]-1:node.string_bounds[0]]=="!":
-			node.parent = Node(None, [], 0, "!", node.vars, None, None,[node.string_bounds[0]-1,node.string_bounds[0]-1])
-			tree_appendix.append(node.parent)
-		if pred_arr_index<len(predicate_nodes)-1\
-		and (logic[node.string_bounds[1]+1:predicate_nodes[pred_arr_index+1].string_bounds[0]]=="&&"\
-		or logic[node.string_bounds[1]+1:predicate_nodes[pred_arr_index+1].string_bounds[0]]=="||"):
-			find_highest_parent(node).parent = Node(None, [], 0, logic[node.string_bounds[1]+1:predicate_nodes[pred_arr_index+1].string_bounds[0]], node.vars, None, None,[node.string_bounds[1]+1,predicate_nodes[pred_arr_index+1].string_bounds[0]-1])
-			find_highest_parent(predicate_nodes[pred_arr_index+1]).parent = find_highest_parent(node)
-			tree_appendix.append(find_highest_parent(node))
-			pass # create parent node to these nodes with operator
-		pred_arr_index = pred_arr_index + 1
-	return tree_appendix
-
-def find_highest_parent(node):
-	if node.parent == None:
-		return node
-	return find_highest_parent(node.parent)
+def square_parens(string, start):
+	itr_index = start
+	comma = 0
+	closep = 0
+	while itr_index<len(string):
+		if string[itr_index]==',':
+			comma = itr_index
+		if string[itr_index]==']':
+			closep = itr_index
+			break
+		itr_index = itr_index + 1
+	firstnum = float(string[start+1:comma])
+	secondnum = float(string[comma+1:len(string)-1])
+	return firstnum, secondnum, closep
 
 class Node(object):
 	
@@ -215,6 +135,12 @@ class Node(object):
 	@children.setter
 	def children(self, children):
 		self.__children = children
+
+	def get_highest_ancestor(self):
+		if __parent == None:
+			return self
+		else:
+			return __parent.get_highest_ancestor
 
 	def __repr__(self, level=0):
 		ret = "\t"*level+repr(self.value)
