@@ -12,12 +12,12 @@ from stl import *
 #conjoined = (conjunction([c1,c2,c3]))
 #display_contract(conjoined)
 
-# process_logic("!G[0,10](F[1,3](!(x>=1)&&(y<=0))")
+process_logic("!G[0,10](F[1,3](!(x>=1)&&(y<=0))")
 
-root = Node(None, [], 0, "!", ["x"], None, None)
-child_layer_1 = Node(root, [], 0, "G", ["x"], 0, 10)
-child_layer_2 = Node(child_layer_1, [], 1, ">=", ["x"], None, 10)
-root.children = [child_layer_1]
-child_layer_1.children = [child_layer_2]
+# root = Node(None, [], 0, "!", ["x"], None, None)
+# child_layer_1 = Node(root, [], 0, "G", ["x"], 0, 10)
+# child_layer_2 = Node(child_layer_1, [], 1, ">=", ["x"], None, 10)
+# root.children = [child_layer_1]
+# child_layer_1.children = [child_layer_2]
 
-print(root)
+# print(root)

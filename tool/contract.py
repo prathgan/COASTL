@@ -25,3 +25,11 @@ class Contract(object):
 	@property
 	def guarantees(self):
 		return self.__guarantees
+
+	def __repr__(self):
+		print("Variables:")
+		print(self.__variables)
+		print("Assumptions:")
+		print(self.__assumptions)
+		print("Guarantees:")
+		print(self.__guarantees)
