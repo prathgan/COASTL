@@ -1,4 +1,4 @@
-def display(c):
+def display_contract(c):
 	"""displays Contract c in a readable manner"""
 	print("Variables:")
 	print(c.variables)

@@ -35,27 +35,29 @@ class Node(object):
     Parameters
     ----------
     parent: pointer to the object of parent of this node
-    child1: pointer to the object of first child of this node; points to anterior requirement of 'until' logic
-    child2: pointer to the object of second child of this ndoe; points to posterior condition of 'until' logic
-    ttype: part of logic which this node represents; logic (0) or predicate (1) (ttype not type because type is Python keyword)
+    children: array with pointers to the objects of children of this node; children[0] 
+    		  points to anterior requirement of 'until' logic, children[1] points to 
+    		  posterior condition of 'until' logic
+    ttype: part of logic which this node represents; logic (0) or predicate (1) (ttype not 
+    	   type because type is Python keyword)
     logic: logic operator which which this node represents, null if predicate node
     vvars: variables which this node pertains to (vvars not vars because vars is Python keyword)
-    range_start: start of range for complex operator nodes
-    range_end: end of range for complex operator nodes
+    range_start: start of range for complex operator nodes, max range
+    range_end: end of range for complex operator nodes, min range
 
     Raises
     ------
     N/A
     """
-	def __init__(self, parent, child1, child2, ttype, logic, vvars, range_start, range_end):
+	def __init__(self, parent, children, ttype, logic, vvars, range_start, range_end):
 		self.__parent = parent
-		self.__child1 = child1
-		self.__child2 = child2
+		self.__children = children
 		self.__type = ttype
 		self.__logic = logic
-		self.__vars = variables
+		self.__vars = vvars
 		self.__range_start = range_start
 		self.__range_end = range_end
+		self.__value = ""
 
 	@property
 	def parent(self):
@@ -63,14 +65,9 @@ class Node(object):
 		return self.__parent
 		
 	@property
-	def child1(self):
+	def children(self):
 		"""returns child1"""
-		return self.__child1
-	
-	@property
-	def child2(self):
-		"""returns child2"""
-		return self.__child2
+		return self.__children
 
 	@property
 	def type(self):
@@ -96,4 +93,30 @@ class Node(object):
 	def range_end(self):
 		"""returns range_end"""
 		return self.__range_end
+
+	@property
+	def value(self):
+		"""returns range_end"""
+		if self.__type==0:
+			if self.__logic=="G" or self.__logic=="F" or self.__logic=="U":
+				self.__value = self.__logic+"["+str(self.__range_start)+","+str(self.__range_end)+"]"
+			if self.__logic=="!" or self.__logic=="||" or self.__logic=="&&":
+				self.__value = self.__logic
+		elif self.__type==1:
+			self.__value = str(self.__vars[0])+self.__logic+str(self.__range_start if self.__range_start==self.__range_end else self.__range_start if self.__range_end==None else self.__range_end)
+		return self.__value
+
+	@parent.setter
+	def parent(self, parent):
+		self.__parent = parent
+
+	@children.setter
+	def children(self, children):
+		self.__children = children
+
+	def __repr__(self, level=0):
+		ret = "\t"*level+repr(self.value)+"\n"
+		for child in self.children:
+			ret += child.__repr__(level+1)
+		return ret
 
