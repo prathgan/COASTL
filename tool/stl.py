@@ -3,8 +3,13 @@ import re
 must translate string of logic such as "!G[0,10](F[1,3](!(x>=1)&&(y<=0))" intro tree structure
 """
 def process_logic(logic):
+	print(logic)
 	control_indices = logic_string_breakdown(logic)
 	predicate_nodes = process_predicate_nodes(logic, control_indices)
+	tree = []
+	tree = tree + predicate_nodes
+	tree = tree + process_predicate_modifiers(predicate_nodes)
+	# should return root of tree
 	
 # maybe use a FIFO queue to verify all parenthesis are closed
 
@@ -55,7 +60,8 @@ def process_predicate_nodes(logic, control_indices):
 				maxrange = float(logic[logic_operator_ind+2:right_paren_search_ind])
 			logic_operator = logic[logic_operator_ind:logic_operator_ind+2]
 			nodename = "node_"+str(logic_operator_ind)
-			exec(nodename+" = Node(None,[],1,logic_operator,variable,minrange,maxrange)")
+			exec(nodename+" = Node(None,[],1,logic_operator,variable,minrange,maxrange,\
+					[left_paren_search_ind,right_paren_search_ind])")
 			exec("node_array.append("+nodename+")")
 			this_operator_ind = this_operator_ind+1
 		elif this_operator_ind <= len(predicate_operators)-1:
@@ -79,11 +85,26 @@ def process_predicate_nodes(logic, control_indices):
 				maxrange = float(logic[logic_operator_ind+1:right_paren_search_ind])
 			logic_operator = logic[logic_operator_ind:logic_operator_ind+1]
 			nodename = "node_"+str(logic_operator_ind)
-			exec(nodename+" = Node(None,[],1,logic_operator,variable,minrange,maxrange)")
+			exec(nodename+" = Node(None,[],1,logic_operator,variable,minrange,maxrange,\
+				[left_paren_search_ind,right_paren_search_ind])")
 			exec("node_array.append("+nodename+")")
 		this_operator_ind = this_operator_ind+1
 	return node_array
 
+def process_predicate_modifiers(predicate_nodes):
+	tree_appendix = []
+	pred_arr_index = 0
+	for node in predicate_nodes:
+		if logic[node.string_bounds[0]-1:node.string_bounds[0]]=="!":
+			node.parent = Node(None, [node], 0, "!", node.vars, None, None, [node.string_bounds[0]-1,node.string_bounds[0]-1])
+			tree_appendix.append(node.parent)
+		if pred_arr_index<len(predicate_nodes)-1\
+		and (logic[node.string_bounds[1]+1:predicate_nodes[pred_arr_index+1].string_bounds[0]]=="&&"\
+		or logic[node.string_bounds[1]+1:predicate_nodes[pred_arr_index+1].string_bounds[0]]=="||"):
+			# print(str(node)+" and "+str(predicate_nodes[pred_arr_index+1])+" have operator between them")
+			pass # create parent node to these nodes with operator
+		pred_arr_index = pred_arr_index + 1
+	return tree_appendix
 
 class Node(object):
 	
@@ -107,7 +128,7 @@ class Node(object):
     ------
     N/A
     """
-	def __init__(self, parent, children, ttype, logic, vvars, range_start, range_end):
+	def __init__(self, parent, children, ttype, logic, vvars, range_start, range_end, string_bounds):
 		self.__parent = parent
 		self.__children = children
 		self.__type = ttype
@@ -116,6 +137,7 @@ class Node(object):
 		self.__range_start = range_start
 		self.__range_end = range_end
 		self.__value = ""
+		self.__string_bounds = string_bounds
 
 	@property
 	def parent(self):
@@ -153,6 +175,11 @@ class Node(object):
 		return self.__range_end
 
 	@property
+	def string_bounds(self):
+		"""returns range_end"""
+		return self.__string_bounds
+
+	@property
 	def value(self):
 		"""returns string representation of this node"""
 		if self.__type==0:
@@ -176,8 +203,8 @@ class Node(object):
 		self.__children = children
 
 	def __repr__(self, level=0):
-		ret = "\t"*level+repr(self.value)+"\n"
+		ret = "\t"*level+repr(self.value)
 		for child in self.children:
-			ret += child.__repr__(level+1)
+			ret += "\n" + child.__repr__(level+1)
 		return ret
 
