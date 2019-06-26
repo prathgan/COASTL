@@ -1,19 +1,14 @@
 import re
 
-"""
-must translate string of logic such as "!G[0,10](F[1,3](!(x>=1)&&(y<=0))" intro tree structure
-"""
-
-# when find the variables at the predicate node, propogate the variable up through empty variable fields in logic nodes
-# recursively break down string into tree
 def process(logic):
 	return process_logic(logic, 1)
 
+# TODO: when find the variables at the predicate node, propogate the variable up through empty variable fields in logic nodes
 def process_logic(logic, root):
+	print(logic)
 	if logic=="":
 		return []
 	start,end = round_parens(logic, 0)
-	andor_logic, andor_ind = find_andor(logic)
 	if logic[start+1]=='G' or logic[start+1]=='F':
 		firstnum, secondnum, closep = square_parens(logic,start+2)
 		if root==1:
@@ -24,10 +19,13 @@ def process_logic(logic, root):
 			(logic[start+1])
 			(logic[closep+1:end])
 			return [Node(None, process_logic(logic[closep+1:end],0), 0, logic[start+1], "", firstnum, secondnum)]
+
+	andor_logic, andor_ind = find_andor(logic)
 	if andor_logic != None:
 		left_start, left_end, right_start, right_end = find_andor_children(logic,andor_ind)
-		return Node(None, [process_logic(logic[left_start:left_end+1],1),process_logic(logic[right_start:right_end+1],1)], 0, andor_logic, "", None, None)
-		# root=1 for both the children of the andor node
+		return Node(None, [process_logic(logic[1:left_end+1],1),process_logic(logic[right_start:len(logic)-1],1)], 0, andor_logic, "", None, None) # error comes from this line
+	if logic[start+1]==!:
+		return Node(None, process_logic(logic[1:],0), 0, "!", "", None, None)
 	return []
 
 def round_parens(string, start):
