@@ -26,6 +26,9 @@ def process_logic(logic, root):
 		return Node(None, [process_logic(logic[1:left_end+1],1),process_logic(logic[right_start:len(logic)-1],1)], 0, andor_logic, "", None, None) # error comes from this line
 	if logic[start+1]==!:
 		return Node(None, process_logic(logic[1:],0), 0, "!", "", None, None)
+	predicate_logic, predicate_ind = find_predicate(logic)
+	if predicate_logic != None:
+		return [Node(None, [], 1, predicate_logic, )] # FINISH
 	return []
 
 def round_parens(string, start):
@@ -103,6 +106,58 @@ def find_andor_children(string, andor_ind):
 	left_start, left_end = round_parens_bwd(string,andor_ind-1)
 	return left_start, left_end, right_start, right_end
 
+def find_predicate(string):
+	operator = None
+	paren_count = 0
+	itr_index = 0
+	operator_ind = -1
+	while itr_index<len(string):
+		if string[itr_index]=='(':
+			paren_count = paren_count + 1
+		if string[itr_index]==')':
+			paren_count = paren_count - 1
+		if paren_count==1 and (string[itr_index]=="<" or string[itr_index]==">" or string[itr_index]=="="):
+			operator_ind = itr_index
+			if string[itr_index+1]=="=":
+				operator = string[itr_index:itr_index+2]
+			else:
+				operator = string[itr_index]
+			return operator, operator_ind
+		itr_index = itr_index + 1
+	return operator, operator_ind
+
+def find_predicate_info(string, operator_ind, operator):
+	var = find_predicate_var(string, operator_ind)
+	minval = None
+	maxval = None
+	if operator=="<=":
+		maxval = find_predicate_num(string)
+	elif operator==">=":
+		pass
+	elif operator=="<":
+		pass
+	elif operator==">":
+		pass
+	elif operator=="=":
+		pass
+
+
+
+def find_predicate_num(string, last_operator_ind):
+	itr_index = last_operator_ind
+	while itr_index<len(string):
+		if string[itr_index]==")":
+			return float(string[last_operator_ind+1:itr_index])
+		itr_index = itr_index = 1
+	return -1
+
+def find_predicate_var(string, operator_ind):
+	itr_index = operator_ind
+	while itr_index>-1:
+		if string[itr_index]=="(":
+			return string[itr_index+1:operator_ind]
+		itr_index = itr_index - 1
+	return -1
 
 class Node(object):
 
