@@ -266,6 +266,12 @@ class Node(object):
 	def children(self, children):
 		self.__children = children
 
+	def propogate_var(self, var):
+		if self.__parent==None:
+			return
+		self.__vars += ", " + var
+		self.__parent.propogate_var(var)
+
 	def get_highest_ancestor(self):
 		if __parent == None:
 			return self
