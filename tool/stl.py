@@ -9,6 +9,10 @@ def process_logic(logic, root):
 	if logic=="":
 		return []
 	start,end = round_parens(logic, 0)
+	if logic[0]=="!" and root==1:
+		return Node(None, process_logic(logic[1:end+1],0), 0, "!", "", None, None)
+	elif logic[0]=="!" and root==0:
+		return [Node(None, process_logic(logic[1:end+1],0), 0, "!", "", None, None)]
 	if logic[start+1]=='G' or logic[start+1]=='F':
 		firstnum, secondnum, closep = square_parens(logic,start+2)
 		if root==1:
@@ -22,10 +26,6 @@ def process_logic(logic, root):
 	elif andor_logic != None and root==0:
 		left_start, left_end, right_start, right_end = find_andor_children(logic,andor_ind)
 		return [Node(None, [process_logic(logic[1:left_end+1],1),process_logic(logic[right_start:len(logic)-1],1)], 0, andor_logic, "", None, None)]
-	if logic[0]=="!" and root==1:
-		return Node(None, process_logic(logic[1:end+1],0), 0, "!", "", None, None)
-	elif logic[0]=="!" and root==0:
-		return [Node(None, process_logic(logic[1:end+1],0), 0, "!", "", None, None)]
 	if logic[start+1]=="!" and root==1:
 		return Node(None, process_logic(logic[start+2:end],0), 0, "!", "", None, None)
 	elif logic[start+1]=="!" and root==0:

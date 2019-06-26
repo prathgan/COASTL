@@ -15,7 +15,7 @@ from stl import *
 #root = process_logic("!G[0,10](F[1,3](!(x>=1)&&(y<0))")
 #print(root)
 
-print(process("(G[1234,1234](F[1234,1234](!((x>=1234)&&(y<=1234)))))"))
+print(process("!(G[1234,1234](F[1234,1234](!((x>=1234)&&(y<=1234)))))"))
 # print(process("(G[0,10])"))
 # print(square_parens("(G[0,10])",2))
 # print(process_logic("(x<=10)",1))
