@@ -130,18 +130,14 @@ def find_predicate_info(string, operator_ind, operator):
 	var = find_predicate_var(string, operator_ind)
 	minval = None
 	maxval = None
-	if operator=="<=":
-		maxval = find_predicate_num(string)
-	elif operator==">=":
-		pass
-	elif operator=="<":
-		pass
-	elif operator==">":
-		pass
+	if operator=="<=" or operator=="<":
+		maxval = find_predicate_num(string, operator_ind+len(operator))
+	elif operator==">=" or operator==">":
+		minval = find_predicate_num(string, operator_ind+len(operator))
 	elif operator=="=":
-		pass
-
-
+		maxval = find_predicate_num(string, operator_ind+1)
+		minval = maxval
+	return var, minval, maxval
 
 def find_predicate_num(string, last_operator_ind):
 	itr_index = last_operator_ind
