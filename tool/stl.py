@@ -26,6 +26,10 @@ def process_logic(logic, root):
 		return Node(None, process_logic(logic[1:end+1],0), 0, "!", "", None, None)
 	elif logic[0]=="!" and root==0:
 		return [Node(None, process_logic(logic[1:end+1],0), 0, "!", "", None, None)]
+	if logic[start+1]=="!" and root==1:
+		return Node(None, process_logic(logic[start+2:end],0), 0, "!", "", None, None)
+	elif logic[start+1]=="!" and root==0:
+		return [Node(None, process_logic(logic[start+2:end],0), 0, "!", "", None, None)]
 	predicate_logic, predicate_ind = find_predicate(logic)
 	var, minval, maxval = find_predicate_info(logic, predicate_ind, predicate_logic)
 	if predicate_logic != None and root==1:
