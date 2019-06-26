@@ -24,11 +24,12 @@ def process_logic(logic, root):
 	if andor_logic != None:
 		left_start, left_end, right_start, right_end = find_andor_children(logic,andor_ind)
 		return Node(None, [process_logic(logic[1:left_end+1],1),process_logic(logic[right_start:len(logic)-1],1)], 0, andor_logic, "", None, None) # error comes from this line
-	if logic[start+1]==!:
+	if logic[start+1]=="!":
 		return Node(None, process_logic(logic[1:],0), 0, "!", "", None, None)
 	predicate_logic, predicate_ind = find_predicate(logic)
+	var, minval, maxval = find_predicate_info(logic, predicate_ind, predicate_logic)
 	if predicate_logic != None:
-		return [Node(None, [], 1, predicate_logic, )] # FINISH
+		return [Node(None, [], 1, predicate_logic, var, minval, maxval)] # FINISH
 	return []
 
 def round_parens(string, start):
@@ -144,7 +145,7 @@ def find_predicate_num(string, last_operator_ind):
 	while itr_index<len(string):
 		if string[itr_index]==")":
 			return float(string[last_operator_ind+1:itr_index])
-		itr_index = itr_index = 1
+		itr_index = itr_index + 1
 	return -1
 
 def find_predicate_var(string, operator_ind):
