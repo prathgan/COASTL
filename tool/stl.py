@@ -13,16 +13,7 @@ def process_logic(logic, root):
 	if logic=="":
 		return []
 	start,end = round_parens(logic, 0)
-	if logic[0]=='G' or logic[0]=='F':
-		firstnum, secondnum, closep = square_parens(logic,1)
-		if root==1:
-			(logic[0])
-			(logic[closep+1:end])
-			return Node(None, process_logic(logic[closep+1:end], 0), 0, logic[0], "", firstnum, secondnum)
-		else:
-			(logic[0])
-			(logic[closep+1:end])
-			return [Node(None, process_logic(logic[closep+1:end],0), 0, logic[0], "", firstnum, secondnum)]
+	andor_logic, andor_ind = find_andor(logic)
 	if logic[start+1]=='G' or logic[start+1]=='F':
 		firstnum, secondnum, closep = square_parens(logic,start+2)
 		if root==1:
@@ -33,13 +24,16 @@ def process_logic(logic, root):
 			(logic[start+1])
 			(logic[closep+1:end])
 			return [Node(None, process_logic(logic[closep+1:end],0), 0, logic[start+1], "", firstnum, secondnum)]
+	if andor_logic != None:
+		left_start, left_end, right_start, right_end = find_andor_children(logic,andor_ind)
+		return Node(None, [process_logic(logic[left_start:left_end+1],1),process_logic(logic[right_start:right_end+1],1)], 0, andor_logic, "", None, None)
+		# root=1 for both the children of the andor node
+	return []
 
 def round_parens(string, start):
 	count = 0
 	itr_index = start
 	first_not_found = 1
-	openp = 0
-	closep = 0
 	end = None
 	while itr_index<len(string):
 		if string[itr_index]=='(':
@@ -53,6 +47,25 @@ def round_parens(string, start):
 				end = itr_index
 				break
 		itr_index = itr_index + 1
+	return start, end
+
+def round_parens_bwd(string, start):
+	count = 0
+	itr_index = start
+	first_not_found = 1
+	end = None
+	while itr_index>-1:
+		if string[itr_index]==')':
+			if first_not_found==1:
+				end = itr_index
+				first_not_found=0
+			count = count + 1
+		if string[itr_index]=='(':
+			count = count - 1
+			if count==0:
+				start = itr_index
+				break
+		itr_index = itr_index - 1
 	return start, end
 
 def square_parens(string, start):
@@ -83,9 +96,15 @@ def find_andor(string):
 		if paren_count==1 and (string[itr_index]=="&" or string[itr_index]=="|"):
 			operator_ind = itr_index
 			operator = string[itr_index:itr_index+2]
-			break
+			return operator, operator_ind
 		itr_index = itr_index + 1
 	return operator, operator_ind
+
+def find_andor_children(string, andor_ind):
+	right_start, right_end = round_parens(string,andor_ind+2)
+	left_start, left_end = round_parens_bwd(string,andor_ind-1)
+	return left_start, left_end, right_start, right_end
+
 
 class Node(object):
 
@@ -94,20 +113,16 @@ class Node(object):
 
     Parameters
     ----------
-    parent: pointer to the object of parent of this node
-    children: array with pointers to the objects of children of this node; children[0]
-    		  points to anterior requirement of 'until' logic, children[1] points to
-    		  posterior condition of 'until' logic
-    ttype: part of logic which this node represents; logic (0) or predicate (1) (ttype not
-    	   type because type is Python keyword)
-    logic: logic operator which which this node represents, null if predicate node
-    vvars: variables which this node pertains to (vvars not vars because vars is Python keyword)
-    range_start: start of range for complex operator nodes, min range
-    range_end: end of range for complex operator nodes, max range
-
-    Raises
-    ------
-    N/A
+    parent: 		pointer to the object of parent of this node
+    children: 		array with pointers to the objects of children of this node; children[0]
+    		  		points to anterior requirement of 'until' logic, children[1] points to
+    		  		posterior condition of 'until' logic
+    ttype: 			part of logic which this node represents; logic (0) or predicate (1) (ttype not
+    	   			type because type is Python keyword)
+    logic: 			logic operator which which this node represents, null if predicate node
+    vvars: 			variables which this node pertains to (vvars not vars because vars is Python keyword)
+    range_start: 	start of range for complex operator nodes, min range
+    range_end: 		end of range for complex operator nodes, max range
     """
 	def __init__(self, parent, children, ttype, logic, vvars, range_start, range_end):
 		self.__parent = parent

@@ -15,8 +15,11 @@ from stl import *
 #root = process_logic("!G[0,10](F[1,3](!(x>=1)&&(y<0))")
 #print(root)
 
-# print(process_logic("(G[0,10]F[1,9])",1))
-print(find_andor("(!(x>=1)||(y<=0))"))
+# print(process_logic("(G[0,10](F[1,9](!(x>=1)||(y<=0))))",1))
+print(process_logic("(G[0,10](F[1,9]((G[42,43])||(F[44,45]))))",1))
+# print(find_andor("(!(x>=1)||(y<=0))"))
+# andor_logic, andor_ind = (find_andor("(!(x>=1)||(y<=0))"))
+# print(find_andor_children("(!(x>=1)||(y<=0))",andor_ind))
 
 # root = Node(None, [], 0, "!", ["x"], None, None)
 # child_layer_1 = Node(root, [], 0, "G", ["x"], 0, 10)
