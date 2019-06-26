@@ -1,6 +1,8 @@
 import re
 
 def process(logic):
+	if not parentheses_match(logic):
+		raise ValueError("( and ) do not match")
 	return process_logic(logic, 1)
 
 # TODO: when find the variables at the predicate node, propogate the variable up through empty variable fields in logic nodes
@@ -54,7 +56,7 @@ def round_parens(string, start):
 			if count==0:
 				end = itr_index
 				break
-		itr_index = itr_index + 1
+		itr_index += 1
 	return start, end
 
 def round_parens_bwd(string, start):
@@ -86,7 +88,7 @@ def square_parens(string, start):
 		if string[itr_index]==']':
 			closep = itr_index
 			break
-		itr_index = itr_index + 1
+		itr_index += 1
 	firstnum = float(string[start+1:comma])
 	secondnum = float(string[comma+1:closep])
 	return firstnum, secondnum, closep
@@ -105,7 +107,7 @@ def find_andor(string):
 			operator_ind = itr_index
 			operator = string[itr_index:itr_index+2]
 			return operator, operator_ind
-		itr_index = itr_index + 1
+		itr_index += 1
 	return operator, operator_ind
 
 def find_andor_children(string, andor_ind):
@@ -130,7 +132,7 @@ def find_predicate(string):
 			else:
 				operator = string[itr_index]
 			return operator, operator_ind
-		itr_index = itr_index + 1
+		itr_index += 1
 	return operator, operator_ind
 
 def find_predicate_info(string, operator_ind, operator):
@@ -151,7 +153,7 @@ def find_predicate_num(string, last_operator_ind):
 	while itr_index<len(string):
 		if string[itr_index]==")":
 			return float(string[last_operator_ind+1:itr_index])
-		itr_index = itr_index + 1
+		itr_index += 1
 	return -1
 
 def find_predicate_var(string, operator_ind):
@@ -161,6 +163,21 @@ def find_predicate_var(string, operator_ind):
 			return string[itr_index+1:operator_ind]
 		itr_index = itr_index - 1
 	return -1
+
+def parentheses_match(string):
+	verification_stack = []
+	matched = True
+	itr_index = 0
+	while itr_index < len(string) and matched:
+		if string[itr_index]=="(":
+			verification_stack.append(string[itr_index])
+		elif string[itr_index]==")":
+			if len(verification_stack)==0:
+				matched = False
+			else:
+				verification_stack.pop()
+		itr_index += 1
+	return matched and len(verification_stack) == 0
 
 class Node(object):
 
