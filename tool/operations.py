@@ -1,5 +1,3 @@
-from contract import Contract
-
 def conjunction(contracts):
 	if len(contracts)>2:
 		return two_contract_conjunction(contracts[0],conjunction(contracts[1:]))

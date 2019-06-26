@@ -88,7 +88,7 @@ def square_parens(string, start):
 			break
 		itr_index = itr_index + 1
 	firstnum = float(string[start+1:comma])
-	secondnum = float(string[closep-1])
+	secondnum = float(string[comma+1:closep])
 	return firstnum, secondnum, closep
 
 def find_andor(string):

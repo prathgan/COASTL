@@ -1,8 +1,4 @@
-from contract import Contract
-from stl import Node
-from operations import *
-from utilities import *
-from stl import *
+import tool as c
 
 # Contract(Variables, Assumptions, Guarantees)
 # c1 = Contract(["x","y"], ["x>=10","y<6"], ["return x+1","return y-1"])
@@ -15,7 +11,7 @@ from stl import *
 #root = process_logic("!G[0,10](F[1,3](!(x>=1)&&(y<0))")
 #print(root)
 
-print(process("(G[1234,1234](F[1234,1234](!((x>=1234)&&(y<=1234)))))"))
+print(c.process("(G[1234,1234](F[1234,1234](!((x>=1234)&&(y<=1234)))))"))
 # print(process("(G[0,10])"))
 # print(square_parens("(G[0,10])",2))
 # print(process_logic("(x<=10)",1))
