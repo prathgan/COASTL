@@ -5,7 +5,7 @@ def process(logic):
 
 # TODO: when find the variables at the predicate node, propogate the variable up through empty variable fields in logic nodes
 def process_logic(logic, root):
-	print(logic)
+	# print(logic) # un-comment out for degbug
 	if logic=="":
 		return []
 	start,end = round_parens(logic, 0)
