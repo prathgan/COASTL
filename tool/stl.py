@@ -12,24 +12,26 @@ def process_logic(logic, root):
 	if logic[start+1]=='G' or logic[start+1]=='F':
 		firstnum, secondnum, closep = square_parens(logic,start+2)
 		if root==1:
-			(logic[start+1])
-			(logic[closep+1:end])
 			return Node(None, process_logic(logic[closep+1:end], 0), 0, logic[start+1], "", firstnum, secondnum)
 		else:
-			(logic[start+1])
-			(logic[closep+1:end])
 			return [Node(None, process_logic(logic[closep+1:end],0), 0, logic[start+1], "", firstnum, secondnum)]
-
 	andor_logic, andor_ind = find_andor(logic)
-	if andor_logic != None:
+	if andor_logic != None and root==1:
 		left_start, left_end, right_start, right_end = find_andor_children(logic,andor_ind)
-		return Node(None, [process_logic(logic[1:left_end+1],1),process_logic(logic[right_start:len(logic)-1],1)], 0, andor_logic, "", None, None) # error comes from this line
-	if logic[start+1]=="!":
-		return Node(None, process_logic(logic[1:],0), 0, "!", "", None, None)
+		return Node(None, [process_logic(logic[1:left_end+1],1),process_logic(logic[right_start:len(logic)-1],1)], 0, andor_logic, "", None, None)
+	elif andor_logic != None and root==0:
+		left_start, left_end, right_start, right_end = find_andor_children(logic,andor_ind)
+		return [Node(None, [process_logic(logic[1:left_end+1],1),process_logic(logic[right_start:len(logic)-1],1)], 0, andor_logic, "", None, None)]
+	if logic[0]=="!" and root==1:
+		return Node(None, process_logic(logic[1:end+1],0), 0, "!", "", None, None)
+	elif logic[0]=="!" and root==0:
+		return [Node(None, process_logic(logic[1:end+1],0), 0, "!", "", None, None)]
 	predicate_logic, predicate_ind = find_predicate(logic)
 	var, minval, maxval = find_predicate_info(logic, predicate_ind, predicate_logic)
-	if predicate_logic != None:
-		return [Node(None, [], 1, predicate_logic, var, minval, maxval)] # FINISH
+	if predicate_logic != None and root==1:
+		return Node(None, [], 1, predicate_logic, var, minval, maxval)
+	elif predicate_logic != None and root==0:
+		return [Node(None, [], 1, predicate_logic, var, minval, maxval)]
 	return []
 
 def round_parens(string, start):
@@ -132,9 +134,9 @@ def find_predicate_info(string, operator_ind, operator):
 	minval = None
 	maxval = None
 	if operator=="<=" or operator=="<":
-		maxval = find_predicate_num(string, operator_ind+len(operator))
+		maxval = find_predicate_num(string, operator_ind+len(operator)-1)
 	elif operator==">=" or operator==">":
-		minval = find_predicate_num(string, operator_ind+len(operator))
+		minval = find_predicate_num(string, operator_ind+len(operator)-1)
 	elif operator=="=":
 		maxval = find_predicate_num(string, operator_ind+1)
 		minval = maxval
