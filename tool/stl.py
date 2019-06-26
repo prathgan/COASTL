@@ -16,9 +16,23 @@ def process_logic(logic, root):
 	if logic[0]=='G' or logic[0]=='F':
 		firstnum, secondnum, closep = square_parens(logic,1)
 		if root==1:
-			return Node(None, process_logic(logic[closep+1:len(logic)], 0), 0, logic[0], "", firstnum, secondnum)
+			(logic[0])
+			(logic[closep+1:end])
+			return Node(None, process_logic(logic[closep+1:end], 0), 0, logic[0], "", firstnum, secondnum)
 		else:
-			return [Node(None, process_logic(logic[closep+1:len(logic)],0), 0, logic[0], "", firstnum, secondnum)]
+			(logic[0])
+			(logic[closep+1:end])
+			return [Node(None, process_logic(logic[closep+1:end],0), 0, logic[0], "", firstnum, secondnum)]
+	if logic[start+1]=='G' or logic[start+1]=='F':
+		firstnum, secondnum, closep = square_parens(logic,start+2)
+		if root==1:
+			(logic[start+1])
+			(logic[closep+1:end])
+			return Node(None, process_logic(logic[closep+1:end], 0), 0, logic[start+1], "", firstnum, secondnum)
+		else:
+			(logic[start+1])
+			(logic[closep+1:end])
+			return [Node(None, process_logic(logic[closep+1:end],0), 0, logic[start+1], "", firstnum, secondnum)]
 
 def round_parens(string, start):
 	count = 0
@@ -26,6 +40,7 @@ def round_parens(string, start):
 	first_not_found = 1
 	openp = 0
 	closep = 0
+	end = None
 	while itr_index<len(string):
 		if string[itr_index]=='(':
 			if first_not_found==1:
@@ -55,18 +70,38 @@ def square_parens(string, start):
 	secondnum = float(string[closep-1])
 	return firstnum, secondnum, closep
 
+def find_andor(string):
+	has_and = False
+	has_or = False
+	paren_count = 0
+	itr_index = 0
+	operator_ind = -1
+	while itr_index<len(string):
+		if string[itr_index]=='(':
+			if first_not_found==1:
+				start = itr_index
+				first_not_found=0
+			paren_count = paren_count + 1
+		if string[itr_index]==')':
+			paren_count = paren_count - 1
+		if paren_count==1 and (string[itr_index]=="&" or string[itr_index]=="|"):
+			operator_ind = itr_index
+			break
+		itr_index = itr_index + 1
+	return has_and, has_or, operator_ind
+
 class Node(object):
-	
+
 	"""
 	Constructs node to be used in tree representing expression of signal temporal logical.
 
     Parameters
     ----------
     parent: pointer to the object of parent of this node
-    children: array with pointers to the objects of children of this node; children[0] 
-    		  points to anterior requirement of 'until' logic, children[1] points to 
+    children: array with pointers to the objects of children of this node; children[0]
+    		  points to anterior requirement of 'until' logic, children[1] points to
     		  posterior condition of 'until' logic
-    ttype: part of logic which this node represents; logic (0) or predicate (1) (ttype not 
+    ttype: part of logic which this node represents; logic (0) or predicate (1) (ttype not
     	   type because type is Python keyword)
     logic: logic operator which which this node represents, null if predicate node
     vvars: variables which this node pertains to (vvars not vars because vars is Python keyword)
@@ -91,7 +126,7 @@ class Node(object):
 	def parent(self):
 		"""returns parent"""
 		return self.__parent
-		
+
 	@property
 	def children(self):
 		"""returns child1"""
@@ -106,12 +141,12 @@ class Node(object):
 	def logic(self):
 		"""returns logic"""
 		return self.__logic
-	
+
 	@property
 	def vars(self):
 		"""returns vars"""
 		return self.__vars
-	
+
 	@property
 	def range_start(self):
 		"""returns range_start"""
@@ -154,7 +189,7 @@ class Node(object):
 
 	def __repr__(self, level=0):
 		ret = "\t"*level+repr(self.value)
+		(self.__children)
 		for child in self.children:
 			ret += "\n" + child.__repr__(level+1)
 		return ret
-
