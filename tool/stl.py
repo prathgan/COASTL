@@ -6,17 +6,19 @@ must translate string of logic such as "!G[0,10](F[1,3](!(x>=1)&&(y<=0))" intro 
 
 # when find the variables at the predicate node, propogate the variable up through empty variable fields in logic nodes
 # recursively break down string into tree
-def process_logic(logic):
+def process(logic):
+	return process_logic(logic, 1)
+
+def process_logic(logic, root):
 	if logic=="":
 		return []
-	if logic[0]:
-		pass
+	start,end = round_parens(logic, 0)
 	if logic[0]=='G' or logic[0]=='F':
 		firstnum, secondnum, closep = square_parens(logic,1)
-		return Node(None, process_logic(logic[closep+1:len(logic)]), 0, logic[0], "", firstnum, secondnum)
-
-
-		
+		if root==1:
+			return Node(None, process_logic(logic[closep+1:len(logic)], 0), 0, logic[0], "", firstnum, secondnum)
+		else:
+			return [Node(None, process_logic(logic[closep+1:len(logic)],0), 0, logic[0], "", firstnum, secondnum)]
 
 def round_parens(string, start):
 	count = 0
@@ -50,7 +52,7 @@ def square_parens(string, start):
 			break
 		itr_index = itr_index + 1
 	firstnum = float(string[start+1:comma])
-	secondnum = float(string[comma+1:len(string)-1])
+	secondnum = float(string[closep-1])
 	return firstnum, secondnum, closep
 
 class Node(object):

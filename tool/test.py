@@ -15,7 +15,7 @@ from stl import *
 #root = process_logic("!G[0,10](F[1,3](!(x>=1)&&(y<0))")
 #print(root)
 
-print(square_parens("[[[]]]as[]df[]sdf[1234098.2349,30000009.8776889999999]",17))
+print(process_logic("(G[0,10]F[1,9])",1))
 
 # root = Node(None, [], 0, "!", ["x"], None, None)
 # child_layer_1 = Node(root, [], 0, "G", ["x"], 0, 10)
