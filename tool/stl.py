@@ -1,13 +1,19 @@
 import re
 
 def process(logic):
+	"""
+	Return result of passing logic expression into process_logic()
+	"""
 	if not parentheses_match(logic):
-		raise ValueError("( and ) do not match")
+		raise ValueError("Opening and closing brackets do not match, check '(' and ')'")
 	return process_logic(logic, 1)
 
 # TODO: when find the variables at the predicate node, propogate the variable up through empty variable fields in logic nodes
 def process_logic(logic, root):
-	# print(logic) # un-comment out for degbug
+	"""
+	Return root of tree structure which represents
+	a Signal Temporal Logic expression
+	"""
 	if logic=="":
 		return []
 	start,end = round_parens(logic, 0)
@@ -41,6 +47,10 @@ def process_logic(logic, root):
 	return []
 
 def round_parens(string, start):
+	"""
+	Return indices of opening and closing parentheses
+	of expression, starting from right side of expression
+	"""
 	count = 0
 	itr_index = start
 	first_not_found = 1
@@ -60,6 +70,10 @@ def round_parens(string, start):
 	return start, end
 
 def round_parens_bwd(string, start):
+	"""
+	Return indices of opening and closing parentheses
+	of expression, starting from right side of expression
+	"""
 	count = 0
 	itr_index = start
 	first_not_found = 1
@@ -79,6 +93,10 @@ def round_parens_bwd(string, start):
 	return start, end
 
 def square_parens(string, start):
+	"""
+	Return the minimum and maximum of the range
+	and index of closing bracket
+	"""
 	itr_index = start
 	comma = 0
 	closep = 0
@@ -94,6 +112,10 @@ def square_parens(string, start):
 	return firstnum, secondnum, closep
 
 def find_andor(string):
+	"""
+	Return logical operator and index which joins
+	two halves of an expression
+	"""
 	operator = None
 	paren_count = 0
 	itr_index = 0
@@ -111,11 +133,19 @@ def find_andor(string):
 	return operator, operator_ind
 
 def find_andor_children(string, andor_ind):
+	"""
+	Return indices of opening and closing brackets
+	of expressions on either side of 'and' or 'or
+	'"""
 	right_start, right_end = round_parens(string,andor_ind+2)
 	left_start, left_end = round_parens_bwd(string,andor_ind-1)
 	return left_start, left_end, right_start, right_end
 
 def find_predicate(string):
+	"""
+	Return logical operator of predicate expression
+	and index of operator
+	"""
 	operator = None
 	paren_count = 0
 	itr_index = 0
@@ -136,6 +166,10 @@ def find_predicate(string):
 	return operator, operator_ind
 
 def find_predicate_info(string, operator_ind, operator):
+	"""
+	Return variable and its minimum and maximum values
+	for a predicate expression
+	"""
 	var = find_predicate_var(string, operator_ind)
 	minval = None
 	maxval = None
@@ -149,6 +183,9 @@ def find_predicate_info(string, operator_ind, operator):
 	return var, minval, maxval
 
 def find_predicate_num(string, last_operator_ind):
+	"""
+	Return number from predicate expression string
+	"""
 	itr_index = last_operator_ind
 	while itr_index<len(string):
 		if string[itr_index]==")":
@@ -157,6 +194,9 @@ def find_predicate_num(string, last_operator_ind):
 	return -1
 
 def find_predicate_var(string, operator_ind):
+	"""
+	Return variable from predicate expression string
+	"""
 	itr_index = operator_ind
 	while itr_index>-1:
 		if string[itr_index]=="(":
@@ -165,6 +205,10 @@ def find_predicate_var(string, operator_ind):
 	return -1
 
 def parentheses_match(string):
+	"""
+	Return True if opening and closing brackets are
+	all matched in an input logical expression
+	"""
 	verification_stack = []
 	matched = True
 	itr_index = 0
@@ -209,42 +253,42 @@ class Node(object):
 
 	@property
 	def parent(self):
-		"""returns parent"""
+		"""Return parent"""
 		return self.__parent
 
 	@property
 	def children(self):
-		"""returns child1"""
+		"""Return child1"""
 		return self.__children
 
 	@property
 	def type(self):
-		"""returns self"""
+		"""Return self"""
 		return self.__type
 
 	@property
 	def logic(self):
-		"""returns logic"""
+		"""Return logic"""
 		return self.__logic
 
 	@property
 	def vars(self):
-		"""returns vars"""
+		"""Return vars"""
 		return self.__vars
 
 	@property
 	def range_start(self):
-		"""returns range_start"""
+		"""Return range_start"""
 		return self.__range_start
 
 	@property
 	def range_end(self):
-		"""returns range_end"""
+		"""Return range_end"""
 		return self.__range_end
 
 	@property
 	def value(self):
-		"""returns string representation of this node"""
+		"""Return string representation of this node"""
 		if self.__type==0:
 			if self.__logic=="G" or self.__logic=="F" or self.__logic=="U":
 				self.__value = self.__logic+"["+str(self.__range_start)+","+\
@@ -259,26 +303,31 @@ class Node(object):
 
 	@parent.setter
 	def parent(self, parent):
+		"""Set parent"""
 		self.__parent = parent
 		parent.children = parent.children + [self]
 
 	@children.setter
 	def children(self, children):
+		"""Set children"""
 		self.__children = children
 
 	def propogate_var(self, var):
+		"""Propogate value of var up ancestors"""
 		if self.__parent==None:
 			return
 		self.__vars += ", " + var
 		self.__parent.propogate_var(var)
 
 	def get_highest_ancestor(self):
+		"""Return highest ancestor"""
 		if __parent == None:
 			return self
 		else:
 			return __parent.get_highest_ancestor
 
 	def __repr__(self, level=0):
+		"""Return string representation of this node"""
 		ret = "\t"*level+repr(self.value)
 		(self.__children)
 		for child in self.children:
