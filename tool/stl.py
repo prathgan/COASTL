@@ -71,24 +71,21 @@ def square_parens(string, start):
 	return firstnum, secondnum, closep
 
 def find_andor(string):
-	has_and = False
-	has_or = False
+	operator = None
 	paren_count = 0
 	itr_index = 0
 	operator_ind = -1
 	while itr_index<len(string):
 		if string[itr_index]=='(':
-			if first_not_found==1:
-				start = itr_index
-				first_not_found=0
 			paren_count = paren_count + 1
 		if string[itr_index]==')':
 			paren_count = paren_count - 1
 		if paren_count==1 and (string[itr_index]=="&" or string[itr_index]=="|"):
 			operator_ind = itr_index
+			operator = string[itr_index:itr_index+2]
 			break
 		itr_index = itr_index + 1
-	return has_and, has_or, operator_ind
+	return operator, operator_ind
 
 class Node(object):
 
