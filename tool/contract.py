@@ -9,6 +9,12 @@ class Contract(object):
 		self.__isSat = 0
 
 	def process_variables(self, variables):
+		for assum_root in self.__assumptions:
+			for var in variables:
+				assum_root.propogate_var_down(var)
+		for guar_root in self.__guarantees:
+			for var in variables:
+				guar_root.propogate_var_down(var)
 		self.__variables = variables
 
 	def process_assumptions(self, assumptions):
