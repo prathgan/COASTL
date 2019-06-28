@@ -18,7 +18,10 @@ class Contract(object):
 		self.__assumptions = arr
 
 	def process_guarantees(self, guarantees):
-		self.__guarantees = guarantees
+		arr = []
+		for guarantee in guarantees:
+			arr.append(process(guarantee))
+		self.__guarantees = arr
 
 	@property
 	def variables(self):
