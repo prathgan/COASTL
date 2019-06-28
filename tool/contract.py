@@ -1,6 +1,6 @@
 from stl import Node
 from stl import process
-from operations import list_union, join_stringlists
+from utilities import join_stringlists, remove_dups_stringlist
 
 class Contract(object):
 	"""docstring for Contract"""
@@ -12,15 +12,21 @@ class Contract(object):
 
 	def process_assumptions(self, assumptions):
 		assum_arr = []
+		var_str = ""
 		for assumption in assumptions:
-			assum_arr.append(process(assumption))
-		self.__assumptions = Node(None, assum_arr, 0, "&&", vvars, range_start, range_end, string_rep)
+			temp_root = process(assumption)
+			assum_arr.append(temp_root)
+			var_str += temp_root.vars
+		self.__assumptions = Node(None, assum_arr, 0, "&&", remove_dups_stringlist(var_str), None, None, "&&")
 
 	def process_guarantees(self, guarantees):
 		guar_arr = []
+		var_str = ""
 		for guarantee in guarantees:
-			guar_arr.append(process(guarantee))
-		self.__guarantees = guar_arr
+			temp_root = process(guarantee)
+			guar_arr.append(temp_root)
+			var_str += temp_root.vars
+		self.__guarantees = Node(None, guar_arr, 0, "&&", remove_dups_stringlist(var_str), None, None, "&&")
 
 	def process_variables(self, variables):
 		for var in variables:
