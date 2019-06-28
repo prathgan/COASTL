@@ -14,7 +14,6 @@ def process_logic(logic, root):
 	Return root of tree structure which represents
 	a Signal Temporal Logic expression
 	"""
-	print(logic)
 	if logic=="":
 		return []
 	start,end = round_parens(logic, 0)
@@ -201,7 +200,6 @@ def find_predicate_var(string, operator_ind):
 	itr_index = operator_ind
 	while itr_index>-1:
 		if string[itr_index]=="(":
-			print(string[itr_index+1:operator_ind])
 			return string[itr_index+1:operator_ind]
 		itr_index = itr_index - 1
 	return -1
