@@ -21,31 +21,30 @@ def process_logic(logic, root):
 	andor_logic, andor_ind = find_andor(logic)
 	if andor_logic != None and root==1:
 		left_start, left_end, right_start, right_end = find_andor_children(logic,andor_ind)
-		return Node(None, [process_logic(logic[1:left_end+1],1),process_logic(logic[right_start:len(logic)-1],1)], 0, andor_logic, "", None, None, "string_rep")
+		return Node(None, [process_logic(logic[1:left_end+1],1),process_logic(logic[right_start:len(logic)-1],1)], 0, andor_logic, "", None, None, andor_logic)
 	elif andor_logic != None and root==0:
 		left_start, left_end, right_start, right_end = find_andor_children(logic,andor_ind)
-		return [Node(None, [process_logic(logic[1:left_end+1],1),process_logic(logic[right_start:len(logic)-1],1)], 0, andor_logic, "", None, None, "string_rep")]
+		return [Node(None, [process_logic(logic[1:left_end+1],1),process_logic(logic[right_start:len(logic)-1],1)], 0, andor_logic, "", None, None, andor_logic)]
 	if logic[0]=="!" and root==1:
-		return Node(None, process_logic(logic[1:end+1],0), 0, "!", "", None, None, "string_rep")
+		return Node(None, process_logic(logic[1:end+1],0), 0, "!", "", None, None, "!")
 	elif logic[0]=="!" and root==0:
-		return [Node(None, process_logic(logic[1:end+1],0), 0, "!", "", None, None, "string_rep")]
+		return [Node(None, process_logic(logic[1:end+1],0), 0, "!", "", None, None, "!")]
 	if logic[start+1]=='G' or logic[start+1]=='F':
 		firstnum, secondnum, closep = square_parens(logic,start+2)
 		if root==1:
-			return Node(None, process_logic(logic[closep+1:end], 0), 0, logic[start+1], "", firstnum, secondnum, "string_rep")
+			return Node(None, process_logic(logic[closep+1:end], 0), 0, logic[start+1], "", firstnum, secondnum, logic[start+1:closep])
 		else:
-			return [Node(None, process_logic(logic[closep+1:end],0), 0, logic[start+1], "", firstnum, secondnum, "string_rep")]
-	# old place
+			return [Node(None, process_logic(logic[closep+1:end],0), 0, logic[start+1], "", firstnum, secondnum, logic[start+1:closep])]
 	if logic[start+1]=="!" and root==1:
-		return Node(None, process_logic(logic[start+2:end],0), 0, "!", "", None, None, "string_rep")
+		return Node(None, process_logic(logic[start+2:end],0), 0, "!", "", None, None, "!")
 	elif logic[start+1]=="!" and root==0:
-		return [Node(None, process_logic(logic[start+2:end],0), 0, "!", "", None, None, "string_rep")]
+		return [Node(None, process_logic(logic[start+2:end],0), 0, "!", "", None, None, "!")]
 	predicate_logic, predicate_ind = find_predicate(logic)
 	var, minval, maxval = find_predicate_info(logic, predicate_ind, predicate_logic)
 	if predicate_logic != None and root==1:
-		return Node(None, [], 1, predicate_logic, var, minval, maxval, "string_rep")
+		return Node(None, [], 1, predicate_logic, var, minval, maxval, var+predicate_logic+str(minval if minval!=None else maxval))
 	elif predicate_logic != None and root==0:
-		return [Node(None, [], 1, predicate_logic, var, minval, maxval, "string_rep")]
+		return [Node(None, [], 1, predicate_logic, var, minval, maxval, var+predicate_logic+str(minval if minval!=None else maxval))]
 	return []
 
 def round_parens(string, start):
@@ -254,6 +253,7 @@ class Node(object):
 		self.__range_start = range_start
 		self.__range_end = range_end
 		self.__value = ""
+		self.__string_rep = string_rep
 
 	@property
 	def parent(self):
@@ -328,6 +328,11 @@ class Node(object):
 	@property
 	def value(self):
 		"""Return string representation of this node"""
+		return self.__string_rep
+
+	@property
+	def value_alt(self):
+		"""Complicated return string representation of this node"""
 		if self.__type==0:
 			if self.__logic=="G" or self.__logic=="F" or self.__logic=="U":
 				self.__value = self.__logic+"["+str(self.__range_start)+","+\
