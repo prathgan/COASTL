@@ -1,4 +1,5 @@
-from stl import *
+from stl import Node
+from operations import list_union
 
 class Contract(object):
 	"""docstring for Contract"""
@@ -43,7 +44,9 @@ class Contract(object):
 
 	def saturate(self):
 		# A becomes A, and G becomes G or not A
-		pass
+		notA = Node(None, self.__assumptions, 0, "!", self.__assumptions.vars, None, None, "!")
+		self.__guarantees = Node(None, [notA,self.guarantees], 0, "||", ','.join(list_union(notA.vars.split(','),self.guarantees.vars.split(','))), None, None, "||")
+		notA.parent = self.__guarantees
 
 	def __repr__(self):
 		print("Variables:")
