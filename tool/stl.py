@@ -297,6 +297,10 @@ class Node(object):
 		self.__parent = parent
 		parent.children = parent.children + [self]
 
+	def set_parent_alt(self,parent):
+		"""Set parent without setting child of parent to self"""
+		self.__parent = parent
+
 	@children.setter
 	def children(self, children):
 		"""Set children"""
