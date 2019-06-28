@@ -5,8 +5,8 @@ from utilities import *
 from stl import *
 
 # Contract(Variables, Assumptions, Guarantees)
-#c1 = Contract(["x","y"], ["(x>=10)","(y<6)"], ["(x=1)","(y<1)"])
-#print(c1.guarantees)
+c1 = Contract(["x","y"], ["(x>=10)","(y<6)"], ["(x=1)","(y<1)"])
+print(c1.guarantees)
 # c2 = Contract(["y","z"], ["y<6","z>20"], ["return y+1","return z-1"])
 # c3 = Contract(["t","s"], ["s<15","t>12"], ["return t+3","return z-1"])
 
@@ -15,7 +15,7 @@ from stl import *
 
 #root = process_logic("!G[0,10](F[1,3](!(x>=1)&&(y<0))")
 #print(root)
-print(process("(x=10)"))
+# print(process("(x=10)"))
 
 # print(process("!(G[0,1234](F[1234,1234](!((x>=1234)&&(y<=1234)))))"))
 # print(process("(G[0,10])"))

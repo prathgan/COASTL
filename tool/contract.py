@@ -12,16 +12,16 @@ class Contract(object):
 		self.__variables = variables
 
 	def process_assumptions(self, assumptions):
-		arr = []
+		assum_arr = []
 		for assumption in assumptions:
-			arr.append(process(assumption))
-		self.__assumptions = arr
+			assum_arr.append(process(assumption))
+		self.__assumptions = assum_arr
 
 	def process_guarantees(self, guarantees):
-		arr = []
+		guar_arr = []
 		for guarantee in guarantees:
-			arr.append(process(guarantee))
-		self.__guarantees = arr
+			guar_arr.append(process(guarantee))
+		self.__guarantees = guar_arr
 
 	@property
 	def variables(self):
