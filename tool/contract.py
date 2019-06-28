@@ -53,9 +53,4 @@ class Contract(object):
 		self.__isSat = 1
 
 	def __repr__(self):
-		print("Variables:")
-		print(self.__variables)
-		print("Assumptions:")
-		print(self.__assumptions)
-		print("Guarantees:")
-		print(self.__guarantees)
+		return "Variables:\n"+self.__variables+"\nAssumptions:"+self.__assumptions+"\nGuarantees:"+self.__guarantees
