@@ -1,6 +1,6 @@
 from stl import Node
 from stl import process
-from utilities import join_stringlists, remove_dups_stringlist
+from utilities import join_stringlists, remove_dups_stringlist, list_to_str
 
 class Contract(object):
 	"""docstring for Contract"""
@@ -53,4 +53,4 @@ class Contract(object):
 		self.__isSat = 1
 
 	def __repr__(self):
-		return "Variables:\n"+self.__variables+"\nAssumptions:"+self.__assumptions+"\nGuarantees:"+self.__guarantees
+		return "Variables:\n"+list_to_str(self.__variables)+"\nAssumptions:"+self.__assumptions+"\nGuarantees:"+self.__guarantees
