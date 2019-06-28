@@ -233,10 +233,9 @@ class Node(object):
     children: 		array with pointers to the objects of children of this node; children[0]
     		  		points to anterior requirement of 'until' logic, children[1] points to
     		  		posterior condition of 'until' logic
-    ttype: 			part of logic which this node represents; logic (0) or predicate (1) (ttype not
-    	   			type because type is Python keyword)
+    type: 			part of logic which this node represents; logic (0) or predicate (1)
     logic: 			logic operator which which this node represents, null if predicate node
-    vvars: 			variables which this node pertains to (vvars not vars because vars is Python keyword)
+    vars: 			variables which this node pertains to
     range_start: 	start of range for complex operator nodes, min range
     range_end: 		end of range for complex operator nodes, max range
 	string_rep: 	string representation of node
