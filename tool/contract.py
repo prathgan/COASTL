@@ -1,4 +1,5 @@
 from stl import Node
+from stl import process
 from operations import list_union
 
 class Contract(object):
