@@ -311,15 +311,15 @@ class Node(object):
 		self.__vars = var
 		self.__parent.propogate_var_up(var)
 
-	def propogate_var_down(self, var, parent, top, done):
+	def propogate_var_down(self, var, parent, top):
 		"""Propogate value of var down children and set parents"""
 		self.__vars += "," + var
-		if top == 0 and done == 0:
+		if top == 0:
 			self.__parent = parent
 		if self.__children==None:
 			self.propogate_var_up(var)
 		for child in self.__children:
-			child.propogate_var_down(var, self, 0, done)
+			child.propogate_var_down(var, self, 0)
 
 	def get_highest_ancestor(self):
 		"""Return highest ancestor"""
