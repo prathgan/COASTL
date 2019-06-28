@@ -8,7 +8,6 @@ def process(logic):
 		raise ValueError("Opening and closing brackets do not match, check '(' and ')'")
 	return process_logic(logic, 1)
 
-# TODO: when find the variables at the predicate node, propogate the variable up through empty variable fields in logic nodes
 def process_logic(logic, root):
 	"""
 	Return root of tree structure which represents
@@ -242,12 +241,12 @@ class Node(object):
     range_end: 		end of range for complex operator nodes, max range
 	string_rep: 	string representation of node
     """
-	def __init__(self, parent, children, ttype, logic, vvars, range_start, range_end, string_rep):
+	def __init__(self, parent, children, type, logic, vars, range_start, range_end, string_rep):
 		self.__parent = parent
 		self.__children = children
-		self.__type = ttype
+		self.__type = type
 		self.__logic = logic
-		self.__vars = vvars
+		self.__vars = vars
 		self.__range_start = range_start
 		self.__range_end = range_end
 		self.__value = ""
