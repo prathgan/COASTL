@@ -47,8 +47,8 @@ class Contract(object):
 		return self.__guarantees
 
 	def saturate(self):
-		notA = Node(None, self.__assumptions, 0, "!", self.__assumptions.vars, None, None, "!")
-		self.__guarantees = Node(None, [notA,self.guarantees], 0, "||", join_stringlists(notA.vars,self.__guarantees.vars), None, None, "||")
+		notA = Node(None, [self.__assumptions], 0, "!", self.__assumptions.vars, None, None, "!")
+		self.__guarantees = Node(None, [notA,self.__guarantees], 0, "||", join_stringlists(notA.vars,self.__guarantees.vars), None, None, "||")
 		notA.parent = self.__guarantees
 		self.__isSat = 1
 
