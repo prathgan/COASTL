@@ -3,9 +3,9 @@ from stl import *
 class Contract(object):
 	"""docstring for Contract"""
 	def __init__(self, variables, assumptions, guarantees):
-		self.process_variables(variables)
 		self.process_assumptions(assumptions)
 		self.process_guarantees(guarantees)
+		self.process_variables(variables)
 		self.__isSat = 0
 
 	def process_variables(self, variables):
