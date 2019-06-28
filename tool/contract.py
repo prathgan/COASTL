@@ -49,6 +49,7 @@ class Contract(object):
 	def saturate(self):
 		notA = Node(None, [self.__assumptions], 0, "!", self.__assumptions.vars, None, None, "!")
 		self.__guarantees = Node(None, [notA,self.__guarantees], 0, "||", join_stringlists(notA.vars,self.__guarantees.vars), None, None, "||")
+		notA.set_parent_alt("self.__guarantees")
 		self.__isSat = 1
 
 	def __repr__(self):
