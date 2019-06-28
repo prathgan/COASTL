@@ -18,6 +18,13 @@ def process_logic(logic, root):
 	if logic=="":
 		return []
 	start,end = round_parens(logic, 0)
+	andor_logic, andor_ind = find_andor(logic)
+	if andor_logic != None and root==1:
+		left_start, left_end, right_start, right_end = find_andor_children(logic,andor_ind)
+		return Node(None, [process_logic(logic[1:left_end+1],1),process_logic(logic[right_start:len(logic)-1],1)], 0, andor_logic, "", None, None, "string_rep")
+	elif andor_logic != None and root==0:
+		left_start, left_end, right_start, right_end = find_andor_children(logic,andor_ind)
+		return [Node(None, [process_logic(logic[1:left_end+1],1),process_logic(logic[right_start:len(logic)-1],1)], 0, andor_logic, "", None, None, "string_rep")]
 	if logic[0]=="!" and root==1:
 		return Node(None, process_logic(logic[1:end+1],0), 0, "!", "", None, None, "string_rep")
 	elif logic[0]=="!" and root==0:
@@ -28,13 +35,7 @@ def process_logic(logic, root):
 			return Node(None, process_logic(logic[closep+1:end], 0), 0, logic[start+1], "", firstnum, secondnum, "string_rep")
 		else:
 			return [Node(None, process_logic(logic[closep+1:end],0), 0, logic[start+1], "", firstnum, secondnum, "string_rep")]
-	andor_logic, andor_ind = find_andor(logic)
-	if andor_logic != None and root==1:
-		left_start, left_end, right_start, right_end = find_andor_children(logic,andor_ind)
-		return Node(None, [process_logic(logic[1:left_end+1],1),process_logic(logic[right_start:len(logic)-1],1)], 0, andor_logic, "", None, None, "string_rep")
-	elif andor_logic != None and root==0:
-		left_start, left_end, right_start, right_end = find_andor_children(logic,andor_ind)
-		return [Node(None, [process_logic(logic[1:left_end+1],1),process_logic(logic[right_start:len(logic)-1],1)], 0, andor_logic, "", None, None, "string_rep")]
+	# old place
 	if logic[start+1]=="!" and root==1:
 		return Node(None, process_logic(logic[start+2:end],0), 0, "!", "", None, None, "string_rep")
 	elif logic[start+1]=="!" and root==0:
@@ -334,7 +335,7 @@ class Node(object):
 			if self.__logic=="!" or self.__logic=="||" or self.__logic=="&&":
 				self.__value = self.__logic
 		elif self.__type==1:
-			self.__value = str(self.__vars[0])+self.__logic+\
+			self.__value = str(self.__vars)+self.__logic+\
 			str(self.__range_start if self.__range_start==self.__range_end else\
 			self.__range_start if self.__range_end==None else self.__range_end)
 		return self.__value
