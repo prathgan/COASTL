@@ -222,10 +222,6 @@ def parentheses_match(string):
 		itr_index += 1
 	return matched and len(verification_stack) == 0
 
-def join_stringlists(str1, str2):
-	"""Return string of union of two sets represented as strings"""
-	return ','.join(list_union(str1.split(','),str2.split(',')))
-
 class Node(object):
 
 	"""
