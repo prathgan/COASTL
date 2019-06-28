@@ -2,7 +2,7 @@ from stl import *
 
 class Contract(object):
 	"""docstring for Contract"""
-	def __init__(self, variables, assumptions, guarantees)
+	def __init__(self, variables, assumptions, guarantees):
 		self.process_variables(variables)
 		self.process_assumptions(assumptions)
 		self.process_guarantees(guarantees)
@@ -12,7 +12,10 @@ class Contract(object):
 		self.__variables = variables
 
 	def process_assumptions(self, assumptions):
-		self.__assumptions = assumptions
+		arr = []
+		for assumption in assumptions:
+			arr.append(process(assumption))
+		self.__assumptions = arr
 
 	def process_guarantees(self, guarantees):
 		self.__guarantees = guarantees
