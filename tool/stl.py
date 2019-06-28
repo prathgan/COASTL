@@ -288,6 +288,11 @@ class Node(object):
 		"""Return range_end"""
 		return self.__range_end
 
+	@property
+	def value(self):
+		"""Return string representation of this node"""
+		return self.__string_rep
+
 	@parent.setter
 	def parent(self, parent):
 		"""Set parent"""
@@ -308,7 +313,7 @@ class Node(object):
 
 	def propogate_var_down(self, var, parent, top, done):
 		"""Propogate value of var down children and set parents"""
-		self.__vars += ", " + var
+		self.__vars += "," + var
 		if top == 0 and done == 0:
 			self.__parent = parent
 		if self.__children==None:
@@ -322,11 +327,6 @@ class Node(object):
 			return self
 		else:
 			return __parent.get_highest_ancestor
-
-	@property
-	def value(self):
-		"""Return string representation of this node"""
-		return self.__string_rep
 
 	@property
 	def value_alt(self):
