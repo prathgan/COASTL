@@ -23,12 +23,9 @@ class Contract(object):
 		self.__guarantees = guar_arr
 
 	def process_variables(self, variables):
-		for assum_root in self.__assumptions:
-			for var in variables:
-				assum_root.propogate_var_down(var, None, 1)
-		for guar_root in self.__guarantees:
-			for var in variables:
-				guar_root.propogate_var_down(var, None, 1)
+		for var in variables:
+			self.__assumptions.propogate_var_down(var, None, 1)
+			self.__guarantees.propogate_var_down(var, None, 1)
 		self.__variables = variables
 
 	@property
