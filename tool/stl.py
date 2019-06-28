@@ -313,19 +313,21 @@ class Node(object):
 		self.__children = children
 
 	def propogate_var_up(self, var):
-		"""Propogate value of var up ancestors"""
-		if self.__parent==None:
+		"""Remove all variables except for var until junction node"""
+		if len(self.__children)>1:
 			return
-		self.__vars += ", " + var
-		self.__parent.propogate_var(var)
+		self.__vars = var
+		self.__parent.propogate_var_up(var)
 
-	def propogate_var_down(self, var):
-		"""Propogate value of var down children"""
+	def propogate_var_down(self, var, parent, top):
+		"""Propogate value of var down children and set parents"""
 		self.__vars += ", " + var
+		if top == 0:
+			self.__parent = parent
 		if self.__children==None:
-			return
+			self.propogate_var_up(var)
 		for child in self.__children:
-			child.propogate_var_down(var)
+			child.propogate_var_down(var, self, 0)
 
 	def get_highest_ancestor(self):
 		"""Return highest ancestor"""
