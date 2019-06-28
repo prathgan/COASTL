@@ -43,10 +43,10 @@ class Contract(object):
 		return self.__guarantees
 
 	def saturate(self):
-		# A becomes A, and G becomes G or not A
 		notA = Node(None, self.__assumptions, 0, "!", self.__assumptions.vars, None, None, "!")
 		self.__guarantees = Node(None, [notA,self.guarantees], 0, "||", ','.join(list_union(notA.vars.split(','),self.guarantees.vars.split(','))), None, None, "||")
 		notA.parent = self.__guarantees
+		self.__isSat = 1
 
 	def __repr__(self):
 		print("Variables:")
