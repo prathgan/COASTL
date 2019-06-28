@@ -19,3 +19,6 @@ def remove_dups_stringlist(str):
 	arr = str.split(',')
 	arr = list(dict.fromkeys(arr))
 	return ','.join(arr)
+
+def list_to_str(l):
+	return ','.join(l)
