@@ -14,36 +14,37 @@ def process_logic(logic, root):
 	Return root of tree structure which represents
 	a Signal Temporal Logic expression
 	"""
+	print(logic)
 	if logic=="":
 		return []
 	start,end = round_parens(logic, 0)
 	if logic[0]=="!" and root==1:
-		return Node(None, process_logic(logic[1:end+1],0), 0, "!", "", None, None)
+		return Node(None, process_logic(logic[1:end+1],0), 0, "!", "", None, None, "string_rep")
 	elif logic[0]=="!" and root==0:
-		return [Node(None, process_logic(logic[1:end+1],0), 0, "!", "", None, None)]
+		return [Node(None, process_logic(logic[1:end+1],0), 0, "!", "", None, None, "string_rep")]
 	if logic[start+1]=='G' or logic[start+1]=='F':
 		firstnum, secondnum, closep = square_parens(logic,start+2)
 		if root==1:
-			return Node(None, process_logic(logic[closep+1:end], 0), 0, logic[start+1], "", firstnum, secondnum)
+			return Node(None, process_logic(logic[closep+1:end], 0), 0, logic[start+1], "", firstnum, secondnum, "string_rep")
 		else:
-			return [Node(None, process_logic(logic[closep+1:end],0), 0, logic[start+1], "", firstnum, secondnum)]
+			return [Node(None, process_logic(logic[closep+1:end],0), 0, logic[start+1], "", firstnum, secondnum, "string_rep")]
 	andor_logic, andor_ind = find_andor(logic)
 	if andor_logic != None and root==1:
 		left_start, left_end, right_start, right_end = find_andor_children(logic,andor_ind)
-		return Node(None, [process_logic(logic[1:left_end+1],1),process_logic(logic[right_start:len(logic)-1],1)], 0, andor_logic, "", None, None)
+		return Node(None, [process_logic(logic[1:left_end+1],1),process_logic(logic[right_start:len(logic)-1],1)], 0, andor_logic, "", None, None, "string_rep")
 	elif andor_logic != None and root==0:
 		left_start, left_end, right_start, right_end = find_andor_children(logic,andor_ind)
-		return [Node(None, [process_logic(logic[1:left_end+1],1),process_logic(logic[right_start:len(logic)-1],1)], 0, andor_logic, "", None, None)]
+		return [Node(None, [process_logic(logic[1:left_end+1],1),process_logic(logic[right_start:len(logic)-1],1)], 0, andor_logic, "", None, None, "string_rep")]
 	if logic[start+1]=="!" and root==1:
-		return Node(None, process_logic(logic[start+2:end],0), 0, "!", "", None, None)
+		return Node(None, process_logic(logic[start+2:end],0), 0, "!", "", None, None, "string_rep")
 	elif logic[start+1]=="!" and root==0:
-		return [Node(None, process_logic(logic[start+2:end],0), 0, "!", "", None, None)]
+		return [Node(None, process_logic(logic[start+2:end],0), 0, "!", "", None, None, "string_rep")]
 	predicate_logic, predicate_ind = find_predicate(logic)
 	var, minval, maxval = find_predicate_info(logic, predicate_ind, predicate_logic)
 	if predicate_logic != None and root==1:
-		return Node(None, [], 1, predicate_logic, var, minval, maxval)
+		return Node(None, [], 1, predicate_logic, var, minval, maxval, "string_rep")
 	elif predicate_logic != None and root==0:
-		return [Node(None, [], 1, predicate_logic, var, minval, maxval)]
+		return [Node(None, [], 1, predicate_logic, var, minval, maxval, "string_rep")]
 	return []
 
 def round_parens(string, start):
@@ -200,6 +201,7 @@ def find_predicate_var(string, operator_ind):
 	itr_index = operator_ind
 	while itr_index>-1:
 		if string[itr_index]=="(":
+			print(string[itr_index+1:operator_ind])
 			return string[itr_index+1:operator_ind]
 		itr_index = itr_index - 1
 	return -1
@@ -240,8 +242,9 @@ class Node(object):
     vvars: 			variables which this node pertains to (vvars not vars because vars is Python keyword)
     range_start: 	start of range for complex operator nodes, min range
     range_end: 		end of range for complex operator nodes, max range
+	string_rep: 	string representation of node
     """
-	def __init__(self, parent, children, ttype, logic, vvars, range_start, range_end):
+	def __init__(self, parent, children, ttype, logic, vvars, range_start, range_end, string_rep):
 		self.__parent = parent
 		self.__children = children
 		self.__type = ttype
@@ -286,21 +289,6 @@ class Node(object):
 		"""Return range_end"""
 		return self.__range_end
 
-	@property
-	def value(self):
-		"""Return string representation of this node"""
-		if self.__type==0:
-			if self.__logic=="G" or self.__logic=="F" or self.__logic=="U":
-				self.__value = self.__logic+"["+str(self.__range_start)+","+\
-				str(self.__range_end)+"]"
-			if self.__logic=="!" or self.__logic=="||" or self.__logic=="&&":
-				self.__value = self.__logic
-		elif self.__type==1:
-			self.__value = str(self.__vars[0])+self.__logic+\
-			str(self.__range_start if self.__range_start==self.__range_end else\
-			self.__range_start if self.__range_end==None else self.__range_end)
-		return self.__value
-
 	@parent.setter
 	def parent(self, parent):
 		"""Set parent"""
@@ -335,6 +323,21 @@ class Node(object):
 			return self
 		else:
 			return __parent.get_highest_ancestor
+
+	@property
+	def value(self):
+		"""Return string representation of this node"""
+		if self.__type==0:
+			if self.__logic=="G" or self.__logic=="F" or self.__logic=="U":
+				self.__value = self.__logic+"["+str(self.__range_start)+","+\
+				str(self.__range_end)+"]"
+			if self.__logic=="!" or self.__logic=="||" or self.__logic=="&&":
+				self.__value = self.__logic
+		elif self.__type==1:
+			self.__value = str(self.__vars[0])+self.__logic+\
+			str(self.__range_start if self.__range_start==self.__range_end else\
+			self.__range_start if self.__range_end==None else self.__range_end)
+		return self.__value
 
 	def __repr__(self, level=0):
 		"""Return string representation of this node"""
