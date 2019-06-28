@@ -23,10 +23,10 @@ class Contract(object):
 	def process_variables(self, variables):
 		for assum_root in self.__assumptions:
 			for var in variables:
-				assum_root.propogate_var_down(var)
+				assum_root.propogate_var_down(var, None, 1, 0)
 		for guar_root in self.__guarantees:
 			for var in variables:
-				guar_root.propogate_var_down(var)
+				guar_root.propogate_var_down(var, None, 1, 1)
 		self.__variables = variables
 
 	@property
