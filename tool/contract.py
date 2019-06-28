@@ -1,6 +1,6 @@
 from stl import Node
 from stl import process
-from operations import list_union
+from operations import list_union, join_stringlists
 
 class Contract(object):
 	"""docstring for Contract"""
@@ -14,7 +14,7 @@ class Contract(object):
 		assum_arr = []
 		for assumption in assumptions:
 			assum_arr.append(process(assumption))
-		self.__assumptions = assum_arr
+		self.__assumptions = Node(None, assum_arr, 0, "&&", vvars, range_start, range_end, string_rep)
 
 	def process_guarantees(self, guarantees):
 		guar_arr = []
@@ -42,7 +42,7 @@ class Contract(object):
 
 	def saturate(self):
 		notA = Node(None, self.__assumptions, 0, "!", self.__assumptions.vars, None, None, "!")
-		self.__guarantees = Node(None, [notA,self.guarantees], 0, "||", ','.join(list_union(notA.vars.split(','),self.guarantees.vars.split(','))), None, None, "||")
+		self.__guarantees = Node(None, [notA,self.guarantees], 0, "||", join_stringlists(notA.vars,self.__guarantees.vars), None, None, "||")
 		notA.parent = self.__guarantees
 		self.__isSat = 1
 
