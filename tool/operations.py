@@ -1,4 +1,5 @@
 from contract import Contract
+from utilities import *
 
 def conjunction(contracts):
 	if len(contracts)>2:
