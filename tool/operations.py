@@ -8,6 +8,9 @@ def conjunction(contracts):
 	else:
 		return two_contract_conjunction(contracts[0],contracts[1])
 
+def conjunction(c1,c2):
+	return two_contract_conjunction(c1,c2)
+
 def two_contract_conjunction(c1,c2):
 	return Contract(list_union(c1.variables,c2.variables),
 		Node(None, [c1.assumptions,c2.assumptions], 0, "||", list_union(c1.assumptions.vars,c2.assumptions.vars), None, None, "||"),
