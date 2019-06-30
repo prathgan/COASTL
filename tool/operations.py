@@ -1,5 +1,6 @@
 from contract import Contract
 from utilities import *
+from stl import Node
 
 def conjunction(contracts):
 	if len(contracts)>2:
