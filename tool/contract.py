@@ -5,8 +5,14 @@ from utilities import join_stringlists, remove_dups_stringlist, list_to_str
 class Contract(object):
 	"""docstring for Contract"""
 	def __init__(self, variables, assumptions, guarantees):
-		self.process_assumptions(assumptions)
-		self.process_guarantees(guarantees)
+		if isinstance(assumptions, Node):
+			self.__assumptions = assumptions
+		else:
+			self.process_assumptions(assumptions)
+		if isinstance(guarantees, Node):
+			self.__guarantees = guarantees
+		else:
+			self.process_guarantees(guarantees)
 		self.process_variables(variables)
 		self.__isSat = 0
 
