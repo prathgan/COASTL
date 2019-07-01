@@ -30,9 +30,9 @@ def process_logic(logic, root):
 	if logic[start+1]=='G' or logic[start+1]=='F':
 		firstnum, secondnum, closep = square_parens(logic,start+2)
 		if root==1:
-			return Node(None, process_logic(logic[closep+1:end], 0), 0, logic[start+1], "", firstnum, secondnum, logic[start+1:closep])
+			return Node(None, process_logic(logic[closep+1:end], 0), 0, logic[start+1], "", firstnum, secondnum, logic[start+1:closep+1])
 		else:
-			return [Node(None, process_logic(logic[closep+1:end],0), 0, logic[start+1], "", firstnum, secondnum, logic[start+1:closep])]
+			return [Node(None, process_logic(logic[closep+1:end],0), 0, logic[start+1], "", firstnum, secondnum, logic[start+1:closep+1])]
 	if logic[start+1]=="~" and root==1:
 		return Node(None, process_logic(logic[start+2:end],0), 0, "~", "", None, None, "~")
 	elif logic[start+1]=="~" and root==0:
@@ -330,9 +330,13 @@ class Node(object):
 		else:
 			return __parent.get_highest_ancestor
 
-	def prop_string_up(self):
-		if self.__string_rep != "&":
+	# NOT FINISHED
+	def prop_string_down(self):
+		if len(self.__children)==1:
+			return self.__string_rep + "(" + self.__children[1].__prop_string_down() + ")"
+		if self.__string_rep == "&" or self.__string_rep == "|":
 			pass
+
 
 	@property
 	def value_alt(self):
