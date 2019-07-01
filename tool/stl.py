@@ -136,8 +136,8 @@ def find_andor_children(string, andor_ind):
 	Return indices of opening and closing brackets
 	of expressions on either side of 'and' or 'or
 	'"""
-	right_start, right_end = round_parens(string,andor_ind+2)
-	left_start, left_end = round_parens_bwd(string,andor_ind-1)
+	right_start, right_end = round_parens(string,andor_ind+1)
+	left_start, left_end = round_parens_bwd(string,andor_ind)
 	return left_start, left_end, right_start, right_end
 
 def find_predicate(string):
