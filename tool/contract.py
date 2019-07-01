@@ -52,6 +52,10 @@ class Contract(object):
 	def guarantees(self):
 		return self.__guarantees
 
+	@property
+	def isSat(self):
+		return self.__isSat
+
 	def saturate(self):
 		notA = Node(None, [self.__assumptions], 0, "~", self.__assumptions.vars, None, None, "~")
 		self.__guarantees = Node(None, [notA,self.__guarantees], 0, "|", join_stringlists(notA.vars,self.__guarantees.vars), None, None, "|")
