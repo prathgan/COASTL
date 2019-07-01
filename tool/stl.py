@@ -23,20 +23,20 @@ def process_logic(logic, root):
 	elif andor_logic != None and root==0:
 		left_start, left_end, right_start, right_end = find_andor_children(logic,andor_ind)
 		return [Node(None, [process_logic(logic[1:left_end+1],1),process_logic(logic[right_start:len(logic)-1],1)], 0, andor_logic, "", None, None, andor_logic)]
-	if logic[0]=="!" and root==1:
-		return Node(None, process_logic(logic[1:end+1],0), 0, "!", "", None, None, "!")
-	elif logic[0]=="!" and root==0:
-		return [Node(None, process_logic(logic[1:end+1],0), 0, "!", "", None, None, "!")]
+	if logic[0]=="~" and root==1:
+		return Node(None, process_logic(logic[1:end+1],0), 0, "~", "", None, None, "~")
+	elif logic[0]=="~" and root==0:
+		return [Node(None, process_logic(logic[1:end+1],0), 0, "~", "", None, None, "~")]
 	if logic[start+1]=='G' or logic[start+1]=='F':
 		firstnum, secondnum, closep = square_parens(logic,start+2)
 		if root==1:
 			return Node(None, process_logic(logic[closep+1:end], 0), 0, logic[start+1], "", firstnum, secondnum, logic[start+1:closep])
 		else:
 			return [Node(None, process_logic(logic[closep+1:end],0), 0, logic[start+1], "", firstnum, secondnum, logic[start+1:closep])]
-	if logic[start+1]=="!" and root==1:
-		return Node(None, process_logic(logic[start+2:end],0), 0, "!", "", None, None, "!")
-	elif logic[start+1]=="!" and root==0:
-		return [Node(None, process_logic(logic[start+2:end],0), 0, "!", "", None, None, "!")]
+	if logic[start+1]=="~" and root==1:
+		return Node(None, process_logic(logic[start+2:end],0), 0, "~", "", None, None, "~")
+	elif logic[start+1]=="~" and root==0:
+		return [Node(None, process_logic(logic[start+2:end],0), 0, "~", "", None, None, "~")]
 	predicate_logic, predicate_ind = find_predicate(logic)
 	var, minval, maxval = find_predicate_info(logic, predicate_ind, predicate_logic)
 	if predicate_logic != None and root==1:
@@ -337,7 +337,7 @@ class Node(object):
 			if self.__logic=="G" or self.__logic=="F" or self.__logic=="U":
 				self.__value = self.__logic+"["+str(self.__range_start)+","+\
 				str(self.__range_end)+"]"
-			if self.__logic=="!" or self.__logic=="||" or self.__logic=="&&":
+			if self.__logic=="~" or self.__logic=="||" or self.__logic=="&&":
 				self.__value = self.__logic
 		elif self.__type==1:
 			self.__value = str(self.__vars)+self.__logic+\
