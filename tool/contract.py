@@ -23,7 +23,7 @@ class Contract(object):
 			temp_root = process(assumption)
 			assum_arr.append(temp_root)
 			var_str += temp_root.vars
-		self.__assumptions = Node(None, assum_arr, 0, "&&", remove_dups_stringlist(var_str), None, None, "&&")
+		self.__assumptions = Node(None, assum_arr, 0, "&", remove_dups_stringlist(var_str), None, None, "&")
 
 	def process_guarantees(self, guarantees):
 		guar_arr = []
@@ -32,7 +32,7 @@ class Contract(object):
 			temp_root = process(guarantee)
 			guar_arr.append(temp_root)
 			var_str += temp_root.vars
-		self.__guarantees = Node(None, guar_arr, 0, "&&", remove_dups_stringlist(var_str), None, None, "&&")
+		self.__guarantees = Node(None, guar_arr, 0, "&", remove_dups_stringlist(var_str), None, None, "&")
 
 	def process_variables(self, variables):
 		for var in variables:
@@ -54,7 +54,7 @@ class Contract(object):
 
 	def saturate(self):
 		notA = Node(None, [self.__assumptions], 0, "~", self.__assumptions.vars, None, None, "~")
-		self.__guarantees = Node(None, [notA,self.__guarantees], 0, "||", join_stringlists(notA.vars,self.__guarantees.vars), None, None, "||")
+		self.__guarantees = Node(None, [notA,self.__guarantees], 0, "|", join_stringlists(notA.vars,self.__guarantees.vars), None, None, "|")
 		notA.set_parent_alt("self.__guarantees")
 		self.__isSat = 1
 

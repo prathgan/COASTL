@@ -126,7 +126,7 @@ def find_andor(string):
 			paren_count = paren_count - 1
 		if paren_count==1 and (string[itr_index]=="&" or string[itr_index]=="|"):
 			operator_ind = itr_index
-			operator = string[itr_index:itr_index+2]
+			operator = string[itr_index:itr_index+1]
 			return operator, operator_ind
 		itr_index += 1
 	return operator, operator_ind
@@ -330,6 +330,10 @@ class Node(object):
 		else:
 			return __parent.get_highest_ancestor
 
+	def prop_string_up(self):
+		if self.__string_rep != "&":
+			pass
+
 	@property
 	def value_alt(self):
 		"""Complicated return string representation of this node"""
@@ -337,7 +341,7 @@ class Node(object):
 			if self.__logic=="G" or self.__logic=="F" or self.__logic=="U":
 				self.__value = self.__logic+"["+str(self.__range_start)+","+\
 				str(self.__range_end)+"]"
-			if self.__logic=="~" or self.__logic=="||" or self.__logic=="&&":
+			if self.__logic=="~" or self.__logic=="|" or self.__logic=="&":
 				self.__value = self.__logic
 		elif self.__type==1:
 			self.__value = str(self.__vars)+self.__logic+\
