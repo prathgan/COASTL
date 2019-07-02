@@ -18,7 +18,7 @@ class Node(object):
 	def __init__(self, parent, child1, child2, type, logic, vars, range_start, range_end, string_rep):
 		self.__parent = parent
 		self.__child1 = child1
-        self.__child2 = child2
+		self.__child2 = child2
 		self.__type = type
 		self.__logic = logic
 		self.__vars = vars
@@ -37,7 +37,7 @@ class Node(object):
 		"""Return child1"""
 		return self.__child1
 
-    @property
+	@property
 	def child2(self):
 		"""Return child2"""
 		return self.__child2
@@ -82,12 +82,12 @@ class Node(object):
 		"""Set parent without setting child of parent to self"""
 		self.__parent = parent
 
-	@children.setter
+	@child1.setter
 	def child1(self, children):
 		"""Set children"""
 		self.__child1 = child1
 
-    @children.setter
+	@child2.setter
 	def child2(self, children):
 		"""Set children"""
 		self.__child2 = child2
@@ -135,8 +135,10 @@ class Node(object):
 		"""Return string representation of this node"""
 		ret = "\t"*level+repr(self.value)
 		children = []
-		children+= child1 if child1!=None
-		children+= child2 if child1!=None
+		if self.__child1 != None:
+			children+= child1
+		if self.__child2 != None:
+			children+= child2
 		for child in children:
 			ret += "\n" + child.__repr__(level+1)
 		return ret
