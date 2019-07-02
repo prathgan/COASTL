@@ -104,10 +104,12 @@ class Node(object):
 		self.__vars += "," + var
 		if top == 0:
 			self.__parent = parent
-		if self.__children==None:
+		if self.__child1==None and self.__child1 == None:
 			self.propogate_var_up(var)
-		for child in self.__children:
-			child.propogate_var_down(var, self, 0)
+		if child1 != None:
+			child1.propogate_var_down(var, self, 0)
+		if child2 != None:
+			child2.propogate_var_down(var, self, 0)
 
 	def get_highest_ancestor(self):
 		"""Return highest ancestor"""

@@ -1,6 +1,6 @@
-from stl import Node
-from stl import process
-from utilities import join_stringlists, remove_dups_stringlist, list_to_str
+from .stl_processing.stl_node import Node
+from .stl_processing.stl_processing import process
+from .stl_processing.utilities.simple_utilities import join_stringlists, remove_dups_stringlist, list_to_str
 
 class Contract(object):
 	"""docstring for Contract"""
@@ -8,12 +8,13 @@ class Contract(object):
 		if isinstance(assumptions, Node):
 			self.__assumptions = assumptions
 		else:
-			self.process_assumptions(assumptions)
+			self.__assumptions = process(assumptions)
 		if isinstance(guarantees, Node):
 			self.__guarantees = guarantees
 		else:
-			self.process_guarantees(guarantees)
-		self.process_variables(variables)
+			self.__guarantees = process(guarantees)
+		self.__variables = variables
+		# self.process_variables(variables)
 		self.__isSat = 0
 
 	def process_assumptions(self, assumptions):
@@ -23,7 +24,7 @@ class Contract(object):
 			temp_root = process(assumption)
 			assum_arr.append(temp_root)
 			var_str += temp_root.vars
-		self.__assumptions = Node(None, assum_arr, 0, "&", remove_dups_stringlist(var_str), None, None, "&")
+		self.__assumptions = process
 
 	def process_guarantees(self, guarantees):
 		guar_arr = []
@@ -57,8 +58,8 @@ class Contract(object):
 		return self.__isSat
 
 	def saturate(self):
-		notA = Node(None, [self.__assumptions], 0, "~", self.__assumptions.vars, None, None, "~")
-		self.__guarantees = Node(None, [notA,self.__guarantees], 0, "|", join_stringlists(notA.vars,self.__guarantees.vars), None, None, "|")
+		notA = Node(None, self.__assumptions, None, 0, "~", self.__assumptions.vars, None, None, "~")
+		self.__guarantees = Node(None, notA, self.__guarantees, 0, "|", join_stringlists(notA.vars,self.__guarantees.vars), None, None, "|")
 		notA.set_parent_alt("self.__guarantees")
 		self.__isSat = 1
 
