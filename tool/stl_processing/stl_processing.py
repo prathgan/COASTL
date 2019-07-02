@@ -16,6 +16,8 @@ def process_logic(logic, root):
 	if logic=="":
 		return []
 	start,end = round_parens(logic, 0)
+	if start==0 and end ==len(logic)-1:
+		return process_logic(logic[1:len(logic)-1],root)
 	andor_logic, andor_ind = find_andor(logic)
 	if andor_logic != None and root==1:
 		left_start, left_end, right_start, right_end = find_andor_children(logic,andor_ind)
