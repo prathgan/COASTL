@@ -21,29 +21,6 @@ def round_parens(string, start=0):
 		itr_index += 1
 	return start, end
 
-def round_parens_bwd(string, start):
-	"""
-	Return indices of opening and closing parentheses
-	of expression, starting from right side of expression
-	"""
-	count = 0
-	itr_index = start
-	first_not_found = 1
-	end = None
-	while itr_index>-1:
-		if string[itr_index]==')':
-			if first_not_found==1:
-				end = itr_index
-				first_not_found=0
-			count = count + 1
-		if string[itr_index]=='(':
-			count = count - 1
-			if count==0:
-				start = itr_index
-				break
-		itr_index = itr_index - 1
-	return start, end
-
 def square_parens(string, start):
 	"""
 	Return the minimum and maximum of the range
