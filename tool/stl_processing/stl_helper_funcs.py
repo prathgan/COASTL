@@ -93,69 +93,6 @@ def find_andor_children(string, andor_ind):
 	left_start, left_end = round_parens_bwd(string,andor_ind)
 	return left_start, left_end, right_start, right_end
 
-def find_predicate(string):
-	"""
-	Return logical operator of predicate expression
-	and index of operator
-	"""
-	operator = None
-	paren_count = 0
-	itr_index = 0
-	operator_ind = -1
-	while itr_index<len(string):
-		if string[itr_index]=='(':
-			paren_count = paren_count + 1
-		if string[itr_index]==')':
-			paren_count = paren_count - 1
-		if paren_count==1 and (string[itr_index]=="<" or string[itr_index]==">" or string[itr_index]=="="):
-			operator_ind = itr_index
-			if string[itr_index+1]=="=":
-				operator = string[itr_index:itr_index+2]
-			else:
-				operator = string[itr_index]
-			return operator, operator_ind
-		itr_index += 1
-	return operator, operator_ind
-
-def find_predicate_info(string, operator_ind, operator):
-	"""
-	Return variable and its minimum and maximum values
-	for a predicate expression
-	"""
-	var = find_predicate_var(string, operator_ind)
-	minval = None
-	maxval = None
-	if operator=="<=" or operator=="<":
-		maxval = find_predicate_num(string, operator_ind+len(operator)-1)
-	elif operator==">=" or operator==">":
-		minval = find_predicate_num(string, operator_ind+len(operator)-1)
-	elif operator=="=":
-		maxval = find_predicate_num(string, operator_ind+len(operator)-1)
-		minval = maxval
-	return var, minval, maxval
-
-def find_predicate_num(string, last_operator_ind):
-	"""
-	Return number from predicate expression string
-	"""
-	itr_index = last_operator_ind
-	while itr_index<len(string):
-		if string[itr_index]==")":
-			return float(string[last_operator_ind+1:itr_index])
-		itr_index += 1
-	return -1
-
-def find_predicate_var(string, operator_ind):
-	"""
-	Return variable from predicate expression string
-	"""
-	itr_index = operator_ind
-	while itr_index>-1:
-		if string[itr_index]=="(":
-			return string[itr_index+1:operator_ind]
-		itr_index = itr_index - 1
-	return -1
-
 def parentheses_match(string):
 	"""
 	Return True if opening and closing brackets are
