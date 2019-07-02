@@ -6,9 +6,8 @@ class Node(object):
     Parameters
     ----------
     parent: 		pointer to the object of parent of this node
-    children: 		array with pointers to the objects of children of this node; children[0]
-    		  		points to anterior requirement of 'until' logic, children[1] points to
-    		  		posterior condition of 'until' logic
+    child1: 		pointer to the object of child1; points to anterior requirement of 'until' logic
+	child2: 		pointer to the object of child2; points to posterior condition of 'until' logic
     type: 			part of logic which this node represents; logic (0) or predicate (1)
     logic: 			logic operator which which this node represents, null if predicate node
     vars: 			variables which this node pertains to
