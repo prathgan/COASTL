@@ -16,9 +16,10 @@ class Node(object):
     range_end: 		end of range for complex operator nodes, max range
 	string_rep: 	string representation of node
     """
-	def __init__(self, parent, children, type, logic, vars, range_start, range_end, string_rep):
+	def __init__(self, parent, chil1, child2, type, logic, vars, range_start, range_end, string_rep):
 		self.__parent = parent
-		self.__children = children
+		self.__child1 = child1
+        self.__child2 = child2
 		self.__type = type
 		self.__logic = logic
 		self.__vars = vars
@@ -33,13 +34,18 @@ class Node(object):
 		return self.__parent
 
 	@property
-	def children(self):
+	def child1(self):
 		"""Return child1"""
-		return self.__children
+		return self.__child1
+
+    @property
+	def child2(self):
+		"""Return child2"""
+		return self.__child2
 
 	@property
 	def type(self):
-		"""Return self"""
+		"""Return type"""
 		return self.__type
 
 	@property
@@ -78,9 +84,14 @@ class Node(object):
 		self.__parent = parent
 
 	@children.setter
-	def children(self, children):
+	def child1(self, children):
 		"""Set children"""
-		self.__children = children
+		self.__child1 = child1
+
+    @children.setter
+	def child2(self, children):
+		"""Set children"""
+		self.__child2 = child2
 
 	def propogate_var_up(self, var):
 		"""Remove all variables except for var until junction node"""
@@ -105,14 +116,6 @@ class Node(object):
 			return self
 		else:
 			return __parent.get_highest_ancestor
-
-	# NOT FINISHED
-	def prop_string_down(self):
-		if len(self.__children)==1:
-			return self.__string_rep + "(" + self.__children[1].__prop_string_down() + ")"
-		if self.__string_rep == "&" or self.__string_rep == "|":
-			pass
-
 
 	@property
 	def value_alt(self):
