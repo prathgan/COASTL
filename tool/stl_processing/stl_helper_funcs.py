@@ -126,10 +126,9 @@ def is_predicate(logic, start, end):
 	return False, -1
 
 def predicate_info(logic, start, equals_ind):
-	num = float(logic[equals_ind+1:-1]+logic[-1])
 	var = logic[0:equals_ind]
 	operator = "="
 	if var[-1]=="<" or var[-1]==">":
 		operator = var[-1] + operator
 		var = var[:-1]
-	return var, operator, num
+	return var, operator
