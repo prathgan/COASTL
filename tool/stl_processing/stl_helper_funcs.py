@@ -174,3 +174,12 @@ def parentheses_match(string):
 				verification_stack.pop()
 		itr_index += 1
 	return matched and len(verification_stack) == 0
+
+def predicate(logic):
+	pass
+
+def is_predicate(logic, start, end):
+	equals_ind = logic.index("=")
+	if equals_ind>end or equals_ind<start:
+		return True, equals_ind
+	return False, -1
