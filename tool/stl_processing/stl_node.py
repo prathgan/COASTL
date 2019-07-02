@@ -15,7 +15,7 @@ class Node(object):
     range_end: 		end of range for complex operator nodes, max range
 	string_rep: 	string representation of node
     """
-	def __init__(self, parent, chil1, child2, type, logic, vars, range_start, range_end, string_rep):
+	def __init__(self, parent, child1, child2, type, logic, vars, range_start, range_end, string_rep):
 		self.__parent = parent
 		self.__child1 = child1
         self.__child2 = child2
