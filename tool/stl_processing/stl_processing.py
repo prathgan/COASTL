@@ -8,7 +8,10 @@ def process(logic):
 		raise ValueError("Opening and closing brackets do not match, check '(' and ')'")
 	return process_logic(logic, 1)
 
-def process_logic(logic, root):
+def process_logic(logic):
+	pass
+
+def process_logic_old(logic, root):
 	"""
 	Return root of tree structure which represents
 	a Signal Temporal Logic expression
@@ -29,12 +32,12 @@ def process_logic(logic, root):
 		return Node(None, process_logic(logic[1:end+1],0), 0, "~", "", None, None, "~")
 	elif logic[0]=="~" and root==0:
 		return [Node(None, process_logic(logic[1:end+1],0), 0, "~", "", None, None, "~")]
-	elif logic[start+1]=='G' or logic[start+1]=='F':
-		firstnum, secondnum, closep = square_parens(logic,start+2)
+	elif logic[0]=='G' or logic[0]=='F':
+		firstnum, secondnum, closep = square_parens(logic,1)
 		if root==1:
-			return Node(None, process_logic(logic[closep+1:end], 0), 0, logic[start+1], "", firstnum, secondnum, logic[start+1:closep+1])
+			return Node(None, process_logic(logic[closep+1:end], 0), 0, logic[0], "", firstnum, secondnum, logic[start+1:closep+1])
 		else:
-			return [Node(None, process_logic(logic[closep+1:end],0), 0, logic[start+1], "", firstnum, secondnum, logic[start+1:closep+1])]
+			return [Node(None, process_logic(logic[closep+1:end],0), 0, logic[0], "", firstnum, secondnum, logic[start+1:closep+1])]
 	elif logic[start+1]=="~" and root==1:
 		return Node(None, process_logic(logic[start+2:end],0), 0, "~", "", None, None, "~")
 	elif logic[start+1]=="~" and root==0:
