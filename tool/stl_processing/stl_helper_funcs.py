@@ -63,7 +63,7 @@ def square_parens(string, start):
 	secondnum = float(string[comma+1:closep])
 	return firstnum, secondnum, closep
 
-def find_andor(string):
+def andor(string):
 	"""
 	Return logical operator and index which joins
 	two halves of an expression
@@ -77,21 +77,14 @@ def find_andor(string):
 			paren_count = paren_count + 1
 		if string[itr_index]==')':
 			paren_count = paren_count - 1
-		if paren_count==1 and (string[itr_index]=="&" or string[itr_index]=="|"):
+		if paren_count==0 and (string[itr_index]=="&" or string[itr_index]=="|"):
 			operator_ind = itr_index
 			operator = string[itr_index:itr_index+1]
-			return operator, operator_ind
+			break
 		itr_index += 1
-	return operator, operator_ind
-
-def find_andor_children(string, andor_ind):
-	"""
-	Return indices of opening and closing brackets
-	of expressions on either side of 'and' or 'or
-	'"""
-	right_start, right_end = round_parens(string,andor_ind+1)
-	left_start, left_end = round_parens_bwd(string,andor_ind)
-	return left_start, left_end, right_start, right_end
+	if operator_ind != -1:
+		return string[:operator_ind], operator, string[operator_ind+1:]
+	return -1
 
 def parentheses_match(string):
 	"""
