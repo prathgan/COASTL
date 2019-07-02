@@ -136,9 +136,9 @@ class Node(object):
 		ret = "\t"*level+repr(self.value)
 		children = []
 		if self.__child1 != None:
-			children+= child1
+			children.append(self.__child1)
 		if self.__child2 != None:
-			children+= child2
+			children.append(self.__child2)
 		for child in children:
 			ret += "\n" + child.__repr__(level+1)
 		return ret
