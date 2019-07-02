@@ -134,7 +134,9 @@ class Node(object):
 	def __repr__(self, level=0):
 		"""Return string representation of this node"""
 		ret = "\t"*level+repr(self.value)
-		(self.__children)
-		for child in self.children:
+		children = []
+		children+= child1 if child1!=None
+		children+= child2 if child1!=None
+		for child in children:
 			ret += "\n" + child.__repr__(level+1)
 		return ret
