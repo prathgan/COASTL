@@ -1,4 +1,4 @@
-def round_parens(string, start):
+def round_parens(string, start=0):
 	"""
 	Return indices of opening and closing parentheses
 	of expression, starting from right side of expression
@@ -6,7 +6,7 @@ def round_parens(string, start):
 	count = 0
 	itr_index = start
 	first_not_found = 1
-	end = None
+	end = 0
 	while itr_index<len(string):
 		if string[itr_index]=='(':
 			if first_not_found==1:
@@ -175,11 +175,24 @@ def parentheses_match(string):
 		itr_index += 1
 	return matched and len(verification_stack) == 0
 
-def predicate(logic):
-	pass
+def predicate(logic, start, end):
+	is_p, equals_ind = is_predicate(logic, start, end)
+	if is_p:
+		return predicate_info(logic, start, equals_ind)
+	else:
+		return -1
 
 def is_predicate(logic, start, end):
 	equals_ind = logic.index("=")
 	if equals_ind>end or equals_ind<start:
 		return True, equals_ind
 	return False, -1
+
+def predicate_info(logic, start, equals_ind):
+	num = float(logic[equals_ind+1:-1]+logic[-1])
+	var = logic[0:equals_ind]
+	operator = "="
+	if var[-1]=="<" or var[-1]==">":
+		operator = var[-1] + operator
+		var = var[:-1]
+	return var, operator, num
