@@ -1,7 +1,7 @@
 import re
-from stl_helper_funcs import *
-from stl_helper_structures import SwitchDict
-from stl_node import Node
+from .stl_helper_funcs import *
+from .stl_helper_structures import SwitchDict
+from .stl_node import Node
 
 def process(logic):
 	"""
@@ -9,57 +9,42 @@ def process(logic):
 	"""
 	if not parentheses_match(logic):
 		raise ValueError("Opening and closing brackets do not match, check '(' and ')'")
-	return process_logic(logic, 1)
+	return process_logic(logic)
 
 def process_logic(logic):
+	"""
+	Return root of tree structure which represents
+	a Signal Temporal Logic expression
+	"""
 	if logic=="":
 		return None
 	start, end = round_parens(logic)
 	if start==0 and end==len(logic)-1:
 		return process_logic(logic[1:len(logic)-1])
 	node_switch_0 = SwitchDict([("~",not_node),("G",g_node),("F",f_node)])
-	node_switch_1 = SwitchDict([("&",and_node),("|",or_node)])
 	if node_switch_0[logic[0]] != None:
-		return node_switch_0[logic[0]](logic)
+		return node_switch_0[logic[0]](logic, start, end)
+	andor_info = andor(logic)
+	if andor_info != -1:
+		return andor_node(andor_info)
+	AP_info = predicate(logic, start, end)
+	if AP_info != -1:
+		return AP_node(AP_info, logic)
 
-def process_logic_old(logic, root):
-	"""
-	Return root of tree structure which represents
-	a Signal Temporal Logic expression
-	"""
-	if logic=="":
-		return []
-	start,end = round_parens(logic, 0)
-	if start==0 and end ==len(logic)-1:
-		return process_logic(logic[1:len(logic)-1],root)
-	andor_logic, andor_ind = find_andor(logic)
-	if andor_logic != None and root==1:
-		left_start, left_end, right_start, right_end = find_andor_children(logic,andor_ind)
-		return Node(None, [process_logic(logic[1:left_end+1],1),process_logic(logic[right_start:len(logic)-1],1)], 0, andor_logic, "", None, None, andor_logic)
-	elif andor_logic != None and root==0:
-		left_start, left_end, right_start, right_end = find_andor_children(logic,andor_ind)
-		return [Node(None, [process_logic(logic[1:left_end+1],1),process_logic(logic[right_start:len(logic)-1],1)], 0, andor_logic, "", None, None, andor_logic)]
-	elif logic[0]=="~" and root==1:
-		return Node(None, process_logic(logic[1:end+1],0), 0, "~", "", None, None, "~")
-	elif logic[0]=="~" and root==0:
-		return [Node(None, process_logic(logic[1:end+1],0), 0, "~", "", None, None, "~")]
-	elif logic[0]=='G' or logic[0]=='F':
-		firstnum, secondnum, closep = square_parens(logic,1)
-		if root==1:
-			return Node(None, process_logic(logic[closep+1:end], 0), 0, logic[0], "", firstnum, secondnum, logic[start+1:closep+1])
-		else:
-			return [Node(None, process_logic(logic[closep+1:end],0), 0, logic[0], "", firstnum, secondnum, logic[start+1:closep+1])]
-	elif logic[start+1]=="~" and root==1:
-		return Node(None, process_logic(logic[start+2:end],0), 0, "~", "", None, None, "~")
-	elif logic[start+1]=="~" and root==0:
-		return [Node(None, process_logic(logic[start+2:end],0), 0, "~", "", None, None, "~")]
-	predicate_logic, predicate_ind = find_predicate(logic)
-	var, minval, maxval = find_predicate_info(logic, predicate_ind, predicate_logic)
-	if predicate_logic != None and root==1:
-		return Node(None, [], 1, predicate_logic, var, minval, maxval, var+predicate_logic+str(minval if minval!=None else maxval))
-	elif predicate_logic != None and root==0:
-		return [Node(None, [], 1, predicate_logic, var, minval, maxval, var+predicate_logic+str(minval if minval!=None else maxval))]
-	return []
+def not_node(logic, start, end):
+	return Node(None, process_logic(logic[start+1:end]), None, 0, "~", vars, range, range, "~")
 
-def not_node(logic):
-	return Node(None, child1, child2, 0, "~", None, None, None, "~")
+def g_node(logic, start, end):
+	firstnum, secondnum, closep = square_parens(logic, 1)
+	return Node(None, process_logic(logic[closep+1:]), None, 0, "G", None, firstnum, secondnum, logic[0:closep+1])
+
+def f_node(logic, start, end):
+	firstnum, secondnum, closep = square_parens(logic, 1)
+	return Node(None, process_logic(logic[closep+1:]), None, 0, "F", None, firstnum, secondnum, logic[0:closep+1])
+
+def andor_node(andor_info):
+	return Node(None, process_logic(andor_info[0]), process_logic(andor_info[2]), 0, andor_info[1], None, None, None, andor_info[1])
+
+#UNFINISHED - AP nodes need range from previous nodes (see notes)
+def AP_node(AP_info,logic):
+	return Node(None, None, None, 1, AP_info[1], AP_info[0], None, None, logic)
