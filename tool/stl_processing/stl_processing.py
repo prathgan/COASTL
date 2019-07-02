@@ -1,5 +1,6 @@
 import re
-from stl_helpers import *
+from stl_helper_funcs import *
+from stl_helper_structures import SwitchDict
 from stl_node import Node
 
 def process(logic):
@@ -11,7 +12,15 @@ def process(logic):
 	return process_logic(logic, 1)
 
 def process_logic(logic):
-	pass
+	if logic=="":
+		return None
+	start, end = round_parens(logic)
+	if start==0 and end==len(logic)-1:
+		return process_logic(logic[1:len(logic)-1])
+	node_switch_0 = SwitchDict([("~",not_node),("G",g_node),("F",f_node)])
+	node_switch_1 = SwitchDict([("&",and_node),("|",or_node)])
+	if node_switch_0[logic[0]] != None:
+		return node_switch_0[logic[0]](logic)
 
 def process_logic_old(logic, root):
 	"""
@@ -51,3 +60,6 @@ def process_logic_old(logic, root):
 	elif predicate_logic != None and root==0:
 		return [Node(None, [], 1, predicate_logic, var, minval, maxval, var+predicate_logic+str(minval if minval!=None else maxval))]
 	return []
+
+def not_node(logic):
+	return Node(None, child1, child2, 0, "~", None, None, None, "~")
