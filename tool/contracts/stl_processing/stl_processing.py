@@ -32,18 +32,18 @@ def process_logic(logic):
 		return AP_node(AP_info, logic)
 
 def not_node(logic, start, end):
-	return Node(None, process_logic(logic[start+1:end]), None, 0, "~", vars, range, range, "~")
+	return Node(None, process_logic(logic[start+1:end]), None, 0, "~", "", None, None, "~")
 
 def g_node(logic, start, end):
 	firstnum, secondnum, closep = square_parens(logic, 1)
-	return Node(None, process_logic(logic[closep+1:]), None, 0, "G", None, firstnum, secondnum, logic[0:closep+1])
+	return Node(None, process_logic(logic[closep+1:]), None, 0, "G", "", firstnum, secondnum, logic[0:closep+1])
 
 def f_node(logic, start, end):
 	firstnum, secondnum, closep = square_parens(logic, 1)
-	return Node(None, process_logic(logic[closep+1:]), None, 0, "F", None, firstnum, secondnum, logic[0:closep+1])
+	return Node(None, process_logic(logic[closep+1:]), None, 0, "F", "", firstnum, secondnum, logic[0:closep+1])
 
 def andor_node(andor_info):
-	return Node(None, process_logic(andor_info[0]), process_logic(andor_info[2]), 0, andor_info[1], None, None, None, andor_info[1])
+	return Node(None, process_logic(andor_info[0]), process_logic(andor_info[2]), 0, andor_info[1], "", None, None, andor_info[1])
 
 #UNFINISHED - AP nodes need range from previous nodes (see notes)
 def AP_node(AP_info,logic):
