@@ -17,4 +17,4 @@ b_left + b_right >= b_implies
 def g(start_t, end_t):
     times = list(range(start_t, end_t))
     for t in times:
-        
+        # exec()
