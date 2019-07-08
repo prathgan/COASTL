@@ -24,13 +24,9 @@ print(end - start)
 
 #c1 = Contract(["x","y"],"(x(1)<=10)&((y<=20))","~(~(G[0,10](F[1,3](~(x>=1)&(y<=0)))))")
 #c2 = Contract(["x","y"],"(x(1)<=10)&((y<=20))","~(~(G[0,10](F[1,3](~(x>=1)&(y<=0)))))")
-#start = timer()
 #conjunction(c1,c2)
-#end = timer()
 #print(end - start)
-#start = timer()
 #composition(c1,c2)
-#end = timer()
 #print(end - start)
 
 # start, end = round_parens("x<=10")
