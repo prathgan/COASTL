@@ -5,9 +5,6 @@ try:
     # Create a new model
     m = Model("mip1")
 
-    # Turn off logging
-    # m.Params.OutputFlag = 0
-
     # Create variables
     x = m.addVar(vtype=GRB.BINARY, name="x")
     y = m.addVar(vtype=GRB.BINARY, name="y")
