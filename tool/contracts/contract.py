@@ -13,7 +13,6 @@ class Contract(object):
 			self.__guarantees = guarantees
 		else:
 			self.__guarantees = process(guarantees)
-		# self.__variables = variables
 		self.process_variables(variables)
 		self.__isSat = 0
 
