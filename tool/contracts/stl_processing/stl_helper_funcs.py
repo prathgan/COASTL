@@ -40,7 +40,7 @@ def square_parens(string, start):
 	secondnum = float(string[comma+1:closep])
 	return firstnum, secondnum, closep
 
-def andor(string):
+def connector(string):
 	"""
 	Return logical operator and index which joins
 	two halves of an expression
@@ -53,8 +53,10 @@ def andor(string):
 			paren_count = paren_count + 1
 		if string[itr_index]==')':
 			paren_count = paren_count - 1
-		if paren_count==0 and (string[itr_index]=="&" or string[itr_index]=="|"):
+		if paren_count==0 and (string[itr_index]=="&" or string[itr_index]=="|" or string[itr_index]=="-"):
 			return string[:itr_index], string[itr_index:itr_index+2], string[itr_index+2:]
+		if paren_count==0 and string[itr_index]=="U":
+			return string[:itr_index], string[itr_index:itr_index+1], string[itr_index+1:]
 		itr_index += 1
 	return -1
 
