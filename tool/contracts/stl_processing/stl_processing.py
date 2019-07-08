@@ -11,13 +11,15 @@ def process(logic, remove_log=False):
 	"""
 	if not parentheses_match(logic):
 		raise ValueError("Opening and closing brackets do not match, check '(' and ')'")
+	stl_tree = process_logic(logic, None, None)
 	m = Model("optimization_model")
-	tree = process_logic(logic, None, None, m)
+	# add constraints
+	# solve problem
 	if remove_log:
 		remove_gurobi_log()
 	return tree
 
-def process_logic(logic, range_start, range_end, m):
+def process_logic(logic, range_start, range_end):
 	"""
 	Return root of tree structure which represents
 	a Signal Temporal Logic expression
@@ -26,30 +28,30 @@ def process_logic(logic, range_start, range_end, m):
 		return None
 	start, end = round_parens(logic)
 	if start==0 and end==len(logic)-1:
-		return process_logic(logic[1:len(logic)-1], range_start, range_end, m)
+		return process_logic(logic[1:len(logic)-1], range_start, range_end)
 	node_switch_0 = SwitchDict([("~",not_node),("G",g_node),("F",f_node)])
 	if node_switch_0[logic[0]] != None:
-		return node_switch_0[logic[0]](logic, start, end, range_start, range_end, m)
+		return node_switch_0[logic[0]](logic, start, end, range_start, range_end)
 	con_info = connector(logic)
 	if con_info != -1:
-		return con_node(con_info, range_start, range_end, m)
+		return con_node(con_info, range_start, range_end)
 	AP_info = predicate(logic, start, end)
 	if AP_info != -1:
-		return AP_node(AP_info, logic, range_start, range_end, m)
+		return AP_node(AP_info, logic, range_start, range_end)
 
-def not_node(logic, start, end, range_start, range_end, m):
-	return Node(None, process_logic(logic[start+1:end, range_start, range_end], range_start, range_end, m), None, 0, "~", "", None, None, "~")
+def not_node(logic, start, end, range_start, range_end):
+	return Node(None, process_logic(logic[start+1:end, range_start, range_end], range_start, range_end), None, 0, "~", "", None, None, "~")
 
-def g_node(logic, start, end, range_start, range_end, m):
+def g_node(logic, start, end, range_start, range_end):
 	firstnum, secondnum, closep = square_parens(logic, 1)
-	return Node(None, process_logic(logic[closep+1:], firstnum, secondnum, m), None, 0, "G", "", None, None, logic[0:closep+1])
+	return Node(None, process_logic(logic[closep+1:], firstnum, secondnum), None, 0, "G", "", None, None, logic[0:closep+1])
 
-def f_node(logic, start, end, range_start, range_end, m):
+def f_node(logic, start, end, range_start, range_end):
 	firstnum, secondnum, closep = square_parens(logic, 1)
-	return Node(None, process_logic(logic[closep+1:], firstnum, secondnum, m), None, 0, "F", "", firstnum, secondnum, logic[0:closep+1])
+	return Node(None, process_logic(logic[closep+1:], firstnum, secondnum), None, 0, "F", "", firstnum, secondnum, logic[0:closep+1])
 
-def con_node(andor_info, range_start, range_end, m):
-	return Node(None, process_logic(andor_info[0], range_start, range_end, m), process_logic(andor_info[2], range_start, range_end, m), 0, andor_info[1], "", None, None, andor_info[1])
+def con_node(andor_info, range_start, range_end):
+	return Node(None, process_logic(andor_info[0], range_start, range_end), process_logic(andor_info[2], range_start, range_end), 0, andor_info[1], "", None, None, andor_info[1])
 
-def AP_node(AP_info,logic, range_start, range_end, m):
+def AP_node(AP_info,logic, range_start, range_end):
 	return Node(None, None, None, 1, AP_info[1], AP_info[0], range_start, range_end, logic)
