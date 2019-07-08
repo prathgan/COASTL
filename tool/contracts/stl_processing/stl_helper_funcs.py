@@ -48,19 +48,15 @@ def andor(string):
 	operator = None
 	paren_count = 0
 	itr_index = 0
-	operator_ind = -1
 	while itr_index<len(string):
 		if string[itr_index]=='(':
 			paren_count = paren_count + 1
 		if string[itr_index]==')':
 			paren_count = paren_count - 1
 		if paren_count==0 and (string[itr_index]=="&" or string[itr_index]=="|"):
-			operator_ind = itr_index
 			operator = string[itr_index:itr_index+1]
-			break
+			return string[:itr_index], operator, string[itr_index+1:]
 		itr_index += 1
-	if operator_ind != -1:
-		return string[:operator_ind], operator, string[operator_ind+1:]
 	return -1
 
 def parentheses_match(string):
