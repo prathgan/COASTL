@@ -1,3 +1,5 @@
+import os
+
 def list_union(l1,l2):
 	"""Return union of elements in two lists"""
 	return list(set().union(l1,l2))
@@ -14,3 +16,6 @@ def remove_dups_stringlist(str):
 
 def list_to_str(l):
 	return ','.join(l)
+
+def remove_gurobi_log():
+	os.remove("gurobi.log")
