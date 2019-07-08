@@ -8,3 +8,7 @@ b_inner_1 + b_inner_2 <= 1 + b_and
 # or
 b_or <= b_inner_1 + b_inner_2
 b_inner_1 + b_inner_2 <= 2 * b_or
+
+# implies
+b_left + b_right >= b_implies
+2 * b_implies >= 1 - b_left + b_right
