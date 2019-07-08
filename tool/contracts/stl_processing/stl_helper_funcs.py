@@ -54,8 +54,7 @@ def andor(string):
 		if string[itr_index]==')':
 			paren_count = paren_count - 1
 		if paren_count==0 and (string[itr_index]=="&" or string[itr_index]=="|"):
-			operator = string[itr_index:itr_index+1]
-			return string[:itr_index], operator, string[itr_index+1:]
+			return string[:itr_index], string[itr_index:itr_index+2], string[itr_index+2:]
 		itr_index += 1
 	return -1
 
