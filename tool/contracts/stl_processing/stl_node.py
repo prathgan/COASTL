@@ -94,7 +94,7 @@ class Node(object):
 
 	def propogate_var_up(self, var):
 		"""Remove all variables except for var until junction node"""
-		if len(self.__children)>1:
+		if (self.__child1!=None and self.__child2!=None) or self.__parent==None:
 			return
 		self.__vars = var
 		self.__parent.propogate_var_up(var)
@@ -106,10 +106,10 @@ class Node(object):
 			self.__parent = parent
 		if self.__child1==None and self.__child1 == None:
 			self.propogate_var_up(var)
-		if child1 != None:
-			child1.propogate_var_down(var, self, 0)
-		if child2 != None:
-			child2.propogate_var_down(var, self, 0)
+		if self.__child1 != None:
+			self.__child1.propogate_var_down(var, self, 0)
+		if self.__child2 != None:
+			self.__child2.propogate_var_down(var, self, 0)
 
 	def get_highest_ancestor(self):
 		"""Return highest ancestor"""
