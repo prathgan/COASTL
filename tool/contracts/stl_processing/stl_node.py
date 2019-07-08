@@ -76,7 +76,10 @@ class Node(object):
 	def parent(self, parent):
 		"""Set parent"""
 		self.__parent = parent
-		parent.children = parent.children + [self]
+		if parent.child1 == None:
+			parent.child1 = self
+		elif parent.child2 == None:
+			parent.child2 = self
 
 	def set_parent_alt(self,parent):
 		"""Set parent without setting child of parent to self"""
