@@ -18,7 +18,9 @@ end = timer()
 print(end - start)
 """
 
-print(process("(F[0,20]((5<=x(1))&&(x(1)<=5)&&(0<=x(2))&&(x(2)<=0)))U(F[0,20]((5<=x(1))&&(x(1)<=5)&&(0<=x(2))&&(x(2)<=0)))"))
+# tree = process("(F[0,20]((5<=x(1))&&(x(1)<=5)&&(0<=x(2))&&(x(2)<=0)))U(F[0,20]((5<=x(1))&&(x(1)<=5)&&(0<=x(2))&&(x(2)<=0)))")
+# print(tree.child1.child1.child2.child2.child1)
+# print(tree.child1.child1.child2.child2.child1.range_end)
 
 #c1 = Contract(["x","y"],"(x(1)<=10)&((y<=20))","~(~(G[0,10](F[1,3](~(x>=1)&(y<=0)))))")
 #c2 = Contract(["x","y"],"(x(1)<=10)&((y<=20))","~(~(G[0,10](F[1,3](~(x>=1)&(y<=0)))))")
