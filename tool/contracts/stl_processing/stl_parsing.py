@@ -23,7 +23,7 @@ def parse_logic(logic, range_start, range_end):
 		return AP_node(AP_info, logic, range_start, range_end)
 
 def not_node(logic, start, end, range_start, range_end):
-	return Node(None, parse_logic(logic[start+1:end, range_start, range_end], range_start, range_end), None, 0, "~", "", None, None, "~")
+	return Node(None, parse_logic(logic[start+1:end], range_start, range_end), None, 0, "~", "", None, None, "~")
 
 def g_node(logic, start, end, range_start, range_end):
 	firstnum, secondnum, closep = square_parens(logic, 1)
