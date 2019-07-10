@@ -136,6 +136,11 @@ class Node(object):
 		return self.__value
 
 	@property
+	def string_rep(self):
+		"""Return string_rep"""
+		return self.__string_rep
+
+	@property
 	def value(self):
 		"""Return string representation of this node"""
 		return self.__string_rep
