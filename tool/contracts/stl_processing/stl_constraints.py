@@ -2,7 +2,7 @@ from gurobipy import *
 from .utilities.simple_utilities import get_bin_name
 from .stl_parsing_helpers import SwitchDict
 
-def create_constraints(tree, m=None):
+def create_constraints(node, m=None):
     if m == None:
         m = Model("solver")
     m = topmost_constr(node, m)
