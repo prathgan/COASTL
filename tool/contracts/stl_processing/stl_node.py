@@ -30,6 +30,7 @@ class Node(object):
 		self.__range_end = range_end
 		self.__value = ""
 		self.__string_rep = string_rep
+		self.__gurobi_vars = []
 
 	@property
 	def parent(self):
@@ -71,6 +72,11 @@ class Node(object):
 		"""Return range_end"""
 		return self.__range_end
 
+	@property
+	def gurobi_vars(self):
+		"""Return gurobi_vars"""
+		return self.__gurobi_vars
+
 	@parent.setter
 	def parent(self, parent):
 		"""Set parent"""
@@ -93,6 +99,9 @@ class Node(object):
 	def child2(self, children):
 		"""Set children"""
 		self.__child2 = child2
+
+	def add_gurobi_var(self, var):
+		self.__gurobi_vars.append(var)
 
 	def propogate_var_up(self, var):
 		"""Remove all variables except for var until junction node"""
