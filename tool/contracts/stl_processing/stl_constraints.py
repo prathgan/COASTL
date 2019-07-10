@@ -10,8 +10,7 @@ def create_constraints(node, m=None):
                               ("G",g_constr),
                               ("F",f_constr),
                               ("<=",leq_constr),
-                              (">=",geq_constr),
-                              ("<",l_constr)])
+                              (">=",geq_constr)])
     m = node_switch[node.logic](node, m)
     if node.child1 is not None:
         m = create_constraints(node.child1, m)
@@ -53,7 +52,4 @@ def leq_constr():
 
 def geq_constr(node, m):
     print(node)
-    pass
-
-def l_constr():
     pass
