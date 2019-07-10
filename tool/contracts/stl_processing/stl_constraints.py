@@ -1,4 +1,5 @@
 from gurobipy import *
+from .utilities.simple_utilities import bin_name
 
 def create_constraints(tree, m=None):
     if m == None:
@@ -18,7 +19,7 @@ def create_constraints(tree, m=None):
 
 def topmost_constr(node, m):
     if node.parent is None:
-        bin_name = "b_"+node.string_rep
+        bin_name = bin_name(node)
         exec(bin_name+"= m.addVar(vtype=GRB.BINARY, name='b_"+node.string_rep+"')")
         exec("m.addConstr("+bin_name+" == 1, 'c_"+bin_name+"')")
     return m
