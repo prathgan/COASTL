@@ -67,11 +67,6 @@ class Node(object):
 		"""Return range_end"""
 		return self.__range_end
 
-	@property
-	def value(self):
-		"""Return string representation of this node"""
-		return self.__string_rep
-
 	@parent.setter
 	def parent(self, parent):
 		"""Set parent"""
@@ -135,6 +130,11 @@ class Node(object):
 			str(self.__range_start if self.__range_start==self.__range_end else\
 			self.__range_start if self.__range_end==None else self.__range_end)
 		return self.__value
+
+	@property
+	def value(self):
+		"""Return string representation of this node"""
+		return self.__string_rep
 
 	def __repr__(self, level=0):
 		"""Return string representation of this node"""
