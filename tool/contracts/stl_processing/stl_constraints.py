@@ -55,5 +55,4 @@ def leq_constr():
     pass
 
 def geq_constr(node, m):
-    print(node)
     pass
