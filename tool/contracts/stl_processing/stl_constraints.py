@@ -27,7 +27,17 @@ def topmost_constr(node, m):
     return m
 
 def g_constr(node, m):
-    def g(start_t, end_t):
-        times = list(range(start_t, end_t))
-        for t in times:
-            # exec()
+    bin_name = get_bin_name(node)
+    child_bin_name = get_bin_name(node.child1)
+    exec(bin_name+"=m.addVar(vtype=GRB.BINARY, name='"+bin_name+"')")
+    times = list(range(node.range_start, node.range_end))
+    sum_bin_allTs = ""
+    n = 0
+    for t in times:
+        temp_bin = child_bin_name+"_"+str(t)
+        exec(temp_bin+"=m.addVar(vtype=GRB.BINARY, name='"+temp_bin+"')")
+        sum_bin_allTs += temp_bin + "+"
+        n += 1
+    sum_bin_allTs = sum_bin_allTs[:-1]
+    exec("m.addConstr("+ str(n) + "*" + bin_name + " <= " + sum_bin_allTs + ", 'c_" + bin_name + "_1')")
+    exec("m.addConstr("+ sum_bin_allTs + " <= " + str(n-1) + " + " + bin_name + ", 'c_"+bin_name+"_1')")
