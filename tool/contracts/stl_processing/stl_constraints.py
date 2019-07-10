@@ -41,3 +41,19 @@ def g_constr(node, m):
     sum_bin_allTs = sum_bin_allTs[:-1]
     exec("m.addConstr("+ str(n) + "*" + bin_name + " <= " + sum_bin_allTs + ", 'c_" + bin_name + "_1')")
     exec("m.addConstr("+ sum_bin_allTs + " <= " + str(n-1) + " + " + bin_name + ", 'c_"+bin_name+"_1')")
+
+def not_constr():
+    pass
+
+def f_constr():
+    pass
+
+def leq_constr():
+    pass
+
+def geq_constr(node, m):
+    print(node)
+    pass
+
+def l_constr():
+    pass
