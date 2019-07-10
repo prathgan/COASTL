@@ -18,3 +18,7 @@ def g(start_t, end_t):
     times = list(range(start_t, end_t))
     for t in times:
         # exec()
+
+
+if not m.getVars()[-1].varName==self_temp_bin_name:
+    exec(self_temp_bin_name+"=m.addVar(vtype=GRB.BINARY, name='"+self_temp_bin_name+"')")
