@@ -18,7 +18,11 @@ class Node(object):
 	def __init__(self, parent, child1, child2, type, logic, vars, range_start, range_end, string_rep):
 		self.__parent = parent
 		self.__child1 = child1
+		if child1 is not None:
+			self.__child1.parent = self
 		self.__child2 = child2
+		if child2 is not None:
+			self.__child2.parent = self
 		self.__type = type
 		self.__logic = logic
 		self.__vars = vars
@@ -71,14 +75,14 @@ class Node(object):
 	def parent(self, parent):
 		"""Set parent"""
 		self.__parent = parent
+
+	def set_parent_alt(self,parent):
+		"""Set parent while setting open child of parent to self"""
+		self.__parent = parent
 		if parent.child1 == None:
 			parent.child1 = self
 		elif parent.child2 == None:
 			parent.child2 = self
-
-	def set_parent_alt(self,parent):
-		"""Set parent without setting child of parent to self"""
-		self.__parent = parent
 
 	@child1.setter
 	def child1(self, children):
