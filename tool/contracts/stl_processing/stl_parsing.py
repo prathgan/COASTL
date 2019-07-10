@@ -1,5 +1,4 @@
 from .stl_parsing_helpers import *
-from .stl_helper_structures import SwitchDict
 from .stl_node import Node
 
 def parse(logic):
