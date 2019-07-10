@@ -9,12 +9,13 @@ def create_constraints(tree, m=None):
                               ("G",g_constr),
                               ("F",f_constr),
                               ("<=",leq_constr),
-                              (">=",geq_constr)])
-    m = node_switch[tree.logic](node, m)
-    if tree.child1 is not None:
-        m = create_constraints(tree.child1, m)
-    if tree.child2 is not None:
-        m = create_constraints(tree.child2, m)
+                              (">=",geq_constr),
+                              ("<",l_constr)])
+    m = node_switch[node.logic](node, m)
+    if node.child1 is not None:
+        m = create_constraints(node.child1, m)
+    if node.child2 is not None:
+        m = create_constraints(node.child2, m)
     return m
 
 def topmost_constr(node, m):
