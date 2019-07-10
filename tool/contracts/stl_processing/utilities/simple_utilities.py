@@ -44,8 +44,10 @@ def get_bin_name(node):
 	name = name.replace('[','_')
 	name = name.replace(']','_')
 	name = name.replace(',','_')
-	name = name.replace('<=','leq')
-	name = name.replace('>=','geq')
+	name = name.replace("<=",'leq')
+	name = name.replace(">=",'geq')
 	name = name.replace('<','l')
 	name = name.replace('>','g')
+	name = name.replace("&&","and")
+	name = name.replace('||',"or")
 	return name
