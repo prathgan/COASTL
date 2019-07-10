@@ -70,19 +70,27 @@ def or_constr(node, m):
 
 def g_constr(node, m):
     bin_name = get_bin_name(node)
-    exec(bin_name+"=m.addVar(vtype=GRB.BINARY, name='"+bin_name+"')")
+    if not (node.gurobi_vars):
+        exec(bin_name+"=m.addVar(vtype=GRB.BINARY, name='"+bin_name+"')")
+        exec("node.add_gurobi_var("+bin_name+")")
+    else:
+        exec(bin_name+"=node.gurobi_vars[0]")
     child_bin_name = get_bin_name(node.child1)
     times = list(range(node.range_start, node.range_end))
     sum_bin_allTs = ""
     n = 0
     for t in times:
-        temp_bin = child_bin_name+"_"+str(t)
-        exec(temp_bin+"=m.addVar(vtype=GRB.BINARY, name='"+temp_bin+"')")
-        sum_bin_allTs += temp_bin + "+"
+        temp_child_bin = child_bin_name+"_"+str(t)
+        exec(temp_child_bin+"=m.addVar(vtype=GRB.BINARY, name='"+temp_child_bin+"')")
+        exec("node.child1.add_gurobi_var("+temp_child_bin+")")
+        sum_bin_allTs += temp_child_bin + "+"
+        m.update()
         n += 1
     sum_bin_allTs = sum_bin_allTs[:-1]
     exec("m.addConstr("+ str(n) + "*" + bin_name + " <= " + sum_bin_allTs + ", 'c_" + bin_name + "_1')")
-    exec("m.addConstr("+ sum_bin_allTs + " <= " + str(n-1) + " + " + bin_name + ", 'c_"+bin_name+"_1')")
+    exec("m.addConstr("+ sum_bin_allTs + " <= " + str(n-1) + " + " + bin_name + ", 'c_"+bin_name+"_2')")
+    m.update()
+    return m
 
 def f_constr():
     pass
