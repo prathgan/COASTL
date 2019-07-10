@@ -38,3 +38,6 @@ def parentheses_match(string):
 
 def remove_gurobi_log():
 	os.remove("gurobi.log")
+
+def bin_name(node):
+	return "b_"+node.string_rep
