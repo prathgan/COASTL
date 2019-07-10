@@ -7,6 +7,7 @@ def create_constraints(node, m=None):
         m = Model("solver")
     m = topmost_constr(node, m)
     node_switch = SwitchDict([("~",not_constr),
+                              ("&&", and_constr),
                               ("G",g_constr),
                               ("F",f_constr),
                               ("<=",leq_constr),
@@ -26,6 +27,9 @@ def topmost_constr(node, m):
     return m
 
 def not_constr():
+    pass
+
+def and_constr(node, m):
     pass
 
 def g_constr(node, m):
