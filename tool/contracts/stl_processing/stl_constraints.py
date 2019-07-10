@@ -35,8 +35,8 @@ def or_constr(node, m):
 
 def g_constr(node, m):
     bin_name = get_bin_name(node)
-    child_bin_name = get_bin_name(node.child1)
     exec(bin_name+"=m.addVar(vtype=GRB.BINARY, name='"+bin_name+"')")
+    child_bin_name = get_bin_name(node.child1)
     times = list(range(node.range_start, node.range_end))
     sum_bin_allTs = ""
     n = 0
