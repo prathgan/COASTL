@@ -36,8 +36,8 @@ def square_parens(string, start):
 			closep = itr_index
 			break
 		itr_index += 1
-	firstnum = float(string[start+1:comma])
-	secondnum = float(string[comma+1:closep])
+	firstnum = int(string[start+1:comma])
+	secondnum = int(string[comma+1:closep])
 	return firstnum, secondnum, closep
 
 def connector(string):
