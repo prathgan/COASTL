@@ -95,8 +95,8 @@ def g_constr(node, m):
 def f_constr():
     pass
 
-def leq_constr():
-    pass
+def leq_constr(node, m):
+    return m
 
 def geq_constr(node, m):
-    pass
+    return m
