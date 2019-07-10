@@ -30,6 +30,7 @@ def not_constr():
     pass
 
 def and_constr(node, m):
+def or_constr(node, m):
     pass
 
 def g_constr(node, m):
