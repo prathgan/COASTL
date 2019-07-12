@@ -10,7 +10,6 @@ def process(logic, remove_log=False):
 	if not parentheses_match(logic):
 		raise ValueError("Opening and closing brackets do not match, check '(' and ')'")
 	stl_tree = parse_logic(logic, None, None)
-	m = Model("optimization_model")
 	# add constraints
 	# solve problem
 	if remove_log:
