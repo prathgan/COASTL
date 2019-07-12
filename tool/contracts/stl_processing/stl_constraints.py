@@ -192,7 +192,7 @@ def leq_constr(node, m, M, E):
         for var in node.vars:
             var_temp_bin_name = var+"_"+str(t)
             if not m.getVars()[-1-T+gurobi_vars_ind].VarName == var_temp_bin_name:
-                exec(var_temp_bin_name+"=m.addVar(vtype=GRB.BINARY, name='"+var_temp_bin_name+"')")
+                exec(var_temp_bin_name+"=m.addVar(vtype=GRB.CONTINUOUS, name='"+var_temp_bin_name+"')")
             else:
                 exec(var_temp_bin_name+"=m.getVars()[-1-T+gurobi_vars_ind]")
             isolated_exp = isolated_exp.replace(var,var_temp_bin_name)
