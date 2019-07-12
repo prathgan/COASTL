@@ -8,4 +8,4 @@ def display_tree(root):
 
 def display_model(m):
 	for v in m.getVars():
-	    print('%s %g' % (v.varName, v.x))
+		print('%s %g' % (v.varName, v.x))
