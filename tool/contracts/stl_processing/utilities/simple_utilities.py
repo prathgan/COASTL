@@ -14,8 +14,11 @@ def remove_dups_stringlist(str):
 	arr = list(dict.fromkeys(arr))
 	return ','.join(arr)
 
-def list_to_str(l):
-	return ','.join(l)
+def list_to_str(l, commas=True):
+	if commas:
+		return ','.join(l)
+	else:
+		return ''.join(l)
 
 def parentheses_match(string):
 	"""
