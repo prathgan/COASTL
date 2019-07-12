@@ -32,9 +32,9 @@ def create_constraints(node, m=None, remove_log=False, M=10**4, E=10**(-4)):
 def topmost_constr(node, m):
     if node.parent is None:
         bin_name = get_bin_name(node)
-        exec(bin_name+"= m.addVar(vtype=GRB.BINARY, name='"+bin_name+"')")
+        exec(bin_name+"= m.addVar(vtype=GRB.BINARY, name='"+bin_name+"_root')")
         exec("node.add_gurobi_var("+bin_name+")")
-        exec("m.addConstr("+bin_name+" == 1, 'c_"+bin_name+"')")
+        exec("m.addConstr("+bin_name+" == 1, 'c_"+bin_name+"_root')")
     m.update()
     return m
 
@@ -58,7 +58,7 @@ def not_constr(node, m):
         exec(child1_temp_bin_name+"=m.addVar(vtype=GRB.BINARY, name='"+child1_temp_bin_name+"')")
         exec("node.child1.add_gurobi_var("+child1_temp_bin_name+")")
         # add constraints to relate ~ and the expression at each timestep
-        exec("m.addConstr("+ child1_temp_bin_name + " == 1 - " + self_temp_bin_name + ", 'c_" + self_temp_bin_name + "_1')")
+        exec("m.addConstr("+ child1_temp_bin_name + " == 1 - " + self_temp_bin_name + ", 'c_" + self_temp_bin_name + "')")
         m.update()
     m.update()
     return m
