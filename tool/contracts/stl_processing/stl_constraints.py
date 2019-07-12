@@ -171,9 +171,6 @@ def f_constr(node, m):
 def leq_constr(node, m):
     self_bin_name = get_bin_name(node)
     times = list(range(handle_no_range(node).range_start, handle_no_range(node).range_end+1))
-    vars_yc = list_to_str(node.vars, commas=True)
-    vars_nc = list_to_str(node.vars, commas=False)
-    exec(vars_yc + " = " + "sympy.symbols('" + vars_nc + "')")
     return m
 
 def geq_constr(node, m):
