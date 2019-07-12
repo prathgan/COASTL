@@ -9,6 +9,7 @@ def create_constraints(node, m=None):
     m.update()
     node_switch = SwitchDict([("~",not_constr),
                               ("&&", and_constr),
+                              ("||", or_constr),
                               ("G",g_constr),
                               ("F",f_constr),
                               ("<=",leq_constr),
