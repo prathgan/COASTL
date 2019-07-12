@@ -169,6 +169,9 @@ def f_constr(node, m):
     return m
 
 def leq_constr(node, m):
+    vars_yc = list_to_str(node.vars, commas=True)
+    vars_nc = list_to_str(node.vars, commas=False)
+    exec(vars_yc + " = " + "sympy.symbols('" + vars_nc + "')")
     return m
 
 def geq_constr(node, m):
