@@ -40,7 +40,7 @@ def and_constr(node, m):
     self_bin_name = get_bin_name(node)
     child1_bin_name = get_bin_name(node.child1)
     child2_bin_name = get_bin_name(node.child2)
-    times = list(range(node.range_start, node.range_end+1))
+    times = list(range(handle_no_range(node).range_start, handle_no_range(node).range_end+1))
     create_new_vars = False
     gurobi_vars_ind = 0
     for t in times:
@@ -70,7 +70,7 @@ def or_constr(node, m):
     self_bin_name = get_bin_name(node)
     child1_bin_name = get_bin_name(node.child1)
     child2_bin_name = get_bin_name(node.child2)
-    times = list(range(node.range_start, node.range_end+1))
+    times = list(range(handle_no_range(node).range_start, handle_no_range(node).range_end+1))
     create_new_vars = False
     gurobi_vars_ind = 0
     for t in times:
@@ -104,7 +104,7 @@ def g_constr(node, m):
     else:
         exec(bin_name+"=node.gurobi_vars[0]")
     child_bin_name = get_bin_name(node.child1)
-    times = list(range(node.range_start, node.range_end+1))
+    times = list(range(handle_no_range(node).range_start, handle_no_range(node).range_end+1))
     sum_bin_allTs = ""
     n = 0
     for t in times:
@@ -128,7 +128,7 @@ def f_constr(node, m):
     else:
         exec(bin_name+"=node.gurobi_vars[0]")
     child_bin_name = get_bin_name(node.child1)
-    times = list(range(node.range_start, node.range_end+1))
+    times = list(range(handle_no_range(node).range_start, handle_no_range(node).range_end+1))
     sum_bin_allTs = ""
     n = 0
     for t in times:
