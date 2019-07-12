@@ -1,6 +1,5 @@
 from gurobipy import *
-from .utilities.simple_utilities import get_bin_name
-from .stl_parsing_helpers import SwitchDict
+from .stl_constraints_helpers import *
 
 def create_constraints(node, m=None):
     if m is None:
