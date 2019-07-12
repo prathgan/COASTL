@@ -178,6 +178,29 @@ def f_constr(node, m):
 def leq_constr(node, m, M, E):
     self_bin_name = get_bin_name(node)
     times = list(range(handle_no_range(node).range_start, handle_no_range(node).range_end+1))
+    isolated_exp_orig = isolate_0(node)
+    gurobi_vars_ind = 0
+    create_new_vars = False
+    T = len(times)
+    for t in times:
+        isolated_exp = isolated_exp_orig
+        self_temp_bin_name = self_bin_name+"_"+str(t)
+        # add self bin var
+        exec(self_temp_bin_name+"=node.gurobi_vars["+str(gurobi_vars_ind)+"]")
+        gurobi_vars_ind+=1
+        # add bin vars for all node.vars
+        for var in node.vars:
+            var_temp_bin_name = var+"_"+str(t)
+            if not m.getVars()[-1-T+gurobi_vars_ind].VarName == var_temp_bin_name:
+                exec(var_temp_bin_name+"=m.addVar(vtype=GRB.BINARY, name='"+var_temp_bin_name+"')")
+            else:
+                exec(var_temp_bin_name+"=m.getVars()[-1-T+gurobi_vars_ind]")
+            isolated_exp = isolated_exp.replace(var,var_temp_bin_name)
+        # add constraints
+        exec("m.addConstr("+ self_temp_bin_name + " * (" + str(M) + ") <= " + isolated_exp + ", 'c_" + self_temp_bin_name + "_1')")
+        exec("m.addConstr("+ isolated_exp + " <= (" + self_temp_bin_name + " * (" + str(M) + ")) - (" + str(E)+ "), 'c_" + self_temp_bin_name + "_2')")
+        m.update()
+    m.update()
     return m
 
 def geq_constr(node, m):
