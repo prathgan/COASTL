@@ -197,7 +197,7 @@ def leq_constr(node, m, M, E):
                 exec(var_temp_bin_name+"=m.getVars()[-1-T+gurobi_vars_ind]")
             isolated_exp = isolated_exp.replace(var,var_temp_bin_name)
         # add constraints
-        exec("m.addConstr("+ self_temp_bin_name + " * (" + str(M) + ") <= " + isolated_exp + ", 'c_" + self_temp_bin_name + "_1')")
+        exec("m.addConstr(("+ self_temp_bin_name + " - 1) * (" + str(M) + ") <= " + isolated_exp + ", 'c_" + self_temp_bin_name + "_1')")
         exec("m.addConstr("+ isolated_exp + " <= (" + self_temp_bin_name + " * (" + str(M) + ")) - (" + str(E)+ "), 'c_" + self_temp_bin_name + "_2')")
         m.update()
     m.update()
