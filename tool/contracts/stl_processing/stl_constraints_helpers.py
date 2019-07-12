@@ -12,6 +12,12 @@ def get_bin_name(node):
 	name = name.replace('~',"not")
 	return name
 
+def handle_no_range(node):
+	if node.range_start==None or node.range_end==None:
+		node.range_start = 0
+		node.range_end = 0
+	return node
+
 class SwitchDict(dict):
     def __getitem__(self, key):
         return dict.get(self, key)
