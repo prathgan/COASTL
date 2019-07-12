@@ -32,7 +32,6 @@ def topmost_constr(node, m):
     m.update()
     return m
 
-
 def not_constr(node, m):
     return
 
