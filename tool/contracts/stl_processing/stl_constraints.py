@@ -175,7 +175,7 @@ def f_constr(node, m):
     m.update()
     return m
 
-def leq_constr(node, m):
+def leq_constr(node, m, M, E):
     self_bin_name = get_bin_name(node)
     times = list(range(handle_no_range(node).range_start, handle_no_range(node).range_end+1))
     return m
