@@ -21,7 +21,10 @@ def handle_no_range(node):
 		node.range_end = 0
 	return node
 
-def isolate_0(expr):
+def isolate_0(node):
+	exp = node.string_rep
+	parts = re.split("<=", exp)
+	return parts[1]+" - ("+parts[0]+")"
 
 
 class SwitchDict(dict):
