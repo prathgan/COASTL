@@ -2,7 +2,7 @@ from gurobipy import *
 from .stl_constraints_helpers import *
 from .utilities.simple_utilities import remove_gurobi_log, parentheses_match, list_to_str
 
-def create_constraints(node, m=None, remove_log=False):
+def create_constraints(node, m=None, remove_log=False, M=10**4, E=10**(-4)):
     if m is None:
         m = Model("solver")
     m = topmost_constr(node, m)
