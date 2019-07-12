@@ -33,7 +33,29 @@ def topmost_constr(node, m):
     return m
 
 def not_constr(node, m):
-    return
+    self_bin_name = get_bin_name(node)
+    child1_bin_name = get_bin_name(node.child1)
+    times = list(range(handle_no_range(node).range_start, handle_no_range(node).range_end+1))
+    create_new_vars = False
+    gurobi_vars_ind = 0
+    for t in times:
+        self_temp_bin_name = self_bin_name+"_"+str(t)
+        child1_temp_bin_name = child1_bin_name+"_"+str(t)
+        # add variables for &&, expression1, and expression2 at each timestep
+        if (not node.gurobi_vars) or create_new_vars:
+            exec(self_temp_bin_name+"=m.addVar(vtype=GRB.BINARY, name='"+self_temp_bin_name+"')")
+            exec("node.add_gurobi_var("+self_temp_bin_name+")")
+            create_new_vars = True
+        else:
+            exec(self_temp_bin_name+"=node.gurobi_vars["+str(gurobi_vars_ind)+"]")
+            gurobi_vars_ind+=1
+        exec(child1_temp_bin_name+"=m.addVar(vtype=GRB.BINARY, name='"+child1_temp_bin_name+"')")
+        exec("node.child1.add_gurobi_var("+child1_temp_bin_name+")")
+        # add constraints to relate && and the expressions at each timestep
+        exec("m.addConstr("+ child1_temp_bin_name + " == 1 - " + self_temp_bin_name + ", 'c_" + self_temp_bin_name + "_1')")
+        m.update()
+    m.update()
+    return m
 
 def and_constr(node, m):
     self_bin_name = get_bin_name(node)
