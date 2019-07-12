@@ -1,6 +1,6 @@
 from gurobipy import *
 from .stl_constraints_helpers import *
-from .utilities.simple_utilities import remove_gurobi_log, parentheses_match
+from .utilities.simple_utilities import remove_gurobi_log, parentheses_match, list_to_str
 
 def create_constraints(node, m=None, remove_log=False):
     if m is None:
