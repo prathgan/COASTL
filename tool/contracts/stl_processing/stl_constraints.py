@@ -7,14 +7,17 @@ def create_constraints(node, m=None, remove_log=False, M=10**4, E=10**(-4)):
         m = Model("solver")
     m = topmost_constr(node, m)
     m.update()
-    node_switch = SwitchDict([("~",not_constr),
+    node_switch_L = SwitchDict([("~",not_constr),
                               ("&&", and_constr),
                               ("||", or_constr),
                               ("G",g_constr),
-                              ("F",f_constr),
-                              ("<=",leq_constr),
-                              (">=",geq_constr)])
-    m = node_switch[node.logic](node, m)
+                              ("F",f_constr)])
+    node_switch_AP = SwitchDict([("<=",leq_constr),
+                                (">=",geq_constr)])
+    if node_switch_L[node.logic] is not None:
+        m = node_switch_L[node.logic](node, m)
+    else:
+        m = node_switch_AP[node.logic](node, m, M, E)
     m.update()
     if node.child1 is not None:
         m = create_constraints(node.child1, m)
