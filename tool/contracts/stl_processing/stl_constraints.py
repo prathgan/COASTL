@@ -33,8 +33,8 @@ def topmost_constr(node, m):
     return m
 
 
-def not_constr():
-    pass
+def not_constr(node, m):
+    return
 
 def and_constr(node, m):
     self_bin_name = get_bin_name(node)
