@@ -20,6 +20,9 @@ def handle_no_range(node):
 		node.range_end = 0
 	return node
 
+def isolate_0(expr):
+
+
 class SwitchDict(dict):
     def __getitem__(self, key):
         return dict.get(self, key)
