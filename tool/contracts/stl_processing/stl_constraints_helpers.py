@@ -1,4 +1,5 @@
-from sympy import *
+from .utilities.simple_utilities import list_to_str
+import re
 
 def get_bin_name(node):
 	name = "b_"+node.string_rep
