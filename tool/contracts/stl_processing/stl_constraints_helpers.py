@@ -1,3 +1,5 @@
+from sympy import *
+
 def get_bin_name(node):
 	name = "b_"+node.string_rep
 	name = name.replace('[','_')
