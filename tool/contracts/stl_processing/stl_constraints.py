@@ -125,9 +125,11 @@ def or_constr(node, m):
 
 def g_constr(node, m):
     bin_name = get_bin_name(node)
-    if not (node.gurobi_vars):
+    create_new_vars = False
+    if (not node.gurobi_vars) or create_new_vars:
         exec(bin_name+"=m.addVar(vtype=GRB.BINARY, name='"+bin_name+"')")
         exec("node.add_gurobi_var("+bin_name+")")
+        create_new_vars = True
     else:
         exec(bin_name+"=node.gurobi_vars[0]")
     child_bin_name = get_bin_name(node.child1)
@@ -149,9 +151,11 @@ def g_constr(node, m):
 
 def f_constr(node, m):
     bin_name = get_bin_name(node)
-    if not (node.gurobi_vars):
+    create_new_vars = False
+    if (not node.gurobi_vars) or create_new_vars:
         exec(bin_name+"=m.addVar(vtype=GRB.BINARY, name='"+bin_name+"')")
         exec("node.add_gurobi_var("+bin_name+")")
+        create_new_vars = True
     else:
         exec(bin_name+"=node.gurobi_vars[0]")
     child_bin_name = get_bin_name(node.child1)
