@@ -100,6 +100,16 @@ class Node(object):
 		"""Set children"""
 		self.__child2 = child2
 
+	@range_start.setter
+	def range_start(self, range_start):
+		"""Set range_start"""
+		self.__range_start = range_start
+
+	@range_end.setter
+	def range_end(self, range_end):
+		"""Set range_end"""
+		self.__range_end = range_end
+
 	def add_gurobi_var(self, var):
 		self.__gurobi_vars.append(var)
 
