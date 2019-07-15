@@ -15,6 +15,7 @@ class Contract(object):
 			self.__guarantees = parse_stl(guarantees)
 		self.process_variables(variables)
 		self.__isSat = 0
+		self.__model = None
 
 	def process_assumptions(self, assumptions):
 		self.__assumptions = parse_stl(assumptions)
@@ -43,6 +44,10 @@ class Contract(object):
 	@property
 	def isSat(self):
 		return self.__isSat
+
+	@property
+	def model(self):
+		return self.__model
 
 	def saturate(self):
 		notA = Node(None, self.__assumptions, None, 0, "~", self.__assumptions.vars, None, None, "~")
