@@ -32,6 +32,13 @@ def replace_operators(str):
 	str = str.replace('_d_','/')
 	return str
 
+def remove_operators(str):
+	str = str.replace('+','')
+	str = str.replace('-','')
+	str = str.replace('*','')
+	str = str.replace('/','')
+	return str
+
 def handle_no_range(node):
 	if node.range_start==None or node.range_end==None:
 		node.range_start = 0
