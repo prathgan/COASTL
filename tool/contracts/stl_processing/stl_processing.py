@@ -15,3 +15,10 @@ def process(logic, remove_log=False):
 	if remove_log:
 		remove_gurobi_log()
 	return stl_tree
+
+def synthesize(m, ret_type=0):
+	m.optimize()
+	if ret_type==1:
+		return m.getVars()
+	else:
+		return m
