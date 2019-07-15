@@ -38,4 +38,4 @@ def con_node(andor_info, range_start, range_end):
 	return Node(None, parse_logic(andor_info[0], range_start, range_end), parse_logic(andor_info[2], range_start, range_end), 0, andor_info[1], "", range_start, range_end, andor_info[1])
 
 def AP_node(AP_info,logic, range_start, range_end):
-	return Node(None, None, None, 1, AP_info[1], AP_info[0], range_start, range_end, logic)
+	return Node(None, None, None, 1, AP_info[1], remove_operators(AP_info[0]), range_start, range_end, logic)
