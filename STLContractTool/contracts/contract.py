@@ -57,3 +57,15 @@ class Contract(object):
 
 	def __repr__(self):
 		return "Variables:\n"+list_to_str(self.__variables)+"\nAssumptions:\n"+str(self.__assumptions)+"\nGuarantees:\n"+str(self.__guarantees)
+
+	def synthesize(self, ret_type=0, remove_log=False):
+		if self.__isSat == 0:
+			self.saturate()
+		self.__model = synthesize_stl(self.guarantees, ret_type, remove_log)
+
+	def get_vars(self):
+		vars = {}
+		for var in self.__model.getVars():
+			if var.VarName.split("_")[0] in self.__variables:
+				vars.update({var.VarName:var.x})
+		return vars
