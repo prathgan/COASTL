@@ -2,7 +2,7 @@ from gurobipy import *
 from .stl_constraints_helpers import *
 from .utilities.simple_utilities import remove_gurobi_log, parentheses_match
 
-def create_constraints(node, m=None, remove_log=False, console_log=True, M=10**4, E=10**(-4)):
+def create_constraints(node, m=None, maximize_vars=None, minimize_vars=None, remove_log=False, console_log=True, M=10**4, E=10**(-4)):
     if m is None:
         m = Model("solver")
         m.Params.LogToConsole = int(console_log)
@@ -18,13 +18,13 @@ def create_constraints(node, m=None, remove_log=False, console_log=True, M=10**4
     if node_switch_L[node.logic] is not None:
         m = node_switch_L[node.logic](node, m)
     else:
-        m = node_switch_AP[node.logic](node, m, M, E)
+        m = node_switch_AP[node.logic](node, m, M, E, maximize_vars=maximize_vars, minimize_vars=minimize_vars)
     m.update()
     if node.child1 is not None:
-        m = create_constraints(node.child1, m)
+        m = create_constraints(node.child1, m=m, maximize_vars=maximize_vars, minimize_vars=minimize_vars)
         m.update()
     if node.child2 is not None:
-        m = create_constraints(node.child2, m)
+        m = create_constraints(node.child2, m=m, maximize_vars=maximize_vars, minimize_vars=minimize_vars)
         m.update()
     if remove_log:
         remove_gurobi_log()
@@ -176,7 +176,7 @@ def f_constr(node, m):
     m.update()
     return m
 
-def leq_constr(node, m, M, E):
+def leq_constr(node, m, M, E, maximize_vars, minimize_vars):
     self_bin_name = get_bin_name(node)
     times = list(range(handle_no_range(node).range_start, handle_no_range(node).range_end+1))
     isolated_exp_orig = isolate_0(node)
@@ -196,6 +196,10 @@ def leq_constr(node, m, M, E):
                 exec(var_temp_bin_name+"=m.addVar(vtype=GRB.CONTINUOUS, name='"+var_temp_bin_name+"')")
             else:
                 exec(var_temp_bin_name+"=m.getVars()[-1-T+gurobi_vars_ind]")
+            if (maximize_vars is not None) and var in maximize_vars:
+                exec("m.setObjective("+var_temp_bin_name+", GRB.MAXIMIZE)")
+            if (minimize_vars is not None) and var in minimize_vars:
+                exec("m.setObjective("+var_temp_bin_name+", GRB.MINIMIZE)")
             isolated_exp = isolated_exp.replace(var,var_temp_bin_name)
         # add constraints
         exec("m.addConstr(("+ self_temp_bin_name + " - 1) * (" + str(M) + ") <= " + isolated_exp + ", 'c_" + self_temp_bin_name + "_1')")
