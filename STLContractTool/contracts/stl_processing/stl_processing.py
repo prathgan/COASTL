@@ -13,8 +13,8 @@ def parse_stl(logic, remove_log=False):
 	stl_tree = parse_logic(logic, None, None)
 	return stl_tree
 
-def synthesize_stl(stl_node, ret_type=0, remove_log=False, console_log=True):
-	m = create_constraints(stl_node, console_log=console_log)
+def synthesize_stl(stl_node, ret_type=0, remove_log=False, console_log=True, maximize_vars=None, minimize_vars=None):
+	m = create_constraints(stl_node, maximize_vars=maximize_vars, minimize_vars=minimize_vars, console_log=console_log)
 	m.optimize()
 	if remove_log:
 		remove_gurobi_log()
