@@ -31,8 +31,29 @@ print(end - start)
 #m.optimize()
 #display_model(m)
 
-c = Contract(["x","y"],"T","G[0,10]((~(x<=1))&&(y<=10))")
-print(c.synthesize())
+"""
+# import library, import Contract class
+from STLContractTool import Contract
+
+# create Contract objects with format C([Variables],Assumptions,Guarantees)
+c1 = Contract(["x"],"T","G[0,10](x<=1)")
+c2 = Contract(["y","z"],"(y<=10)&&((z<=20))","G[0,10]((y<=1)&&(z<=0))")
+c3 = Contract(["a","c"],"T","G[0,10](a+c<=1)")
+
+# synthesize values for variables
+c1.synthesize(remove_log=True)
+c2.synthesize(remove_log=True)
+c3.synthesize(remove_log=True)
+
+print(c1.get_synthesized_vars())
+print(c2.get_synthesized_vars())
+print(c3.get_synthesized_vars())
+"""
+
+tree = parse_stl("G[0,1]((a+c)*(b+d)<=1)")
+m = synthesize_stl(tree)
+print(m.getVars())
+
 
 # print(isolate_0(process("(x<=1)")))
 
