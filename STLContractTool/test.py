@@ -13,6 +13,7 @@ from contracts.operations import *
 from contracts.stl_processing.stl_constraints import *
 from contracts.stl_processing.stl_constraints_helpers import *
 from contracts.stl_processing.utilities.object_utilities import *
+from contracts.stl_processing.stl_processing import *
 import sympy
 from gurobipy import *
 
@@ -57,7 +58,7 @@ print(m.getVars())
 
 # print(isolate_0(process("(x<=1)")))
 
-#tree = process("(F[0,20]((5<=x(1))&&(x(1)<=5)&&(0<=x(2))&&(x(2)<=0)))U(F[0,20]((5<=x(1))&&(x(1)<=5)&&(0<=x(2))&&(x(2)<=0)))")
+# tree = process("(F[0,20]((5<=x(1))&&(x(1)<=5)&&(0<=x(2))&&(x(2)<=0)))U(F[0,20]((5<=x(1))&&(x(1)<=5)&&(0<=x(2))&&(x(2)<=0)))")
 #print(tree.vars)
 # remove_gurobi_log()
 # print(tree.child1.child1.child2.child2.child1)
