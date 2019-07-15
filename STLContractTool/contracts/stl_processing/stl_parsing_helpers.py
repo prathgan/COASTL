@@ -81,6 +81,15 @@ def predicate_info(logic, start, equals_ind):
 		var = var[:-1]
 	return var, operator
 
+def remove_operators(str):
+	str = str.replace('+','')
+	str = str.replace('-','')
+	str = str.replace('*','')
+	str = str.replace('/','')
+	str = str.replace('(','')
+	str = str.replace(')','')
+	return str
+
 class SwitchDict(dict):
     def __getitem__(self, key):
         return dict.get(self, key)
