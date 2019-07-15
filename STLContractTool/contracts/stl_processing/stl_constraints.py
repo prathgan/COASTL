@@ -190,7 +190,7 @@ def leq_constr(node, m, M, E):
         gurobi_vars_ind+=1
         # add bin vars for all node.vars
         for var in node.vars:
-            var_temp_bin_name = var+"_"+str(t)
+            var_temp_bin_name = get_bin_name(var+"_"+str(t))
             if not m.getVars()[-1-T+gurobi_vars_ind].VarName == var_temp_bin_name:
                 exec(var_temp_bin_name+"=m.addVar(vtype=GRB.CONTINUOUS, name='"+var_temp_bin_name+"')")
             else:
