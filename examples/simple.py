@@ -8,9 +8,11 @@ c3 = Contract(["p","q"],"T","G[0,10]((p+q)<=2)")
 
 # synthesize values for variables
 # note: contracts must be resynthesized after being edited
-c1.synthesize(remove_log=True)
-c2.synthesize(remove_log=True)
-c3.synthesize(remove_log=True)
+# note: remove_log and console_log parameters set to False
+#       so gurobi log file removed and logging put to console
+c1.synthesize(remove_log=True, console_log=False)
+c2.synthesize(remove_log=True, console_log=False)
+c3.synthesize(remove_log=True, console_log=False)
 
 # get synthesized values for variables considered in contract
 c1_solutions = c1.get_synthesized_vars()
