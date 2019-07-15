@@ -16,7 +16,7 @@ def process(logic, remove_log=False):
 		remove_gurobi_log()
 	return stl_tree
 
-def synthesize(m, ret_type=0):
+def synthesize_stl(m, ret_type=0):
 	m.optimize()
 	if ret_type==1:
 		return m.getVars()
