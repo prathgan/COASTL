@@ -2,6 +2,7 @@ from .utilities.simple_utilities import list_to_str
 import re
 
 def get_bin_name(inp):
+	alphaDict = {'0':'zero','1':'one','2':'two','3':'three','4':'four','5':'five','6':'six','7':'seven','8':'eight','9':'nine'}
 	name = ""
 	if isinstance(inp, str):
 		name = inp
@@ -24,6 +25,8 @@ def get_bin_name(inp):
 	name = name.replace('*',"_t_")
 	name = name.replace('/',"_d_")
 	name = name.replace('.',"_dot_")
+	if name[0].isdigit():
+		name=alphaDict[name[0]]+"_"+name[1:]
 	return name
 
 def replace_operators(str):
@@ -49,7 +52,10 @@ def handle_no_range(node):
 def isolate_0(node):
 	exp = node.string_rep
 	parts = re.split("<=", exp)
-	return parts[1]+" - ("+parts[0]+")"
+	if exp[-1].isalpha():
+		return parts[0]+" - ("+parts[1]+")"
+	else:
+		return parts[1]+" - ("+parts[0]+")"
 
 
 class SwitchDict(dict):
