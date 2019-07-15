@@ -5,9 +5,9 @@ from STLContractTool import conjunction
 # create Contract objects with format C([Variables],Assumptions,Guarantees)
 # note: if no range is provided in STL (no G[] or F[]), assumes range 0-0
 c1 = Contract(["x"],"T","x<=2")
-c2 = Contract(["x"],"T","~(x<=0.9999)")
-c3 = Contract(["y"],"T","(y<=3)")
-c4 = Contract(["x","y"],"T","(x+y<=5)")
+c2 = Contract(["x"],"T","~(x<=1)")
+c3 = Contract(["y"],"T","y<=3")
+c4 = Contract(["x","y"],"T","x+y<=5")
 
 # perform conjunction of Contracts c1, c2, c3, and c4
 c5 = conjunction([c1, c2, c3, c4])
@@ -16,13 +16,14 @@ c5 = conjunction([c1, c2, c3, c4])
 # note: contracts must be resynthesized after being edited
 # note: remove_log and console_log parameters set to False
 #       so gurobi log file removed and logging put to console
-c5.synthesize(remove_log=True, console_log=False, maximize_vars=["x"])
+c5.synthesize(remove_log=True, console_log=False)
 
 # get synthesized values for variables considered in contract
-c5_solutions = c5.get_synthesized_vars()
+# c5_solutions = c5.get_synthesized_vars()
+c1_solutions = c1.get_synthesized_vars()
 
 # print solutions for variables
-print(c5_solutions)
+print(c1_solutions)
 
 #-----------------------------#
 
