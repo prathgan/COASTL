@@ -25,7 +25,8 @@ class Contract(object):
 
 	def process_variables(self, variables):
 		for var in variables:
-			self.__assumptions.propogate_var_down(var, None, 1)
+			if self.__assumptions is not "T":
+				self.__assumptions.propogate_var_down(var, None, 1)
 			self.__guarantees.propogate_var_down(var, None, 1)
 		self.__variables = variables
 
@@ -50,6 +51,9 @@ class Contract(object):
 		return self.__model
 
 	def saturate(self):
+		if self.__assumptions == "T":
+			self.__isSat == 1
+			return
 		notA = Node(None, self.__assumptions, None, 0, "~", self.__assumptions.vars, None, None, "~")
 		self.__guarantees = Node(None, notA, self.__guarantees, 0, "||", join_stringlists(notA.vars,self.__guarantees.vars), None, None, "||")
 		notA.set_parent_alt("self.__guarantees")
