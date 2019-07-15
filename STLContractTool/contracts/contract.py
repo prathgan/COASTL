@@ -8,19 +8,19 @@ class Contract(object):
 		if isinstance(assumptions, Node):
 			self.__assumptions = assumptions
 		else:
-			self.__assumptions = process(assumptions)
+			self.__assumptions = parse_stl(assumptions)
 		if isinstance(guarantees, Node):
 			self.__guarantees = guarantees
 		else:
-			self.__guarantees = process(guarantees)
+			self.__guarantees = parse_stl(guarantees)
 		self.process_variables(variables)
 		self.__isSat = 0
 
 	def process_assumptions(self, assumptions):
-		self.__assumptions = parse(assumptions)
+		self.__assumptions = parse_stl(assumptions)
 
 	def process_guarantees(self, guarantees):
-		self.__guarantees = parse(guarantees)
+		self.__guarantees = parse_stl(guarantees)
 
 	def process_variables(self, variables):
 		for var in variables:
