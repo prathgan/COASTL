@@ -1,9 +1,6 @@
 from .stl_parsing_helpers import *
 from .stl_node import Node
 
-def parse(logic):
-	return parse_logic(logic, None, None)
-
 def parse_logic(logic, range_start, range_end):
 	"""
 	Return root of tree structure which represents
@@ -11,6 +8,8 @@ def parse_logic(logic, range_start, range_end):
 	"""
 	if logic=="":
 		return None
+	if logic=="T":
+		return "T"
 	start, end = round_parens(logic)
 	if start==0 and end==len(logic)-1:
 		return parse_logic(logic[1:len(logic)-1], range_start, range_end)

@@ -24,12 +24,15 @@ end = timer()
 print(end - start)
 """
 
-tree = process("F[0,10]((~(x<=1))&&(x<=10))")
+#tree = process("F[0,10]((~(x<=1))&&(x<=10))")
 # tree = process("~(x<=2)")
-m = create_constraints(tree, remove_log=True)
+#m = create_constraints(tree, remove_log=True)
 # print(m.getConstrs())
-m.optimize()
-display_model(m)
+#m.optimize()
+#display_model(m)
+
+c = Contract(["x","y"],"T","G[0,10]((~(x<=1))&&(y<=10))")
+print(c.synthesize())
 
 # print(isolate_0(process("(x<=1)")))
 
