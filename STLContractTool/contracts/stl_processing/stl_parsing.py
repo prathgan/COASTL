@@ -1,5 +1,6 @@
 from .stl_parsing_helpers import *
 from .stl_node import Node
+import re
 
 def parse_logic(logic, range_start, range_end):
 	"""
