@@ -1,10 +1,14 @@
 from .utilities.simple_utilities import list_to_str
 import re
 
-def get_bin_name(node):
-	name = "b_"+node.string_rep
-	name = name.replace('[','_')
-	name = name.replace(']','_')
+def get_bin_name(inp):
+	name = ""
+	if isinstance(inp, str):
+		name = inp
+	else:
+		name = "b_"+inp.string_rep
+	name = name.replace('[','ob')
+	name = name.replace(']','cb')
 	name = name.replace(',','_')
 	name = name.replace("<=",'leq')
 	name = name.replace(">=",'geq')
@@ -13,6 +17,13 @@ def get_bin_name(node):
 	name = name.replace("&&","and")
 	name = name.replace('||',"or")
 	name = name.replace('~',"not")
+	name = name.replace('(',"_op_")
+	name = name.replace(')',"_cp_")
+	name = name.replace('+',"+")
+	name = name.replace('-',"_m_")
+	name = name.replace('*',"_t_")
+	name = name.replace('/',"_d_")
+	print(name)
 	return name
 
 def handle_no_range(node):
