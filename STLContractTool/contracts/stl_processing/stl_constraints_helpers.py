@@ -23,6 +23,7 @@ def get_bin_name(inp):
 	name = name.replace('-',"_m_")
 	name = name.replace('*',"_t_")
 	name = name.replace('/',"_d_")
+	name = name.replace('.',"_dot_")
 	return name
 
 def replace_operators(str):
