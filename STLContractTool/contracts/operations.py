@@ -17,6 +17,18 @@ def two_contract_conjunction(c1,c2):
 		c1.saturate()
 	if c2.isSat == 1:
 		c2.saturate()
+	if c1.assumptions == "T" and c2.assumptions == "T":
+		return Contract(list_union(c1.variables,c2.variables),
+			"T",
+			Node(None, c1.guarantees, c2.guarantees, 0, "&&", list_union(c1.guarantees.vars,c2.guarantees.vars), None, None, "&&"))
+	elif c1.assumptions == "T":
+		return Contract(list_union(c1.variables,c2.variables),
+			c2.assumptions,
+			Node(None, c1.guarantees, c2.guarantees, 0, "&&", list_union(c1.guarantees.vars,c2.guarantees.vars), None, None, "&&"))
+	elif c2.assumptions == "T":
+		return Contract(list_union(c1.variables,c2.variables),
+			c1.assumptions,
+			Node(None, c1.guarantees, c2.guarantees, 0, "&&", list_union(c1.guarantees.vars,c2.guarantees.vars), None, None, "&&"))
 	return Contract(list_union(c1.variables,c2.variables),
 		Node(None, c1.assumptions, c2.assumptions, 0, "||", list_union(c1.assumptions.vars,c2.assumptions.vars), None, None, "||"),
 		Node(None, c1.guarantees, c2.guarantees, 0, "&&", list_union(c1.guarantees.vars,c2.guarantees.vars), None, None, "&&"))
