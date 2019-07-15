@@ -2,9 +2,10 @@ from gurobipy import *
 from .stl_constraints_helpers import *
 from .utilities.simple_utilities import remove_gurobi_log, parentheses_match
 
-def create_constraints(node, m=None, remove_log=False, M=10**4, E=10**(-4)):
+def create_constraints(node, m=None, remove_log=False, console_log=True, M=10**4, E=10**(-4)):
     if m is None:
         m = Model("solver")
+        m.Params.LogToConsole = int(console_log)
     m = topmost_constr(node, m)
     m.update()
     node_switch_L = SwitchDict([("~",not_constr),
