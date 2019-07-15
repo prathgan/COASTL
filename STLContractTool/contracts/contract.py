@@ -67,7 +67,7 @@ class Contract(object):
 			self.saturate()
 		self.__model = synthesize_stl(self.guarantees, ret_type, remove_log)
 
-	def get_vars(self):
+	def get_synthesized_vars(self):
 		vars = {}
 		for var in self.__model.getVars():
 			if var.VarName.split("_")[0] in self.__variables:
