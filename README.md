@@ -3,4 +3,6 @@ Lightweight Python package for doing operations on contracts in design-by-contra
 
 ## Installation
 ## Use
+### Signal Temporal Logic
+### Contracts
 ## Contact
