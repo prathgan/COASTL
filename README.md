@@ -15,3 +15,4 @@ For all prerequisites, if not already installed, a `pip install` should suffice
 ### Signal Temporal Logic
 ### Contracts
 ## Contact
+This library is currently not in active development, if you have any questions about the operation of this package or would like to contribute, please email me directly at gandhips02@gmail.com
