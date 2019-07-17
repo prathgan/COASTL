@@ -5,10 +5,11 @@ Lightweight Python package for doing operations concerning A/G contracts in desi
 
 ## Installation
 ### Prerequisites
-For all prerequisites, if not already installed, a `pip install` should suffice:
+For most prerequisites, if not already installed, a `pip install` should suffice:
 - `sympy`
 - `numpy`
 - `re`
+This package also requires a functioning installation of Gurobi, an optimization solver tool used heavily in coastl. Once you have installed Gurobi (https://www.gurobi.com), navigate to the Gurobi `<intstalldir>` and execute `python setup.py install`.
 ### Install coastl
 1) download .zip file of this repository
 2) navigate to directory where coastl `setup.py` file is located
