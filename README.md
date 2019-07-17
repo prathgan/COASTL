@@ -5,7 +5,7 @@ Lightweight Python package for doing operations concerning A/G contracts in desi
 
 ## Installation
 ### Prerequisites
-For all prerequisites, if not already installed, a `pip install` should suffice
+For all prerequisites, if not already installed, a `pip install` should suffice:
 - `sympy`
 - `numpy`
 - `re`
