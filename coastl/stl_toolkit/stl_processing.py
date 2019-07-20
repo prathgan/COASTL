@@ -22,3 +22,13 @@ def synthesize_stl(stl_node, ret_type=0, remove_log=False, console_log=True, max
 		return m.getVars()
 	else:
 		return m
+
+def create_model_stl(stl_node, remove_log=False, console_log=True, maximize_vars=None, minimize_vars=None):
+	return create_constraints(stl_node, maximize_vars=maximize_vars, minimize_vars=minimize_vars, console_log=console_log)
+
+def synthesize_stl(m, ret_type=0):
+	m.optimize()
+	if ret_type==1:
+		return m.getVars()
+	else:
+		return m
