@@ -1,5 +1,5 @@
 # import library, import Contract class
-from STLContractTool import Contract
+from coastl import Contract
 
 # create Contract objects with format C([Variables],Assumptions,Guarantees)
 c1 = Contract(["x"],"T","G[0,10](x<=1)")

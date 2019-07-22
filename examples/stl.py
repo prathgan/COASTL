@@ -1,4 +1,4 @@
-from STLContractTool import parse_stl, create_model_stl, synthesize_stl
+from coastl import parse_stl, create_model_stl, synthesize_stl
 
 stl_tree = parse_stl("G[0,10]((x<=10)&&(~(x<=5)))")
 m = create_model_stl(stl_tree)

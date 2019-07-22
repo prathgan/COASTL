@@ -1,6 +1,6 @@
 # import library, import Contract class
-from STLContractTool import Contract
-from STLContractTool import composition
+from coastl import Contract
+from coastl import composition
 
 # create Contract objects with format C([Variables],Assumptions,Guarantees)
 # note: if no range is provided in STL (no G[] or F[]), assumes range 0-0
