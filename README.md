@@ -22,7 +22,7 @@ For more, see [the examples folder](https://github.com/prathgan/coastl/examples)
 ### Signal Temporal Logic
 Import functions:
 ```python
-from STLContractTool import parse_stl, create_model_stl, synthesize_stl
+from coastl import parse_stl, create_model_stl, synthesize_stl
 ```
 Create tree from STL:
 ```python
@@ -48,7 +48,7 @@ for var in solved_vars:
 ### Contracts
 Import Contract object, conjunction & composition operations
 ```python
-from STLContractTool import Contract, conjunction
+from coastl import Contract, conjunction
 ```
 Create two contracts in the format [vars, assumptions, guarantees]
 ```python
