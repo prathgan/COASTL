@@ -1,5 +1,5 @@
 # COASTL (Contract Operations and Signal Temporal Logic)
-[Poster](https://www.github.com/prathgan/coastl/media/poster.pdf)
+[Poster](https://github.com/prathgan/coastl/blob/master/media/poster.pdf)
 
 Lightweight Python package for doing operations concerning A/G contracts in design-by-contract systems design. Also has functionality to read Signal Temporal Logic into operable structure and derive corresponding boolean and synthesis constraints. Developed at DesCyPhy Lab, USC.
 
