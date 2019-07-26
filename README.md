@@ -1,4 +1,6 @@
 # COASTL (Contract Operations and Signal Temporal Logic)
+[![MIT License](https://img.shields.io/github/license/mashape/apistatus.svg?maxAge=2592000)](https://opensource.org/licenses/MIT)
+[![Author](http://wsbadge.herokuapp.com/badge/Author-Pratham_Gandhi-red.svg)](https://github.com/prathgan)
 [Poster](https://github.com/prathgan/coastl/blob/master/media/poster.pdf)
 
 Lightweight Python package for doing operations concerning A/G contracts in design-by-contract systems design. Also has functionality to read Signal Temporal Logic into operable structure and derive corresponding boolean and synthesis constraints. Developed at DesCyPhy Lab, USC.
@@ -77,5 +79,3 @@ c3.synthesize(remove_log=True, console_log=False)
 c3_solutions = c3.get_synthesized_vars()
 print(c3_solutions)
 ```
-## Contact
-This library is currently not in active development. If you have any questions about the operation of this package or would like to contribute, please email me directly at gandhips02@gmail.com. Additionally, I'm still working on documenting all the code, and a big update is coming soon with docstring documentations of each method and class in the package. If you'd like to help me with this, please send me an email.
