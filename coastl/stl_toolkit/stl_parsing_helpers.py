@@ -61,6 +61,7 @@ def connector(string):
 	return -1
 
 def predicate(logic, start, end):
+	"""Returns information about predicate logic from string form if is predicate"""
 	is_p, equals_ind = is_predicate(logic, start, end)
 	if is_p:
 		return predicate_info(logic, start, equals_ind)
@@ -68,12 +69,14 @@ def predicate(logic, start, end):
 		return -1
 
 def is_predicate(logic, start, end):
+	"""Returns T/F depending on if logic string is predicate and index of predicate operator (<=)"""
 	equals_ind = logic.index("=")
 	if equals_ind>end or equals_ind<start:
 		return True, equals_ind
 	return False, -1
 
 def predicate_info(logic, start, equals_ind):
+	"""Returns information about predicate logic from string form"""
 	var = logic[0:equals_ind]
 	operator = "="
 	if var[-1]=="<" or var[-1]==">":
@@ -82,6 +85,7 @@ def predicate_info(logic, start, equals_ind):
 	return var, operator
 
 def remove_operators(str):
+	"""Returns logic string with operators removed"""
 	str = str.replace('+','')
 	str = str.replace('-','')
 	str = str.replace('*','')
@@ -91,5 +95,6 @@ def remove_operators(str):
 	return str
 
 class SwitchDict(dict):
+	"""Dictionary subclass with dict.get(x), where x is not in dict, returning None"""
     def __getitem__(self, key):
         return dict.get(self, key)

@@ -1,21 +1,20 @@
 class Node(object):
-
-	"""
-	Constructs node to be used in tree representing expression of signal temporal logical.
-
-    Parameters
-    ----------
-    parent: 		pointer to the object of parent of this node
-    child1: 		pointer to the object of child1; points to anterior requirement of 'until' logic
-	child2: 		pointer to the object of child2; points to posterior condition of 'until' logic
-    type: 			part of logic which this node represents; logic (0) or predicate (1)
-    logic: 			logic operator which which this node represents, null if predicate node
-    vars: 			variables which this node pertains to
-    range_start: 	start of range for complex operator nodes, min range
-    range_end: 		end of range for complex operator nodes, max range
-	string_rep: 	string representation of node
-    """
 	def __init__(self, parent, child1, child2, type, logic, vars, range_start, range_end, string_rep):
+		"""
+		Constructs node to be used in tree representing expression of signal temporal logical.
+
+	    Parameters
+	    ----------
+	    parent: 		pointer to the object of parent of this node
+	    child1: 		pointer to the object of child1; points to anterior requirement of 'until' logic
+		child2: 		pointer to the object of child2; points to posterior condition of 'until' logic
+	    type: 			part of logic which this node represents; logic (0) or predicate (1)
+	    logic: 			logic operator which which this node represents, null if predicate node
+	    vars: 			variables which this node pertains to
+	    range_start: 	start of range for complex operator nodes, min range
+	    range_end: 		end of range for complex operator nodes, max range
+		string_rep: 	string representation of node
+	    """
 		self.__parent = parent
 		self.__child1 = child1
 		if child1 is not None:

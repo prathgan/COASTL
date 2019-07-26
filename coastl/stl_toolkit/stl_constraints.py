@@ -3,6 +3,7 @@ from .stl_constraints_helpers import *
 from .utilities.simple_utilities import remove_gurobi_log, parentheses_match
 
 def create_constraints(node, m=None, maximize_vars=None, minimize_vars=None, remove_log=False, console_log=True, M=10**4, E=10**(-4)):
+    """Returns gurobi MILP optimization model to solve for all values binary and continuous variables in STL tree 'node'"""
     if m is None:
         m = Model("solver")
         m.Params.LogToConsole = int(console_log)
@@ -31,6 +32,7 @@ def create_constraints(node, m=None, maximize_vars=None, minimize_vars=None, rem
     return m
 
 def topmost_constr(node, m):
+    """Adds constraint for root logic binary variable must equal 1"""
     if node.parent is None:
         bin_name = get_bin_name(node)
         exec(bin_name+"= m.addVar(vtype=GRB.BINARY, name='"+bin_name+"_root')")
@@ -40,6 +42,7 @@ def topmost_constr(node, m):
     return m
 
 def not_constr(node, m):
+    """Adds constraint for not ('~') logic"""
     self_bin_name = get_bin_name(node)
     child1_bin_name = get_bin_name(node.child1)
     times = list(range(handle_no_range(node).range_start, handle_no_range(node).range_end+1))
@@ -65,6 +68,7 @@ def not_constr(node, m):
     return m
 
 def and_constr(node, m):
+    """Adds constraints for and ('&&') logic"""
     self_bin_name = get_bin_name(node)
     child1_bin_name = get_bin_name(node.child1)
     child2_bin_name = get_bin_name(node.child2)
@@ -95,6 +99,7 @@ def and_constr(node, m):
     return m
 
 def or_constr(node, m):
+    """Adds constraints for or ('||') logic"""
     self_bin_name = get_bin_name(node)
     child1_bin_name = get_bin_name(node.child1)
     child2_bin_name = get_bin_name(node.child2)
@@ -125,6 +130,7 @@ def or_constr(node, m):
     return m
 
 def g_constr(node, m):
+    """Adds constraints for globally ('G[start,end]') temporal modifier"""
     bin_name = get_bin_name(node)
     create_new_vars = False
     if (not node.gurobi_vars) or create_new_vars:
@@ -151,6 +157,7 @@ def g_constr(node, m):
     return m
 
 def f_constr(node, m):
+    """Adds constraints for eventually ('F[start,end]') temporal modifier"""
     bin_name = get_bin_name(node)
     create_new_vars = False
     if (not node.gurobi_vars) or create_new_vars:
@@ -177,6 +184,7 @@ def f_constr(node, m):
     return m
 
 def leq_constr(node, m, M, E, maximize_vars, minimize_vars):
+    """Adds constraints for Atomic Predicate nodes with less than or equal to ('<=') logical operator"""
     self_bin_name = get_bin_name(node)
     times = list(range(handle_no_range(node).range_start, handle_no_range(node).range_end+1))
     isolated_exp_orig = isolate_0(node)
@@ -209,4 +217,7 @@ def leq_constr(node, m, M, E, maximize_vars, minimize_vars):
     return m
 
 def geq_constr(node, m):
+    """Adds constraints for Atomic Predicate nodes with greater than or equal to ('>=') logical operator
+    NOTE: not implemented because convention is to write k<=x instead of x>=k
+    """
     return m
