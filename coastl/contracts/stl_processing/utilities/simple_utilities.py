@@ -15,6 +15,7 @@ def remove_dups_stringlist(str):
 	return ','.join(arr)
 
 def list_to_str(l, commas=True):
+	"""Converts list to string representation"""
 	if commas:
 		return ','.join(l)
 	else:
@@ -40,4 +41,5 @@ def parentheses_match(string):
 	return matched and len(verification_stack) == 0
 
 def remove_gurobi_log():
+	"""Removes gurobi log after COASTL synthesis function has been run"""
 	os.remove("gurobi.log")

@@ -7,5 +7,6 @@ def display_tree(root):
 	print(root)
 
 def display_model(m):
+	"""Display all varibles in gurobi model m with their values"""
 	for v in m.getVars():
 		print('%s %g' % (v.varName, v.x))

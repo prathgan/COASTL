@@ -4,6 +4,11 @@ from .stl_processing.stl_node import Node
 import copy
 
 def conjunction(c1,c2=None):
+	"""
+	Returns contract resulting from conjunction of c1 and c2
+	If c2==None, then c1 is a list of multiple contracts to be conjoined
+	Composition joins multiple requirements for one system
+	"""
 	if c2 is not None:
 		return two_contract_conjunction(c1,c2)
 	else:
@@ -13,6 +18,7 @@ def conjunction(c1,c2=None):
 			return two_contract_conjunction(c1[0],c1[1])
 
 def two_contract_conjunction(c1,c2):
+	"""Returns contract resulting from conjunction of c1 and c2"""
 	if c1.isSat == 0:
 		c1.saturate()
 	if c2.isSat == 1:
@@ -34,6 +40,11 @@ def two_contract_conjunction(c1,c2):
 		Node(None, c1.guarantees, c2.guarantees, 0, "&&", list_union(c1.guarantees.vars,c2.guarantees.vars), None, None, "&&"))
 
 def composition(c1, c2=None):
+	"""
+	Returns contract resulting from composition of c1 and c2
+	If c2==None then c1 is a list of contracts to be composed
+	Composition joins requirements for several systems in one environment
+	"""
 	if c2 is not None:
 		return two_contract_composition(c1,c2)
 	else:
@@ -43,6 +54,9 @@ def composition(c1, c2=None):
 			return two_contract_composition(c1[0],c1[1])
 
 def two_contract_composition(c1,c2):
+	"""Returns contract resulting from composition of c1 and c2
+	TODO: implement support for A='T'
+	"""
 	if c1.isSat == 0:
 		c1.saturate()
 	if c2.isSat == 1:
