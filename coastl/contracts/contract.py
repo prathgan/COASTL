@@ -1,3 +1,5 @@
+import sys
+sys.path.insert(1,'../stl_toolkit')
 from .stl_processing.stl_node import Node
 from .stl_processing.stl_processing import parse_stl, synthesize_stl
 from .stl_processing.utilities.simple_utilities import join_stringlists, remove_dups_stringlist, list_to_str

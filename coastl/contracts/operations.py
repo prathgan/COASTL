@@ -1,4 +1,6 @@
+import sys
 from .contract import Contract
+sys.path.insert(1,'../stl_toolkit')
 from .stl_processing.utilities.simple_utilities import *
 from .stl_processing.stl_node import Node
 import copy
