@@ -5,7 +5,7 @@ from .stl_constraints import create_constraints
 from .utilities.simple_utilities import remove_gurobi_log, parentheses_match
 
 def solve(logic):
-	"""Finds solutions for all binary and continuous variables in logic"""
+	"""Finds solutions for all binary and continuous variables in logic string"""
 	return synthesize_stl(create_model_stl(parse_stl(logic)),remove_log=True).getVars()
 
 def parse_stl(logic, remove_log=False):
