@@ -20,7 +20,7 @@ This package also requires a functioning installation of Gurobi, an optimization
 
 3) `pip install .`
 ## Use
-For more, see [the examples folder](https://https://github.com/prathgan/COASTL/tree/master/examples).
+For more, see [the examples folder](https://github.com/prathgan/COASTL/tree/master/examples).
 ### Signal Temporal Logic
 Import functions:
 ```python
