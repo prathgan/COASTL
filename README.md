@@ -50,7 +50,7 @@ for var in solved_vars:
 ### Contracts
 Import Contract object, conjunction & composition operations
 ```python
-from coastl import Contract, conjunction
+from coastl import Contract, conjunction, composition
 ```
 Create two contracts in the format [vars, assumptions, guarantees]
 ```python
