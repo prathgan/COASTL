@@ -1,6 +1,5 @@
 # COASTL (Contract Operations and Signal Temporal Logic)
 [![MIT License](https://img.shields.io/github/license/mashape/apistatus.svg?maxAge=2592000)](https://opensource.org/licenses/MIT)
-[![Author](http://wsbadge.herokuapp.com/badge/Author-Pratham_Gandhi-red.svg)](https://github.com/prathgan)
 
 [Poster](https://github.com/prathgan/coastl/blob/master/media/poster.pdf)
 
